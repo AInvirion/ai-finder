@@ -71,18 +71,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.11"
+          version: "latest"
+      - name: Set up Python
+        run: uv python install 3.11
+      # create_seed_db.py imports ai_finder_kb, whose __init__ pulls in sync ->
+      # requests, so the package's runtime deps have to be present.
+      - name: Install dependencies
+        run: uv sync --locked --all-packages
       - name: Verify version.json matches the seed files
-        run: python scripts/update_seed_checksums.py --verify
+        run: uv run python scripts/update_seed_checksums.py --verify
       - name: Rebuild seed.db from the seed JSONs
-        run: python scripts/create_seed_db.py
+        run: uv run python scripts/create_seed_db.py
       - name: Check the rebuilt database
         run: |
           set -euo pipefail
-          python - <<'PY'
+          uv run python - <<'PY'
           import sqlite3, sys
           db = sqlite3.connect("packages/ai-finder/src/ai_finder_kb/data/seed.db")
           models = db.execute("SELECT COUNT(*) FROM models").fetchone()[0]
