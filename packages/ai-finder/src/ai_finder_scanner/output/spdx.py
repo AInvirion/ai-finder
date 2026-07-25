@@ -71,6 +71,13 @@ class SPDX23Formatter:
             return "cargo"
         return "pypi"
 
+    def _normalize_path(self, path: str) -> str:
+        """Normalize file path for cross-platform consistency.
+
+        Converts Windows backslashes to forward slashes.
+        """
+        return path.replace("\\", "/")
+
     def _infer_purl_type_from_manifest(self, manifest_file: str) -> str:
         """Infer PURL type from manifest filename."""
         filename = manifest_file.split("/")[-1]
@@ -171,7 +178,12 @@ class SPDX23Formatter:
             info = finding.model_info
             package = {
                 "SPDXID": f"SPDXRef-Package-{idx}",
-                "name": finding.file_path.split("/")[-1],
+                # Full normalized path, not the basename: format() keys packages by
+                # name, so two shards both called model.safetensors in different
+                # directories would collapse into the first one seen and the second
+                # model would be missing from the SBOM entirely, checksum included.
+                # spdx3.py already does this; cyclonedx.py now matches.
+                "name": self._normalize_path(finding.file_path),
                 "downloadLocation": "NOASSERTION",
                 "filesAnalyzed": False,
                 "primaryPackagePurpose": "APPLICATION",
@@ -188,6 +200,12 @@ class SPDX23Formatter:
             if info.parameter_count:
                 comment_parts.append(f"parameters: {info.parameter_count:,}")
             package["comment"] = ", ".join(comment_parts)
+
+            # Content hash, when the scanner computed one. Doubles as the key
+            # _enrich_packages uses to resolve this package by hash, which is the
+            # only thing that identifies a generically named shard.
+            if info.sha256:
+                package["checksums"] = [{"algorithm": "SHA256", "checksumValue": info.sha256}]
 
             # Add external references for model metadata (SPDX 2.3 compatible)
             # Using OTHER category for AI/ML specific references
@@ -302,8 +320,21 @@ class SPDX23Formatter:
             purpose = package.get("primaryPackagePurpose")
 
             if purpose == "APPLICATION":
-                # This is a model file - enrich from KB
-                model_data = enricher.lookup_model(name)
+                # This is a model file - enrich from KB, hash first. The package
+                # carries the digest the scanner computed; a filename lookup
+                # cannot resolve a generically named shard, a hash can.
+                sha256 = next(
+                    (
+                        c.get("checksumValue")
+                        for c in package.get("checksums", [])
+                        if c.get("algorithm") == "SHA256"
+                    ),
+                    None,
+                )
+                # The package name is the full path, so pass the basename: the
+                # filename fallback matches against models.name and would never
+                # hit on a path. The hash lookup runs first regardless.
+                model_data = enricher.lookup_model(name.split("/")[-1], sha256=sha256)
                 if model_data:
                     # Add license
                     if model_data.license and "licenseConcluded" not in package:
@@ -319,6 +350,20 @@ class SPDX23Formatter:
                     if model_data.task:
                         comment_parts.append(f"task: {model_data.task}")
                     package["comment"] = ", ".join(filter(None, comment_parts))
+
+                    # The resolved purl is the whole point of the lookup: on a hash
+                    # hit this names the model that a generic shard filename never
+                    # could.
+                    if model_data.purl:
+                        ext_refs = package.get("externalRefs", [])
+                        ext_refs.append(
+                            {
+                                "referenceCategory": "PACKAGE-MANAGER",
+                                "referenceType": "purl",
+                                "referenceLocator": model_data.purl,
+                            }
+                        )
+                        package["externalRefs"] = ext_refs
 
                     # Add external refs for source
                     if model_data.source_url:

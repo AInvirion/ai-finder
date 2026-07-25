@@ -1,5 +1,8 @@
 """AI Finder Knowledge Base library."""
 
+import logging
+import os
+from contextlib import suppress
 from pathlib import Path
 from typing import Any, Optional
 
@@ -8,7 +11,7 @@ from .matcher import Matcher
 from .models import AncestryEdge, MCPMatch, ModelMatch, SDKMatch
 from .sync import KBSync, SyncResult, SyncStatus
 
-__version__ = "0.3.9"
+__version__ = "0.4.0"
 __all__ = [
     "KnowledgeBase",
     "Database",
@@ -21,7 +24,11 @@ __all__ = [
     "SyncStatus",
     "SyncResult",
     "get_seed_db_path",
+    "build_seed_db",
+    "seed_json_available",
 ]
+
+logger = logging.getLogger(__name__)
 
 
 def get_default_db_path() -> Path:
@@ -47,6 +54,48 @@ def get_seed_db_path() -> Optional[Path]:
         return fallback
 
     return None
+
+
+def seed_json_available() -> bool:
+    """Whether the seed JSONs are present, i.e. this is a source checkout.
+
+    An installed wheel deliberately ships only `data/seed.db`, not the JSONs it
+    was built from, so this is False there. See the `exclude` in pyproject.toml.
+    """
+    from .seed import SEED_DIR
+
+    return (SEED_DIR / "models.json").is_file()
+
+
+def build_seed_db() -> Optional[Path]:
+    """Build the bundled seed database from the seed JSONs.
+
+    Only possible in a source checkout: `seed.db` is generated rather than
+    committed, and a wheel ships the database without the JSONs. release.yml
+    builds it before packaging and verifies it landed. Returns None when the JSONs
+    are absent or the package directory is not writable.
+    """
+    from .seed import create_seed_db
+
+    if not seed_json_available():
+        return None
+
+    data_dir = Path(__file__).parent / "data"
+    target = data_dir / "seed.db"
+    try:
+        data_dir.mkdir(parents=True, exist_ok=True)
+        # Build to a temp file in the same directory and rename, so two processes
+        # racing on a fresh checkout cannot leave a half-written seed.db behind.
+        tmp = data_dir / f"seed.db.{os.getpid()}.tmp"
+        try:
+            create_seed_db(tmp)
+            os.replace(tmp, target)
+        finally:
+            with suppress(OSError):
+                tmp.unlink()
+    except OSError:
+        return None
+    return target if target.exists() else None
 
 
 class KnowledgeBase:
@@ -75,6 +124,9 @@ class KnowledgeBase:
         # Initialize from seed if this is a fresh database
         if self._db.get_version() == 0 and self._use_seed:
             seed_path = get_seed_db_path()
+            if seed_path is None:
+                # Source checkout, or a wheel built without the generated seed.db.
+                seed_path = build_seed_db()
             if seed_path and seed_path.exists():
                 import shutil
 
@@ -82,7 +134,18 @@ class KnowledgeBase:
                 shutil.copy(seed_path, self._db_path)
                 self._db.connect()
             else:
+                # No seed.db and no JSONs to build one from. Initialise an empty
+                # schema so the KB is still usable for crawled and user data, but
+                # say so loudly: silently returning an empty knowledge base makes
+                # every lookup miss and looks like the data being wrong rather than
+                # absent. A released wheel cannot reach this, since release.yml
+                # fails the build if seed.db is not in it.
                 self._db.initialize()
+                logger.warning(
+                    "No seed database found and no seed JSONs to build one from, so "
+                    "the knowledge base is empty. A released wheel always bundles "
+                    "one; from a source checkout run scripts/create_seed_db.py."
+                )
 
         self._matcher = Matcher(self._db)
 

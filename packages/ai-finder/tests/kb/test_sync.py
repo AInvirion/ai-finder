@@ -128,6 +128,10 @@ class TestKBSync:
         models_response.json.return_value = []
         models_response.raise_for_status = MagicMock()
 
+        model_files_response = MagicMock()
+        model_files_response.json.return_value = []
+        model_files_response.raise_for_status = MagicMock()
+
         mcp_response = MagicMock()
         mcp_response.json.return_value = []
         mcp_response.raise_for_status = MagicMock()
@@ -139,6 +143,8 @@ class TestKBSync:
                 return sdks_response
             elif "models.json" in url:
                 return models_response
+            elif "model_files.json" in url:
+                return model_files_response
             elif "mcp_servers.json" in url:
                 return mcp_response
             raise ValueError(f"Unexpected URL: {url}")
@@ -189,6 +195,10 @@ class TestKBSync:
         models_response.json.return_value = []
         models_response.raise_for_status = MagicMock()
 
+        model_files_response = MagicMock()
+        model_files_response.json.return_value = []
+        model_files_response.raise_for_status = MagicMock()
+
         mcp_response = MagicMock()
         mcp_response.json.return_value = []
         mcp_response.raise_for_status = MagicMock()
@@ -200,6 +210,8 @@ class TestKBSync:
                 return sdks_response
             elif "models.json" in url:
                 return models_response
+            elif "model_files.json" in url:
+                return model_files_response
             elif "mcp_servers.json" in url:
                 return mcp_response
             raise ValueError(f"Unexpected URL: {url}")
@@ -253,6 +265,10 @@ class TestKBSync:
         models_response.json.return_value = []
         models_response.raise_for_status = MagicMock()
 
+        model_files_response = MagicMock()
+        model_files_response.json.return_value = []
+        model_files_response.raise_for_status = MagicMock()
+
         mcp_response = MagicMock()
         mcp_response.json.return_value = []
         mcp_response.raise_for_status = MagicMock()
@@ -264,6 +280,8 @@ class TestKBSync:
                 return sdks_response
             elif "models.json" in url:
                 return models_response
+            elif "model_files.json" in url:
+                return model_files_response
             elif "mcp_servers.json" in url:
                 return mcp_response
             raise ValueError(f"Unexpected URL: {url}")
@@ -314,6 +332,8 @@ class TestKBSync:
             elif "models.json" in url:
                 # Simulate network failure for models
                 raise requests.RequestException("Network error fetching models")
+            elif "model_files.json" in url:
+                raise requests.RequestException("Network error fetching model_files")
             elif "mcp_servers.json" in url:
                 raise requests.RequestException("Network error fetching mcp_servers")
             raise ValueError(f"Unexpected URL: {url}")
@@ -330,7 +350,11 @@ class TestKBSync:
             # Should fail due to partial fetch failure
             assert result.success is False
             assert "Sync failure" in result.error
-            assert len(result.fetch_errors) == 2  # models and mcp_servers failed
+            # models and mcp_servers failed. model_files is NOT among them: this
+            # version.json carries no checksums, so the remote does not advertise
+            # that artifact and it is never requested.
+            assert len(result.fetch_errors) == 2
+            assert not any("model_files" in e for e in result.fetch_errors)
             # All counts are 0 because we rolled back
             assert result.sdks_updated == 0
             assert result.models_updated == 0
@@ -382,6 +406,7 @@ class TestKBSync:
             "checksums": {
                 "sdks.json": sdk_checksum,
                 "models.json": hashlib.sha256(b"[]").hexdigest(),
+                "model_files.json": hashlib.sha256(b"[]").hexdigest(),
                 "mcp_servers.json": hashlib.sha256(b"[]").hexdigest(),
             },
         }
@@ -397,6 +422,11 @@ class TestKBSync:
         models_response.content = b"[]"
         models_response.raise_for_status = MagicMock()
 
+        model_files_response = MagicMock()
+        model_files_response.json.return_value = []
+        model_files_response.content = b"[]"
+        model_files_response.raise_for_status = MagicMock()
+
         mcp_response = MagicMock()
         mcp_response.json.return_value = []
         mcp_response.content = b"[]"
@@ -409,6 +439,8 @@ class TestKBSync:
                 return sdks_response
             elif "models.json" in url:
                 return models_response
+            elif "model_files.json" in url:
+                return model_files_response
             elif "mcp_servers.json" in url:
                 return mcp_response
             raise ValueError(f"Unexpected URL: {url}")
@@ -434,6 +466,7 @@ class TestKBSync:
             "checksums": {
                 "sdks.json": "wrong_checksum_value",
                 "models.json": "wrong_checksum_value",
+                "model_files.json": "wrong_checksum_value",
                 "mcp_servers.json": "wrong_checksum_value",
             },
         }
@@ -450,6 +483,11 @@ class TestKBSync:
         models_response.content = b"[]"
         models_response.raise_for_status = MagicMock()
 
+        model_files_response = MagicMock()
+        model_files_response.json.return_value = []
+        model_files_response.content = b"[]"
+        model_files_response.raise_for_status = MagicMock()
+
         mcp_response = MagicMock()
         mcp_response.json.return_value = []
         mcp_response.content = b"[]"
@@ -462,6 +500,8 @@ class TestKBSync:
                 return sdks_response
             elif "models.json" in url:
                 return models_response
+            elif "model_files.json" in url:
+                return model_files_response
             elif "mcp_servers.json" in url:
                 return mcp_response
             raise ValueError(f"Unexpected URL: {url}")

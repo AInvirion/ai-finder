@@ -102,6 +102,13 @@ class CycloneDXFormatter:
         # Default to pypi for Python-style names
         return "pypi"
 
+    def _normalize_path(self, path: str) -> str:
+        """Normalize file path for cross-platform consistency.
+
+        Converts Windows backslashes to forward slashes.
+        """
+        return path.replace("\\", "/")
+
     def _infer_purl_type_from_manifest(self, manifest_file: str) -> str:
         """Infer PURL type from manifest filename.
 
@@ -241,11 +248,22 @@ class CycloneDXFormatter:
 
         if finding.type == FindingType.MODEL_FILE and finding.model_info:
             info = finding.model_info
-            filename = finding.file_path.split("/")[-1]
+            # Full normalized path, not the basename: format() keys components by
+            # name, so two shards both called model.safetensors in different
+            # directories would collapse into the first one seen and the second
+            # model would be missing from the SBOM entirely, hash included. The
+            # generic basenames this whole path exists to identify are exactly the
+            # ones that collide. spdx3.py already does this; spdx.py now matches.
             component = {
                 "type": "machine-learning-model",
-                "name": filename,
+                "name": self._normalize_path(finding.file_path),
             }
+
+            # Content hash, when the scanner computed one. Doubles as the key
+            # _enrich_components uses to resolve this component by hash, which is
+            # the only thing that identifies a generically named shard.
+            if info.sha256:
+                component["hashes"] = [{"alg": "SHA-256", "content": info.sha256}]
 
             # Build modelCard per CycloneDX 1.5 ML-BOM spec
             model_params: dict[str, Any] = {}
@@ -370,8 +388,21 @@ class CycloneDXFormatter:
             comp_type = component.get("type")
 
             if comp_type == "machine-learning-model":
-                # Enrich model from KB
-                model_data = enricher.lookup_model(name)
+                # Enrich model from KB, hash first. The component carries the
+                # digest the scanner computed; a filename lookup cannot resolve a
+                # generically named shard, a hash can.
+                sha256 = next(
+                    (
+                        h.get("content")
+                        for h in component.get("hashes", [])
+                        if h.get("alg") == "SHA-256"
+                    ),
+                    None,
+                )
+                # The component name is the full path, so pass the basename: the
+                # filename fallback matches against models.name and would never
+                # hit on a path. The hash lookup runs first regardless.
+                model_data = enricher.lookup_model(name.split("/")[-1], sha256=sha256)
                 if model_data:
                     # Update PURL if we have a better one
                     if model_data.purl:
