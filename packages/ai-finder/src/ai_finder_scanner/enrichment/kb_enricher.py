@@ -98,6 +98,13 @@ class ModelEnrichment:
     task: str | None = None
     base_model_purl: str | None = None
     datasets: list[str] | None = None
+    # Every purl claiming the looked-up file hash, oldest registration first,
+    # when there was more than one; None for an unambiguous hit. ``purl`` above
+    # is always the first entry — the earliest-registered candidate, asserted
+    # as the presumed original. Callers that want to disclose the ambiguity
+    # (identify's JSON output does) read this; callers that just want the
+    # best-effort answer keep reading ``purl``.
+    candidate_purls: list[str] | None = None
 
 
 @dataclass
@@ -200,15 +207,16 @@ class KBEnricher:
                 FROM model_files f JOIN models m ON m.id = f.model_id
                 WHERE f.h = ?
                 GROUP BY m.purl
-                ORDER BY m.purl
-                LIMIT 2
+                ORDER BY (m.repo_created_at IS NULL), m.repo_created_at, m.purl
                 """,
                 (blob,),
             )
             rows = cursor.fetchall()
         except sqlite3.Error as e:
-            # A pre-v3 KB has no model_files table. Not an error: the caller falls
-            # back to filename matching.
+            # A pre-v3 KB has no model_files table, and a pre-v4 one has no
+            # repo_created_at column. Not an error: the caller falls back to
+            # filename matching. (An up-to-date client never hits the v4 case:
+            # Database.initialize migrates its own KB on open.)
             logger.debug("Model hash lookup failed: %s", e)
             return None
 
@@ -217,9 +225,17 @@ class KBEnricher:
             self._cache_set(self._model_cache, cache_key, None)
             return None
 
-        # LIMIT 2 is enough to tell "one purl" from "more than one" without
-        # dragging back every mirror. The first row wins; ORDER BY purl makes that
-        # deterministic so repeated scans of the same file agree.
+        # A hash claimed by several models cannot be resolved by content alone —
+        # a base model and its quantization legitimately share the shards
+        # quantization left untouched. Policy: assert the EARLIEST-REGISTERED
+        # repo (the presumed original that was later forked or re-uploaded) and
+        # carry the full candidate list for disclosure. The ORDER BY does the
+        # pick: dated candidates before undated (a known registration beats an
+        # unknown one), then oldest first — safe as a string comparison because
+        # the seed only ships the canonical whole-second UTC form — then purl
+        # for determinism on ties. Exact identification through quantization or
+        # conversion is fingerprint territory, structurally beyond a hash
+        # lookup.
         row = rows[0]
         datasets = None
         if row["datasets"]:
@@ -242,6 +258,7 @@ class KBEnricher:
             task=row["task"],
             base_model_purl=row["base_model_purl"],
             datasets=datasets,
+            candidate_purls=[r["purl"] for r in rows] if len(rows) > 1 else None,
         )
         self._cache_set(self._model_cache, cache_key, result)
         return result

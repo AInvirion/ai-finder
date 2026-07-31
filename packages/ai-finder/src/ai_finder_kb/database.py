@@ -4,7 +4,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Optional
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 
 class Database:

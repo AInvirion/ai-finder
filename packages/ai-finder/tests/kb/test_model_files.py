@@ -360,3 +360,68 @@ class TestMigrationIdempotency:
             db.commit()
             versions = [r[0] for r in db.execute("SELECT version FROM schema_version").fetchall()]
             assert versions.count(3) == 1
+
+
+class TestRepoCreatedAtMigration:
+    """v004: the repo_created_at column and the v3 -> v4 upgrade path."""
+
+    def test_fresh_database_has_the_column_at_version_4(self, temp_db_path):
+        with Database(temp_db_path) as db:
+            db.initialize()
+            cols = [r[1] for r in db.execute("PRAGMA table_info(models)").fetchall()]
+            assert "repo_created_at" in cols
+            assert db.get_version() == 4
+            # The registration date and the row-audit stamp are distinct columns:
+            # same name upstream, different meaning here, and conflating them
+            # would compare registration dates against insertion times.
+            assert "created_at" in cols
+
+    def test_a_v3_database_is_migrated_on_open(self, temp_db_path):
+        """Simulate an existing pre-v4 install: no column, version stamped 3.
+
+        The stamp must be REPLACED, not just deleted: a fresh schema.sql stamps
+        only 4, so bare deletion empties the table, get_version() reads 0, and
+        initialize() re-runs schema.sql — whose CREATE TABLE IF NOT EXISTS
+        skips the existing models table and stamps 4 with the column still
+        missing. That is not the shape any real v3 install has."""
+        with Database(temp_db_path) as db:
+            db.initialize()
+            db.conn.executescript(
+                "ALTER TABLE models DROP COLUMN repo_created_at;"
+                "DELETE FROM schema_version WHERE version = 4;"
+                "INSERT OR IGNORE INTO schema_version (version) VALUES (3);"
+            )
+            db.commit()
+            assert db.get_version() == 3
+
+        with Database(temp_db_path) as db:
+            db.initialize()  # must apply v004
+            cols = [r[1] for r in db.execute("PRAGMA table_info(models)").fetchall()]
+            assert "repo_created_at" in cols
+            assert db.get_version() == 4
+
+    def test_seed_models_maps_created_at_to_repo_created_at(self, temp_db_path, monkeypatch):
+        """models.json speaks the corpus vocabulary (created_at = HF repo
+        registration date); the column is repo_created_at. The mapping is the
+        one line that ties them together."""
+        import ai_finder_kb.seed as seed_mod
+
+        rows = {
+            "models.json": [
+                {
+                    "purl": "pkg:huggingface/acme/m",
+                    "name": "m",
+                    "created_at": "2023-05-01T00:00:00Z",
+                },
+                {"purl": "pkg:huggingface/acme/undated", "name": "undated"},
+            ]
+        }
+        monkeypatch.setattr(seed_mod, "load_seed_data", lambda f: rows.get(f, []))
+        with Database(temp_db_path) as db:
+            db.initialize()
+            assert seed_mod.seed_models(db) == 2
+            got = dict(
+                db.execute("SELECT purl, repo_created_at FROM models ORDER BY purl").fetchall()
+            )
+            assert got["pkg:huggingface/acme/m"] == "2023-05-01T00:00:00Z"
+            assert got["pkg:huggingface/acme/undated"] is None
