@@ -159,8 +159,27 @@ class KBEnricher:
         cache[key] = value
 
     def __enter__(self) -> KBEnricher:
-        """Open database connection."""
+        """Open database connection, migrating the KB forward first if needed.
+
+        scan and identify open the enricher directly — they never pass through
+        ``KnowledgeBase`` — so this is the only place their database can be
+        brought up to the current schema. Without it, an existing pre-v4 KB
+        keeps its old schema forever under new code, the hash lookup's SELECT
+        fails on the missing ``repo_created_at`` column, and identification
+        silently degrades to filename matching (review finding). initialize()
+        is idempotent: an up-to-date database is a version check and nothing
+        else. Migration failure must not take enrichment down with it — the
+        old-schema connection still serves every pre-v4 query — so it is
+        logged, not raised.
+        """
         if self.db_path and self.db_path.exists():
+            try:
+                from ai_finder_kb.database import Database
+
+                with Database(self.db_path) as kb_db:
+                    kb_db.initialize()
+            except Exception as e:
+                logger.warning("KB schema migration failed; continuing as-is: %s", e)
             self._conn = sqlite3.connect(self.db_path)
             self._conn.row_factory = sqlite3.Row
         return self

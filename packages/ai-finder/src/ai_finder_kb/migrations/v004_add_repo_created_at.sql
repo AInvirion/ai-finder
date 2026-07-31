@@ -14,10 +14,19 @@
 -- whole-second UTC form ('YYYY-MM-DDTHH:MM:SSZ') or NULL; the exporter
 -- enforces that shape so lexicographic ORDER BY is chronological ORDER BY.
 
+-- One transaction, deliberately. executescript() runs each statement in its
+-- own implicit transaction, so without this a crash between the ALTER and the
+-- version stamp leaves the column present with the version still 3 — and the
+-- next open re-runs the ALTER, which has no IF NOT EXISTS form, and fails
+-- with "duplicate column name" forever (review finding). Wrapped, a crash
+-- rolls both back and the re-run starts clean. A concurrent second opener
+-- blocks (or errors) on the write lock and finds version 4 on its next open;
+-- transient, never corrupting.
+BEGIN;
+
 ALTER TABLE models ADD COLUMN repo_created_at TEXT;
 
--- Update schema version. OR IGNORE to match schema.sql's stamp of the same
--- row. The ALTER above is single-shot (SQLite has no IF NOT EXISTS for
--- columns) — like v002's ALTERs, it relies on the version-gated runner in
--- Database._run_migrations applying each migration exactly once.
+-- OR IGNORE to match schema.sql's stamp of the same row.
 INSERT OR IGNORE INTO schema_version (version) VALUES (4);
+
+COMMIT;
