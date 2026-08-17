@@ -9604,6 +9604,21 @@
     "created_at": "2026-03-03T03:50:09Z"
   },
   {
+    "purl": "pkg:huggingface/AxionML/Qwen3.5-35B-A3B-NVFP4",
+    "name": "Qwen3.5-35B-A3B-NVFP4",
+    "organization": "AxionML",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 21242575324,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "modelopt",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-35B-A3B",
+    "source_url": "https://huggingface.co/AxionML/Qwen3.5-35B-A3B-NVFP4",
+    "created_at": "2026-03-03T03:50:08Z"
+  },
+  {
     "purl": "pkg:huggingface/AxionML/Qwen3.5-4B-NVFP4",
     "name": "Qwen3.5-4B-NVFP4",
     "organization": "AxionML",
@@ -14302,6 +14317,19 @@
     "license": "Gemma"
   },
   {
+    "purl": "pkg:huggingface/Buck2222/gemma-4-12B-coder-fable5-composer2.5-v1-GGUF",
+    "name": "gemma-4-12B-coder-fable5-composer2.5-v1",
+    "organization": "Buck2222",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-12B-it",
+    "source_url": "https://huggingface.co/Buck2222/gemma-4-12B-coder-fable5-composer2.5-v1-GGUF",
+    "created_at": "2026-06-15T04:56:23Z"
+  },
+  {
     "purl": "pkg:huggingface/BugTraceAI/BugTraceAI-Apex-G4-26B-Master-f16",
     "name": "BugTraceAI-Apex-G4-26B-Master",
     "organization": "BugTraceAI",
@@ -16274,6 +16302,18 @@
     "created_at": "2026-06-18T07:02:11Z"
   },
   {
+    "purl": "pkg:huggingface/CharlieBonito/clarity-guard-gemma4-7b",
+    "name": "clarity-guard-gemma4-7b",
+    "organization": "CharlieBonito",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E4B-it",
+    "source_url": "https://huggingface.co/CharlieBonito/clarity-guard-gemma4-7b",
+    "created_at": "2026-04-22T19:32:45Z"
+  },
+  {
     "purl": "pkg:huggingface/ChatDOC/OCRFlux-3B",
     "name": "OCRFlux-3B",
     "organization": "ChatDOC",
@@ -16500,6 +16540,19 @@
     "task": "image-text-to-text",
     "source_url": "https://huggingface.co/Chesscorner/Quantised_visionOCR_3B",
     "created_at": "2026-01-23T19:11:08Z"
+  },
+  {
+    "purl": "pkg:huggingface/ChiKoi7/Gemma-2-Llama-Swallow-9b-it-v0.1-Heretic",
+    "name": "Gemma-2-Llama-Swallow-9b-it-v0.1-Heretic",
+    "organization": "ChiKoi7",
+    "architecture": "Gemma2ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 9241705984,
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/ChiKoi7/Gemma-2-Llama-Swallow-9b-it-v0.1-Heretic",
+    "created_at": "2025-12-16T09:31:49Z"
   },
   {
     "purl": "pkg:huggingface/ChiPhan1110/ScaleReasoner-R1",
@@ -19324,9 +19377,11 @@
     "purl": "pkg:huggingface/DS-Archive/limarp-zloss-mixtral-8x7b-qlora",
     "name": "limarp-zloss-mixtral-8x7b-qlora",
     "organization": "DS-Archive",
+    "architecture": "MixtralForCausalLM",
     "parameter_count": 484450304,
     "license": "Apache-2.0",
     "format": "safetensors",
+    "quantization": "bitsandbytes",
     "base_model_purl": "pkg:huggingface/mistralai/Mixtral-8x7B-v0.1",
     "source_url": "https://huggingface.co/DS-Archive/limarp-zloss-mixtral-8x7b-qlora",
     "created_at": "2024-01-03T22:46:57Z"
@@ -21528,6 +21583,7 @@
     "purl": "pkg:huggingface/DeepESP/gpt2-spanish",
     "name": "gpt2-spanish",
     "organization": "DeepESP",
+    "architecture": "GPT2LMHeadModel",
     "architecture_family": "gpt2",
     "parameter_count": 163037196,
     "license": "MIT",
@@ -21540,6 +21596,7 @@
     "purl": "pkg:huggingface/DeepESP/gpt2-spanish-medium",
     "name": "gpt2-spanish-medium",
     "organization": "DeepESP",
+    "architecture": "GPT2LMHeadModel",
     "architecture_family": "gpt2",
     "parameter_count": 406286360,
     "license": "MIT",
@@ -23975,6 +24032,19 @@
     "base_model_purl": "pkg:huggingface/mistralai/Mistral-7B-Instruct-v0.3",
     "source_url": "https://huggingface.co/DuoNeural/Mistral-7B-Instruct-v0.3-GGUF",
     "created_at": "2026-05-03T04:26:43Z"
+  },
+  {
+    "purl": "pkg:huggingface/DuoNeural/OpenYourMind-Gemma4-12B-IT-Abliterated-GGUF",
+    "name": "OpenYourMind-Gemma4-12B-IT-Abliterated",
+    "organization": "DuoNeural",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q3_K_L",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/OpenYourMind/gemma-4-12B-it-abliterated-uncensored",
+    "source_url": "https://huggingface.co/DuoNeural/OpenYourMind-Gemma4-12B-IT-Abliterated-GGUF",
+    "created_at": "2026-06-04T09:43:22Z"
   },
   {
     "purl": "pkg:huggingface/DuoNeural/Phi-4-Mini-Abliterated",
@@ -41823,6 +41893,20 @@
     "created_at": "2024-02-17T19:55:07Z"
   },
   {
+    "purl": "pkg:huggingface/Isotr0py/DeepSeek-V3-0324-tiny",
+    "name": "DeepSeek-V3-0324-tiny",
+    "organization": "Isotr0py",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 2436877112,
+    "license": "MIT",
+    "format": "safetensors",
+    "quantization": "fp8",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/Isotr0py/DeepSeek-V3-0324-tiny",
+    "created_at": "2025-09-06T11:43:28Z"
+  },
+  {
     "purl": "pkg:huggingface/Issa96/camembert-juridique-finetuned",
     "name": "camembert-juridique-finetuned",
     "organization": "Issa96",
@@ -44566,6 +44650,32 @@
     "task": "fill-mask",
     "source_url": "https://huggingface.co/JelenaTosic/SRBerta",
     "created_at": "2023-01-16T20:20:00Z"
+  },
+  {
+    "purl": "pkg:huggingface/Jellon/Qwen3-30B-A3B-exl2-4bpw",
+    "name": "Qwen3-30B-A3B-exl2-4bpw",
+    "organization": "Jellon",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B",
+    "source_url": "https://huggingface.co/Jellon/Qwen3-30B-A3B-exl2-4bpw",
+    "created_at": "2025-06-13T10:05:11Z"
+  },
+  {
+    "purl": "pkg:huggingface/Jellon/Qwen3-30B-A3B-exl2-6bpw",
+    "name": "Qwen3-30B-A3B-exl2-6bpw",
+    "organization": "Jellon",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B",
+    "source_url": "https://huggingface.co/Jellon/Qwen3-30B-A3B-exl2-6bpw",
+    "created_at": "2025-06-12T20:10:30Z"
   },
   {
     "purl": "pkg:huggingface/JeloH/xGenq-qwen2.5-coder-1.5b-instruct-OKI",
@@ -49816,6 +49926,19 @@
     "created_at": "2026-05-31T17:58:16Z"
   },
   {
+    "purl": "pkg:huggingface/L0uu/gemma4-e4b-etafakna-gguf",
+    "name": "gemma4-e4b-etafakna",
+    "organization": "L0uu",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E4B",
+    "source_url": "https://huggingface.co/L0uu/gemma4-e4b-etafakna-gguf",
+    "created_at": "2026-05-08T16:24:33Z"
+  },
+  {
     "purl": "pkg:huggingface/LARONofficial/Gemma-4-12B-OBLITERATED",
     "name": "Gemma-4-12B-OBLITERATED",
     "organization": "LARONofficial",
@@ -50869,6 +50992,20 @@
     "base_model_purl": "pkg:huggingface/samuelcardillo/Carnice-Qwen3.6-MoE-35B-A3B",
     "source_url": "https://huggingface.co/LeaderboardModel1/Carnice-Qwen3.6-MoE-35B-A3B-AutoRound-W4A16-Tuning",
     "created_at": "2026-07-01T22:35:18Z"
+  },
+  {
+    "purl": "pkg:huggingface/LeaderboardModel1/Nex-N2-mini-ultra-uncensored-heretic-AutoRound-W4A16-Tuning",
+    "name": "Nex-N2-mini-ultra-uncensored-heretic-AutoRound-W4A16-Tuning",
+    "organization": "LeaderboardModel1",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 1485903216,
+    "format": "safetensors",
+    "quantization": "auto-round",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/llmfan46/Nex-N2-mini-ultra-uncensored-heretic",
+    "source_url": "https://huggingface.co/LeaderboardModel1/Nex-N2-mini-ultra-uncensored-heretic-AutoRound-W4A16-Tuning",
+    "created_at": "2026-06-24T22:40:24Z"
   },
   {
     "purl": "pkg:huggingface/LeaderboardModel1/Ornith-1.0-35B-AutoRound-W4A16-Tuning",
@@ -52856,6 +52993,32 @@
     "task": "text-generation",
     "source_url": "https://huggingface.co/LoneStriker/Air-Striker-Mixtral-8x7B-ZLoss-LoRA",
     "created_at": "2024-01-10T10:23:42Z"
+  },
+  {
+    "purl": "pkg:huggingface/LoneStriker/Blue-Orchid-2x7b-AWQ",
+    "name": "Blue-Orchid-2x7b",
+    "organization": "LoneStriker",
+    "architecture": "MixtralForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 12879138816,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "awq",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/LoneStriker/Blue-Orchid-2x7b-AWQ",
+    "created_at": "2024-02-03T05:37:35Z"
+  },
+  {
+    "purl": "pkg:huggingface/LoneStriker/FuseChat-7B-Slerp-GGUF",
+    "name": "FuseChat-7B-Slerp",
+    "organization": "LoneStriker",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q3_K_L",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/LoneStriker/FuseChat-7B-Slerp-GGUF",
+    "created_at": "2024-02-28T14:47:48Z"
   },
   {
     "purl": "pkg:huggingface/LoneStriker/FuseChat-7B-TA-GGUF",
@@ -57349,6 +57512,19 @@
     "created_at": "2024-03-01T12:18:08Z"
   },
   {
+    "purl": "pkg:huggingface/MaziyarPanahi/OpenHermes-2.5-Mistral-7B-GGUF",
+    "name": "OpenHermes-2.5-Mistral-7B",
+    "organization": "MaziyarPanahi",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/teknium/OpenHermes-2.5-Mistral-7B",
+    "source_url": "https://huggingface.co/MaziyarPanahi/OpenHermes-2.5-Mistral-7B-GGUF",
+    "created_at": "2024-02-03T05:47:45Z"
+  },
+  {
     "purl": "pkg:huggingface/MaziyarPanahi/OpenHermes-7B-Symbolic-Mistral-7B-Instruct-v0.1-GGUF",
     "name": "OpenHermes-7B-Symbolic-Mistral-7B-Instruct-v0.1",
     "organization": "MaziyarPanahi",
@@ -57913,6 +58089,19 @@
     "base_model_purl": "pkg:huggingface/MaziyarPanahi/SynthIA-7B-v1.5-Mistral-7B-Instruct-v0.1",
     "source_url": "https://huggingface.co/MaziyarPanahi/SynthIA-7B-v1.5-Mistral-7B-Instruct-v0.1-GGUF",
     "created_at": "2024-01-28T13:45:01Z"
+  },
+  {
+    "purl": "pkg:huggingface/MaziyarPanahi/Tess-XS-v1-3-yarn-128K-Mistral-7B-Instruct-v0.1-GGUF",
+    "name": "Tess-XS-v1-3-yarn-128K-Mistral-7B-Instruct-v0.1",
+    "organization": "MaziyarPanahi",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/MaziyarPanahi/Tess-XS-v1-3-yarn-128K-Mistral-7B-Instruct-v0.1",
+    "source_url": "https://huggingface.co/MaziyarPanahi/Tess-XS-v1-3-yarn-128K-Mistral-7B-Instruct-v0.1-GGUF",
+    "created_at": "2024-01-23T14:17:31Z"
   },
   {
     "purl": "pkg:huggingface/MaziyarPanahi/TinyLlama-1.1B-Chat-v1.0-GGUF",
@@ -62746,6 +62935,18 @@
     "created_at": "2024-06-06T19:52:46Z"
   },
   {
+    "purl": "pkg:huggingface/MrezaPRZ/CodeLlama-3x7B-dialect-experts-random-gate-it",
+    "name": "CodeLlama-3x7B-dialect-experts-random-gate-it",
+    "organization": "MrezaPRZ",
+    "architecture": "MixtralForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 15395983360,
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/MrezaPRZ/CodeLlama-3x7B-dialect-experts-random-gate-it",
+    "created_at": "2024-06-06T23:14:02Z"
+  },
+  {
     "purl": "pkg:huggingface/MrezaPRZ/CodeLlama-3x7B-dialect-experts-random-gate-trained-gate",
     "name": "CodeLlama-3x7B-dialect-experts-random-gate-trained-gate",
     "organization": "MrezaPRZ",
@@ -66120,6 +66321,17 @@
     "format": "safetensors",
     "source_url": "https://huggingface.co/Nikolaychekur/best-step500-merged",
     "created_at": "2026-05-06T12:58:28Z"
+  },
+  {
+    "purl": "pkg:huggingface/Nikolaychekur/train2-7379-merged",
+    "name": "train2-7379-merged",
+    "organization": "Nikolaychekur",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 15960110208,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/Nikolaychekur/train2-7379-merged",
+    "created_at": "2026-05-06T13:03:01Z"
   },
   {
     "purl": "pkg:huggingface/Nikolaychekur/v9-1600-KL06781",
@@ -80575,6 +80787,7 @@
     "organization": "Praneeth",
     "architecture": "llama",
     "architecture_family": "llama",
+    "license": "other",
     "format": "safetensors",
     "task": "text-generation",
     "source_url": "https://huggingface.co/Praneeth/code-gemma-2b-it",
@@ -83228,8 +83441,14 @@
     "name": "Qwen2.5-32B-Instruct",
     "organization": "Qwen",
     "architecture": "qwen2",
+    "architecture_family": "llama",
     "parameter_count": 32763876352,
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen2.5-32B",
+    "source_url": "https://huggingface.co/Qwen/Qwen2.5-32B-Instruct",
+    "created_at": "2024-09-17T04:17:55Z"
   },
   {
     "purl": "pkg:huggingface/Qwen/Qwen2.5-3B",
@@ -84611,8 +84830,13 @@
     "name": "Qwen3.5-27B",
     "organization": "Qwen",
     "architecture": "qwen3_5",
+    "architecture_family": "llama",
     "parameter_count": 27781427952,
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "source_url": "https://huggingface.co/Qwen/Qwen3.5-27B",
+    "created_at": "2026-02-24T09:41:56Z"
   },
   {
     "purl": "pkg:huggingface/Qwen/Qwen3.5-27B-FP8",
@@ -88734,6 +88958,20 @@
     "created_at": "2026-03-30T01:15:17Z"
   },
   {
+    "purl": "pkg:huggingface/RepublicOfKorokke/Qwen3-Coder-Next-REAP-48B-A3B-oQ4",
+    "name": "Qwen3-Coder-Next-REAP-48B-A3B-oQ4",
+    "organization": "RepublicOfKorokke",
+    "architecture": "Qwen3NextForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 7838873344,
+    "format": "safetensors",
+    "quantization": "4bit",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/lovedheart/Qwen3-Coder-Next-REAP-48B-A3B-GGUF",
+    "source_url": "https://huggingface.co/RepublicOfKorokke/Qwen3-Coder-Next-REAP-48B-A3B-oQ4",
+    "created_at": "2026-03-30T02:59:59Z"
+  },
+  {
     "purl": "pkg:huggingface/RepublicOfKorokke/Qwen3.5-0.8B-mlx-lm-mxfp4",
     "name": "Qwen3.5-0.8B-mlx-lm-mxfp4",
     "organization": "RepublicOfKorokke",
@@ -90422,6 +90660,19 @@
     "created_at": "2026-06-01T13:48:55Z"
   },
   {
+    "purl": "pkg:huggingface/Rikunarita-ORG/Darwin-4B-Genesis-i-Q5_K_M-GGUF_Fixed",
+    "name": "Darwin-4B-Genesis-i-Q5_K_M-GGUF_Fixed",
+    "organization": "Rikunarita-ORG",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q5_K_M",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/FINAL-Bench/Darwin-4B-Genesis",
+    "source_url": "https://huggingface.co/Rikunarita-ORG/Darwin-4B-Genesis-i-Q5_K_M-GGUF_Fixed",
+    "created_at": "2026-05-10T06:13:59Z"
+  },
+  {
     "purl": "pkg:huggingface/Rikunarita-ORG/Qwen3.5-2B-Ideal-TSUNDERE-Loli-Girl-Japanese-v1-imatrix-Q5_K_M-GGUF",
     "name": "Qwen3.5-2B-Ideal-TSUNDERE-Loli-Girl-Japanese-v1-imatrix",
     "organization": "Rikunarita-ORG",
@@ -90438,7 +90689,12 @@
     "organization": "RingoSystems",
     "architecture": "qwen3_5",
     "parameter_count": 27781427952,
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.6-27B",
+    "source_url": "https://huggingface.co/RingoSystems/RingoLLM",
+    "created_at": "2026-03-28T17:52:26Z"
   },
   {
     "purl": "pkg:huggingface/RioLee/ToolRM-Gen-Qwen3-4B-Thinking-2507",
@@ -92327,6 +92583,19 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-27B",
     "source_url": "https://huggingface.co/SL-AI/GRaPE-2-Ultra-GGUF",
     "created_at": "2026-06-08T23:10:23Z"
+  },
+  {
+    "purl": "pkg:huggingface/SL-AI/GRaPE-2.1-Flash_GGUF",
+    "name": "GRaPE-2.1-Flash",
+    "organization": "SL-AI",
+    "architecture": "qwen35",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_BF16",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-9B",
+    "source_url": "https://huggingface.co/SL-AI/GRaPE-2.1-Flash_GGUF",
+    "created_at": "2026-04-19T19:53:59Z"
   },
   {
     "purl": "pkg:huggingface/SLEM-Character/Abiaca-creatif",
@@ -96355,6 +96624,19 @@
     "created_at": "2025-11-14T07:20:11Z"
   },
   {
+    "purl": "pkg:huggingface/SicariusSicariiStuff/X-Ray_Alpha",
+    "name": "X-Ray_Alpha",
+    "organization": "SicariusSicariiStuff",
+    "architecture": "Gemma3ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 4300079472,
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "base_model_purl": "pkg:huggingface/google/gemma-3-4b-it",
+    "source_url": "https://huggingface.co/SicariusSicariiStuff/X-Ray_Alpha",
+    "created_at": "2025-03-22T15:08:42Z"
+  },
+  {
     "purl": "pkg:huggingface/SicariusSicariiStuff/Zion_Alpha",
     "name": "Zion_Alpha",
     "organization": "SicariusSicariiStuff",
@@ -98749,6 +99031,20 @@
     "base_model_purl": "pkg:huggingface/bunnycore/Qwen-2.5-7b-TitanFusion-v3",
     "source_url": "https://huggingface.co/SvalTek/MQ-Coldbrew-Base-Test1",
     "created_at": "2026-07-04T18:39:55Z"
+  },
+  {
+    "purl": "pkg:huggingface/SvalTek/Q2.5-TheGrimoire-7B-Base-Test0",
+    "name": "Q2.5-TheGrimoire-7B-Base-Test0",
+    "organization": "SvalTek",
+    "architecture": "Qwen2ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 7612763648,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/SvalTek/L3.1-TheGrimoire-8B-Base-Test0",
+    "source_url": "https://huggingface.co/SvalTek/Q2.5-TheGrimoire-7B-Base-Test0",
+    "created_at": "2026-07-05T03:00:52Z"
   },
   {
     "purl": "pkg:huggingface/SvalTek/Q2.5-TheGrimoire-7B-Base0",
@@ -101839,6 +102135,18 @@
     "created_at": "2023-09-08T12:41:26Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/Chupacabra-7B-v2-GGUF",
+    "name": "Chupacabra-7B-v2",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/perlthoughts/Chupacabra-7B-v2",
+    "source_url": "https://huggingface.co/TheBloke/Chupacabra-7B-v2-GGUF",
+    "created_at": "2023-11-22T23:48:04Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/Claire-7B-0.1-GGUF",
     "name": "Claire-7B-0.1",
     "organization": "TheBloke",
@@ -102190,6 +102498,18 @@
     "created_at": "2023-09-08T07:50:48Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/Hermes-Trismegistus-Mistral-7B-GGUF",
+    "name": "Hermes-Trismegistus-Mistral-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/teknium/Hermes-Trismegistus-Mistral-7B",
+    "source_url": "https://huggingface.co/TheBloke/Hermes-Trismegistus-Mistral-7B-GGUF",
+    "created_at": "2023-11-05T23:42:55Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/Hexoteric-7B-GGUF",
     "name": "Hexoteric-7B",
     "organization": "TheBloke",
@@ -102325,6 +102645,18 @@
     "base_model_purl": "pkg:huggingface/KoboldAI/LLaMA2-13B-Tiefighter",
     "source_url": "https://huggingface.co/TheBloke/LLaMA2-13B-Tiefighter-GGUF",
     "created_at": "2023-10-22T09:22:39Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/Lelantos-7B-GGUF",
+    "name": "Lelantos-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/SanjiWatsuki/Lelantos-7B",
+    "source_url": "https://huggingface.co/TheBloke/Lelantos-7B-GGUF",
+    "created_at": "2023-12-31T08:12:09Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/Leo-Mistral-Hessianai-7B-Chat-GGUF",
@@ -102703,6 +103035,18 @@
     "created_at": "2023-12-11T22:18:46Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/Mistral-7B-Instruct-v0.2-DARE-GGUF",
+    "name": "Mistral-7B-Instruct-v0.2-DARE",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/janhq/Mistral-7B-Instruct-v0.2-DARE",
+    "source_url": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-DARE-GGUF",
+    "created_at": "2023-12-14T21:20:49Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
     "name": "Mistral-7B-Instruct-v0.2",
     "organization": "TheBloke",
@@ -102790,6 +103134,18 @@
     "base_model_purl": "pkg:huggingface/emrgnt-cmplxty/Mistral-7B-SciPhi-32k",
     "source_url": "https://huggingface.co/TheBloke/Mistral-7B-SciPhi-32k-GGUF",
     "created_at": "2023-10-22T17:56:41Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/Mistral-7B-codealpaca-lora-GGUF",
+    "name": "Mistral-7B-codealpaca-lora",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/Nondzu/Mistral-7B-codealpaca-lora",
+    "source_url": "https://huggingface.co/TheBloke/Mistral-7B-codealpaca-lora-GGUF",
+    "created_at": "2023-10-28T08:57:12Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/Mistral-7B-v0.1-AWQ",
@@ -102958,6 +103314,19 @@
     "created_at": "2023-12-23T12:08:27Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/MonadGPT-GGUF",
+    "name": "MonadGPT",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Pclanglais/MonadGPT",
+    "source_url": "https://huggingface.co/TheBloke/MonadGPT-GGUF",
+    "created_at": "2023-11-09T20:41:18Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/Mythalion-13B-GGUF",
     "name": "Mythalion-13B",
     "organization": "TheBloke",
@@ -103019,6 +103388,18 @@
     "created_at": "2023-08-31T11:24:42Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/MythoMist-7B-GGUF",
+    "name": "MythoMist-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "other",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/Gryphe/MythoMist-7b",
+    "source_url": "https://huggingface.co/TheBloke/MythoMist-7B-GGUF",
+    "created_at": "2023-11-22T09:05:23Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/Naberius-7B-GGUF",
     "name": "Naberius-7B",
     "organization": "TheBloke",
@@ -103041,6 +103422,18 @@
     "base_model_purl": "pkg:huggingface/NeverSleep/Nethena-13B",
     "source_url": "https://huggingface.co/TheBloke/Nethena-13B-GGUF",
     "created_at": "2023-10-30T17:59:08Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/NeuralBeagle14-7B-GGUF",
+    "name": "NeuralBeagle14-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/mlabonne/NeuralBeagle14-7B",
+    "source_url": "https://huggingface.co/TheBloke/NeuralBeagle14-7B-GGUF",
+    "created_at": "2024-01-17T17:08:24Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/NeuralHermes-2.5-Mistral-7B-GGUF",
@@ -103216,6 +103609,30 @@
     "base_model_purl": "pkg:huggingface/teknium/OpenHermes-2.5-Mistral-7B",
     "source_url": "https://huggingface.co/TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
     "created_at": "2023-11-02T21:44:04Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/OpenHermes-2.5-neural-chat-7B-v3-1-7B-GGUF",
+    "name": "OpenHermes-2.5-neural-chat-7B-v3-1-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/Weyaxi/OpenHermes-2.5-neural-chat-7b-v3-1-7B",
+    "source_url": "https://huggingface.co/TheBloke/OpenHermes-2.5-neural-chat-7B-v3-1-7B-GGUF",
+    "created_at": "2023-11-27T14:34:25Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/OpenHermes-2.5-neural-chat-7B-v3-2-7B-GGUF",
+    "name": "OpenHermes-2.5-neural-chat-7B-v3-2-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/Weyaxi/OpenHermes-2.5-neural-chat-7b-v3-2-7B",
+    "source_url": "https://huggingface.co/TheBloke/OpenHermes-2.5-neural-chat-7B-v3-2-7B-GGUF",
+    "created_at": "2023-12-03T18:27:10Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/OpenHermes-2.5-neural-chat-v3-3-Slerp-GGUF",
@@ -103456,6 +103873,17 @@
     "created_at": "2023-10-14T22:05:50Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/SciPhi-Mistral-7B-32k-GGUF",
+    "name": "SciPhi-Mistral-7B-32k",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/SciPhi/SciPhi-Mistral-7B-32k",
+    "source_url": "https://huggingface.co/TheBloke/SciPhi-Mistral-7B-32k-GGUF",
+    "created_at": "2023-10-29T21:52:43Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/SciPhi-Self-RAG-Mistral-7B-32k-GGUF",
     "name": "SciPhi-Self-RAG-Mistral-7B-32k",
     "organization": "TheBloke",
@@ -103501,6 +103929,18 @@
     "base_model_purl": "pkg:huggingface/Weyaxi/Seraph-openchat-3.5-1210-Slerp",
     "source_url": "https://huggingface.co/TheBloke/Seraph-openchat-3.5-1210-Slerp-GGUF",
     "created_at": "2023-12-29T17:25:08Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/Silicon-Maid-7B-GGUF",
+    "name": "Silicon-Maid-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "CC-BY-4.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/SanjiWatsuki/Silicon-Maid-7B",
+    "source_url": "https://huggingface.co/TheBloke/Silicon-Maid-7B-GGUF",
+    "created_at": "2023-12-27T13:26:56Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/Sonya-7B-GGUF",
@@ -103862,6 +104302,19 @@
     "base_model_purl": "pkg:huggingface/Delcos/Velara-11B-V2",
     "source_url": "https://huggingface.co/TheBloke/Velara-11B-V2-GGUF",
     "created_at": "2024-01-10T01:45:25Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/Vigostral-7B-Chat-GGUF",
+    "name": "Vigostral-7B-Chat",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/bofenghuang/vigostral-7b-chat",
+    "source_url": "https://huggingface.co/TheBloke/Vigostral-7B-Chat-GGUF",
+    "created_at": "2023-10-24T16:19:47Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/WestLake-7B-v2-GGUF",
@@ -104282,6 +104735,18 @@
     "created_at": "2024-01-15T14:12:17Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/blossom-v3-mistral-7B-GGUF",
+    "name": "blossom-v3-mistral-7B",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/Azure99/blossom-v3-mistral-7b",
+    "source_url": "https://huggingface.co/TheBloke/blossom-v3-mistral-7B-GGUF",
+    "created_at": "2023-11-20T10:18:18Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/cinematika-7B-v0.1-GGUF",
     "name": "cinematika-7B-v0.1",
     "organization": "TheBloke",
@@ -104334,6 +104799,18 @@
     "base_model_purl": "pkg:huggingface/deepseek-ai/deepseek-coder-6.7b-instruct",
     "source_url": "https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-AWQ",
     "created_at": "2023-11-05T03:10:55Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/docsgpt-7B-mistral-GGUF",
+    "name": "docsgpt-7B-mistral",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/Arc53/docsgpt-7b-mistral",
+    "source_url": "https://huggingface.co/TheBloke/docsgpt-7B-mistral-GGUF",
+    "created_at": "2023-12-29T14:41:30Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/dolphin-2.0-mistral-7B-GGUF",
@@ -104876,6 +105353,18 @@
     "created_at": "2023-11-11T00:25:31Z"
   },
   {
+    "purl": "pkg:huggingface/TheBloke/openchat_3.5-GGUF",
+    "name": "openchat_3.5",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/openchat/openchat_3.5",
+    "source_url": "https://huggingface.co/TheBloke/openchat_3.5-GGUF",
+    "created_at": "2023-11-02T16:13:58Z"
+  },
+  {
     "purl": "pkg:huggingface/TheBloke/openinstruct-mistral-7B-GGUF",
     "name": "openinstruct-mistral-7B",
     "organization": "TheBloke",
@@ -105147,6 +105636,18 @@
     "base_model_purl": "pkg:huggingface/lmsys/vicuna-13b-v1.5",
     "source_url": "https://huggingface.co/TheBloke/vicuna-13B-v1.5-GGUF",
     "created_at": "2023-09-05T03:48:43Z"
+  },
+  {
+    "purl": "pkg:huggingface/TheBloke/xDAN-L1-Chat-RL-v1-GGUF",
+    "name": "xDAN-L1-Chat-RL-v1",
+    "organization": "TheBloke",
+    "architecture": "llama",
+    "license": "CC-BY-4.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/xDAN-AI/xDAN-L1-Chat-RL-v1",
+    "source_url": "https://huggingface.co/TheBloke/xDAN-L1-Chat-RL-v1-GGUF",
+    "created_at": "2023-12-26T08:43:43Z"
   },
   {
     "purl": "pkg:huggingface/TheBloke/zephyr-7B-alpha-AWQ",
@@ -106227,6 +106728,19 @@
     "created_at": "2025-06-27T17:14:31Z"
   },
   {
+    "purl": "pkg:huggingface/Tinman-Lab/Tinman-gemma4-companion-gguf",
+    "name": "Tinman-gemma4-companion",
+    "organization": "Tinman-Lab",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "task": "any-to-any",
+    "base_model_purl": "pkg:huggingface/TinmanLabSL/gemma4-companion-merged",
+    "source_url": "https://huggingface.co/Tinman-Lab/Tinman-gemma4-companion-gguf",
+    "created_at": "2026-04-23T11:56:13Z"
+  },
+  {
     "purl": "pkg:huggingface/Tinman-Lab/Tinman-gemma4-companion-merged",
     "name": "Tinman-gemma4-companion-merged",
     "organization": "Tinman-Lab",
@@ -106908,6 +107422,18 @@
     "base_model_purl": "pkg:huggingface/rombodawg/Everyone-Coder-4x7b-Base",
     "source_url": "https://huggingface.co/TobDeBer/Everyone-Coder-4x7b-Base-Q4-mlx",
     "created_at": "2024-12-14T12:58:06Z"
+  },
+  {
+    "purl": "pkg:huggingface/TobDeBer/Qwen3-30B-Hirma",
+    "name": "Qwen3-30B-Hirma",
+    "organization": "TobDeBer",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-Coder-30B-A3B-Instruct",
+    "source_url": "https://huggingface.co/TobDeBer/Qwen3-30B-Hirma",
+    "created_at": "2025-12-10T09:09:52Z"
   },
   {
     "purl": "pkg:huggingface/TobDeBer/Qwen3-30b-8layer",
@@ -110143,6 +110669,18 @@
     "format": "safetensors",
     "source_url": "https://huggingface.co/VMSR-Lab/phobert-readability-scale-with-small-range-dataset-classification",
     "created_at": "2026-04-11T12:37:48Z"
+  },
+  {
+    "purl": "pkg:huggingface/VMware/deberta-v3-large-mrqa",
+    "name": "deberta-v3-large-mrqa",
+    "organization": "VMware",
+    "architecture": "DebertaV2ForQuestionAnswering",
+    "parameter_count": 434014722,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "question-answering",
+    "source_url": "https://huggingface.co/VMware/deberta-v3-large-mrqa",
+    "created_at": "2023-02-17T21:10:32Z"
   },
   {
     "purl": "pkg:huggingface/VN-Hung/vintern-cc3",
@@ -114838,6 +115376,21 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3.6-27B",
     "source_url": "https://huggingface.co/Youssofal/Qwen3.6-27B-Abliterated-Heretic-Uncensored-GGUF",
     "created_at": "2026-04-23T01:17:56Z"
+  },
+  {
+    "purl": "pkg:huggingface/Youssofal/Qwen3.6-27B-Abliterated-Heretic-Uncensored-MLX-4bit",
+    "name": "Qwen3.6-27B-Abliterated-Heretic-Uncensored",
+    "organization": "Youssofal",
+    "architecture": "Qwen3_5ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 26895993856,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "4bit",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Youssofal/Qwen3.6-27B-Abliterated-Heretic-Uncensored-BF16",
+    "source_url": "https://huggingface.co/Youssofal/Qwen3.6-27B-Abliterated-Heretic-Uncensored-MLX-4bit",
+    "created_at": "2026-04-24T04:59:29Z"
   },
   {
     "purl": "pkg:huggingface/Youssofal/Qwen3.6-27B-Abliterated-Heretic-Uncensored-MLX-6bit",
@@ -121663,6 +122216,19 @@
     "created_at": "2024-12-31T16:15:55Z"
   },
   {
+    "purl": "pkg:huggingface/alea-institute/kl3m-003-1.7b",
+    "name": "kl3m-003-1.7b",
+    "organization": "alea-institute",
+    "architecture": "GPTNeoXForCausalLM",
+    "architecture_family": "gpt_neox",
+    "parameter_count": 1745686528,
+    "license": "CC-BY-4.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/alea-institute/kl3m-003-1.7b",
+    "created_at": "2024-11-10T17:06:13Z"
+  },
+  {
     "purl": "pkg:huggingface/alea-institute/kl3m-003-3.7b",
     "name": "kl3m-003-3.7b",
     "organization": "alea-institute",
@@ -123745,6 +124311,114 @@
     "base_model_purl": "pkg:huggingface/allura-org/Q3-30B-A3B-Designant",
     "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30B-A3B-Designant_EXL3_8.0bpw_H8",
     "created_at": "2025-05-26T21:17:49Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_2.5bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_2.5bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_2.5bpw_H6",
+    "created_at": "2025-05-22T09:03:23Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_3.0bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_3.0bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_3.0bpw_H6",
+    "created_at": "2025-05-22T07:24:44Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_3.5bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_3.5bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_3.5bpw_H6",
+    "created_at": "2025-05-22T07:27:01Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_4.0bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_4.0bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_4.0bpw_H6",
+    "created_at": "2025-05-22T07:28:16Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_4.5bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_4.5bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_4.5bpw_H6",
+    "created_at": "2025-05-22T11:16:25Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_5.0bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_5.0bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_5.0bpw_H6",
+    "created_at": "2025-05-22T07:29:39Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_6.0bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_6.0bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_6.0bpw_H6",
+    "created_at": "2025-05-22T07:31:17Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_8.0bpw_H6",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_8.0bpw_H6",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_8.0bpw_H6",
+    "created_at": "2025-05-22T07:33:11Z"
+  },
+  {
+    "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_8.0bpw_H8",
+    "name": "allura-org_Q3-30b-A3b-Pentiment_EXL2_8.0bpw_H8",
+    "organization": "allura-quants",
+    "architecture": "Qwen3MoeForCausalLM",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/allura-org/Q3-30b-A3b-Pentiment",
+    "source_url": "https://huggingface.co/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL2_8.0bpw_H8",
+    "created_at": "2025-05-22T09:07:02Z"
   },
   {
     "purl": "pkg:huggingface/allura-quants/allura-org_Q3-30b-A3b-Pentiment_EXL3_2.5bpw_H6",
@@ -130558,6 +131232,20 @@
     "created_at": "2025-03-05T22:28:32Z"
   },
   {
+    "purl": "pkg:huggingface/atlasia/moulsot.v0.3",
+    "name": "moulsot.v0.3",
+    "organization": "atlasia",
+    "architecture": "Qwen3ASRForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 2038052480,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "automatic-speech-recognition",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-ASR-1.7B",
+    "source_url": "https://huggingface.co/atlasia/moulsot.v0.3",
+    "created_at": "2026-04-12T08:21:18Z"
+  },
+  {
     "purl": "pkg:huggingface/atmzed/Darwin-4B-David-mlx-fp16",
     "name": "Darwin-4B-David",
     "organization": "atmzed",
@@ -132515,6 +133203,20 @@
     "base_model_purl": "pkg:huggingface/google/gemma-4-26B-A4B-it",
     "source_url": "https://huggingface.co/baa-ai/Gemma-4-26B-A4B-it-RAM-14GB-MLX",
     "created_at": "2026-04-07T03:55:03Z"
+  },
+  {
+    "purl": "pkg:huggingface/baa-ai/Gemma-4-26B-A4B-it-RAM-20GB-MLX",
+    "name": "Gemma-4-26B-A4B-it-RAM-20GB",
+    "organization": "baa-ai",
+    "architecture": "Gemma4ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 6504723022,
+    "license": "other",
+    "format": "safetensors",
+    "quantization": "4bit",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-26B-A4B-it",
+    "source_url": "https://huggingface.co/baa-ai/Gemma-4-26B-A4B-it-RAM-20GB-MLX",
+    "created_at": "2026-04-06T13:15:04Z"
   },
   {
     "purl": "pkg:huggingface/baa-ai/Gemma-4-31B-it-RAM-30GB-MLX",
@@ -134488,6 +135190,21 @@
     "created_at": "2025-02-14T18:54:33Z"
   },
   {
+    "purl": "pkg:huggingface/bash99/Qwen3-30B-A3B-Instruct-2507-FP8-Dynamic",
+    "name": "Qwen3-30B-A3B-Instruct-2507-FP8-Dynamic",
+    "organization": "bash99",
+    "architecture": "Qwen3MoeForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 30554486784,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "compressed-tensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B-Instruct-2507",
+    "source_url": "https://huggingface.co/bash99/Qwen3-30B-A3B-Instruct-2507-FP8-Dynamic",
+    "created_at": "2025-10-23T10:41:36Z"
+  },
+  {
     "purl": "pkg:huggingface/bash99/Qwen3-30B-A3B-Instruct-2507-fused-bnb-4bit",
     "name": "Qwen3-30B-A3B-Instruct-2507-fused",
     "organization": "bash99",
@@ -134587,6 +135304,19 @@
     "base_model_purl": "pkg:huggingface/google/gemma-4-31B-it",
     "source_url": "https://huggingface.co/batiai/gemma-4-31B-it-GGUF",
     "created_at": "2026-04-11T02:31:07Z"
+  },
+  {
+    "purl": "pkg:huggingface/batiai/gemma-4-E2B-it-GGUF",
+    "name": "gemma-4-E2B-it",
+    "organization": "batiai",
+    "architecture": "gemma4",
+    "license": "other",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E2B-it",
+    "source_url": "https://huggingface.co/batiai/gemma-4-E2B-it-GGUF",
+    "created_at": "2026-04-08T04:55:54Z"
   },
   {
     "purl": "pkg:huggingface/batmac/Phi-3-mini-128k-instruct-mlx-8bit",
@@ -136744,6 +137474,39 @@
     "created_at": "2026-05-05T11:34:34Z"
   },
   {
+    "purl": "pkg:huggingface/best26/sn97-u-bestv1",
+    "name": "sn97-u-bestv1",
+    "organization": "best26",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 15960111936,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/best26/sn97-u-bestv1",
+    "created_at": "2026-05-03T02:24:43Z"
+  },
+  {
+    "purl": "pkg:huggingface/best26/sn97-u-bestv2",
+    "name": "sn97-u-bestv2",
+    "organization": "best26",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 15960111936,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/best26/sn97-u-bestv2",
+    "created_at": "2026-05-03T02:32:36Z"
+  },
+  {
+    "purl": "pkg:huggingface/best26/sn97-u-bestv3",
+    "name": "sn97-u-bestv3",
+    "organization": "best26",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 15960111936,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/best26/sn97-u-bestv3",
+    "created_at": "2026-05-03T02:40:11Z"
+  },
+  {
     "purl": "pkg:huggingface/best26/sn97-u-bestv4",
     "name": "sn97-u-bestv4",
     "organization": "best26",
@@ -137358,7 +138121,12 @@
     "name": "padhai-v2-gemma3-mobile",
     "organization": "bhriguverma",
     "architecture": "gemma",
-    "license": "Gemma"
+    "license": "Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "task": "image-text-to-text",
+    "source_url": "https://huggingface.co/bhriguverma/padhai-v2-gemma3-mobile",
+    "created_at": "2026-04-28T13:26:52Z"
   },
   {
     "purl": "pkg:huggingface/bhuy71/embedding_finetuned",
@@ -140827,6 +141595,45 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B-Instruct-2507",
     "source_url": "https://huggingface.co/bullerwins/Qwen3-30B-A3B-Instruct-2507-exl3-8.0bpw",
     "created_at": "2025-07-30T06:53:24Z"
+  },
+  {
+    "purl": "pkg:huggingface/bullerwins/Qwen3-30B-A3B-exl2_3.0bpw",
+    "name": "Qwen3-30B-A3B-exl2_3.0bpw",
+    "organization": "bullerwins",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B-Base",
+    "source_url": "https://huggingface.co/bullerwins/Qwen3-30B-A3B-exl2_3.0bpw",
+    "created_at": "2025-05-05T15:35:04Z"
+  },
+  {
+    "purl": "pkg:huggingface/bullerwins/Qwen3-30B-A3B-exl2_4.0bpw",
+    "name": "Qwen3-30B-A3B-exl2_4.0bpw",
+    "organization": "bullerwins",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B-Base",
+    "source_url": "https://huggingface.co/bullerwins/Qwen3-30B-A3B-exl2_4.0bpw",
+    "created_at": "2025-05-05T11:43:20Z"
+  },
+  {
+    "purl": "pkg:huggingface/bullerwins/Qwen3-30B-A3B-exl2_5.0bpw",
+    "name": "Qwen3-30B-A3B-exl2_5.0bpw",
+    "organization": "bullerwins",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B-Base",
+    "source_url": "https://huggingface.co/bullerwins/Qwen3-30B-A3B-exl2_5.0bpw",
+    "created_at": "2025-05-05T13:19:29Z"
   },
   {
     "purl": "pkg:huggingface/bullerwins/Qwen3.6-27B-NVFP4",
@@ -144807,6 +145614,17 @@
     "created_at": "2026-05-30T05:25:39Z"
   },
   {
+    "purl": "pkg:huggingface/chosw02/qwen3-30b-a3b-pruned-b40-paper-w75",
+    "name": "qwen3-30b-a3b-pruned-b40-paper-w75",
+    "organization": "chosw02",
+    "architecture": "Qwen3MoeForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 4998829312,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/chosw02/qwen3-30b-a3b-pruned-b40-paper-w75",
+    "created_at": "2026-04-07T02:20:14Z"
+  },
+  {
     "purl": "pkg:huggingface/chrafay/my-roberta-model",
     "name": "my-roberta-model",
     "organization": "chrafay",
@@ -146535,7 +147353,13 @@
     "organization": "clemsail",
     "architecture": "qwen3_5_moe",
     "parameter_count": 35951822704,
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-35B-A3B",
+    "source_url": "https://huggingface.co/clemsail/micro-kiki-v3",
+    "created_at": "2026-04-17T16:48:47Z"
   },
   {
     "purl": "pkg:huggingface/clglavan/magos-k8s-0.6b",
@@ -155614,8 +156438,13 @@
     "name": "DeepSeek-R1-Distill-Qwen-32B",
     "organization": "deepseek-ai",
     "architecture": "qwen2",
+    "architecture_family": "llama",
     "parameter_count": 32763876352,
-    "license": "MIT"
+    "license": "MIT",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+    "created_at": "2025-01-20T09:19:00Z"
   },
   {
     "purl": "pkg:huggingface/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
@@ -160667,6 +161496,19 @@
     "created_at": "2024-04-16T05:08:27Z"
   },
   {
+    "purl": "pkg:huggingface/dreamgen/opus-v1.2-7b",
+    "name": "opus-v1.2-7b",
+    "organization": "dreamgen",
+    "architecture": "MistralForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 7241748480,
+    "license": "cc-by-nc-nd-4.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/dreamgen/opus-v1.2-7b",
+    "created_at": "2024-02-18T17:08:43Z"
+  },
+  {
     "purl": "pkg:huggingface/dreamiii0406/evolai-0p47b-v1",
     "name": "evolai-0p47b-v1",
     "organization": "dreamiii0406",
@@ -161269,6 +162111,17 @@
     "task": "text-generation",
     "source_url": "https://huggingface.co/dvruette/oasst-pythia-12b-reference",
     "created_at": "2023-04-03T12:24:29Z"
+  },
+  {
+    "purl": "pkg:huggingface/dvruette/oasst-pythia-6.9b-4000-steps",
+    "name": "oasst-pythia-6.9b-4000-steps",
+    "organization": "dvruette",
+    "architecture": "GPTNeoXForCausalLM",
+    "architecture_family": "gpt_neox",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/dvruette/oasst-pythia-6.9b-4000-steps",
+    "created_at": "2023-03-12T11:00:14Z"
   },
   {
     "purl": "pkg:huggingface/dwlee/ds_base_alpha",
@@ -172878,6 +173731,20 @@
     "created_at": "2023-01-03T09:39:43Z"
   },
   {
+    "purl": "pkg:huggingface/fxmarty/moonshotai_Kimi-K2-Instruct-0905-2-layers",
+    "name": "moonshotai_Kimi-K2-Instruct-0905-2-layers",
+    "organization": "fxmarty",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 19906754544,
+    "license": "other",
+    "format": "safetensors",
+    "quantization": "fp8",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/fxmarty/moonshotai_Kimi-K2-Instruct-0905-2-layers",
+    "created_at": "2026-02-02T17:36:33Z"
+  },
+  {
     "purl": "pkg:huggingface/fxmarty/onnx-tiny-random-gpt2-with-merge",
     "name": "onnx-tiny-random-gpt2-with-merge",
     "organization": "fxmarty",
@@ -174673,6 +175540,18 @@
     "created_at": "2026-06-26T10:36:03Z"
   },
   {
+    "purl": "pkg:huggingface/gesong2077/Qwen3-Next-80B-A3B-Thinking-NVFP4",
+    "name": "Qwen3-Next-80B-A3B-Thinking-NVFP4",
+    "organization": "gesong2077",
+    "architecture": "Qwen3NextForCausalLM",
+    "architecture_family": "llama",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "compressed-tensors",
+    "source_url": "https://huggingface.co/gesong2077/Qwen3-Next-80B-A3B-Thinking-NVFP4",
+    "created_at": "2025-12-31T06:59:30Z"
+  },
+  {
     "purl": "pkg:huggingface/gesong2077/Qwen3-Next-80B-A3B-Thinking-NVFP4A16",
     "name": "Qwen3-Next-80B-A3B-Thinking-NVFP4A16",
     "organization": "gesong2077",
@@ -174995,6 +175874,16 @@
     "base_model_purl": "pkg:huggingface/deepreinforce-ai/Ornith-1.0-9B",
     "source_url": "https://huggingface.co/giaki3003/Ornith-1.0-9B-4bit-graft-MTP-MLX-Serve",
     "created_at": "2026-06-28T00:32:25Z"
+  },
+  {
+    "purl": "pkg:huggingface/giangndm/qwen3-30b-omni-text-only",
+    "name": "qwen3-30b-omni-text-only",
+    "organization": "giangndm",
+    "architecture": "Qwen3MoeForCausalLM",
+    "architecture_family": "llama",
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/giangndm/qwen3-30b-omni-text-only",
+    "created_at": "2025-10-10T15:19:25Z"
   },
   {
     "purl": "pkg:huggingface/giannisan/dolphin-mixtral-2x7b",
@@ -178164,8 +179053,14 @@
     "name": "gemma-2-27b-it",
     "organization": "google",
     "architecture": "gemma2",
+    "architecture_family": "llama",
     "parameter_count": 27227128320,
-    "license": "Gemma"
+    "license": "Gemma",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-2-27b",
+    "source_url": "https://huggingface.co/google/gemma-2-27b-it",
+    "created_at": "2024-06-24T08:05:04Z"
   },
   {
     "purl": "pkg:huggingface/google/gemma-2-2b",
@@ -178458,8 +179353,14 @@
     "name": "gemma-3-27b-it",
     "organization": "google",
     "architecture": "gemma3",
+    "architecture_family": "llama",
     "parameter_count": 27432406640,
-    "license": "Gemma"
+    "license": "Gemma",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-3-27b-pt",
+    "source_url": "https://huggingface.co/google/gemma-3-27b-it",
+    "created_at": "2025-03-01T19:10:19Z"
   },
   {
     "purl": "pkg:huggingface/google/gemma-3-27b-it-qat-q4_0-gguf",
@@ -180097,6 +180998,19 @@
     "base_model_purl": "pkg:huggingface/roberta-base",
     "source_url": "https://huggingface.co/gtfintechlab/model_federal_reserve_system_stance_label",
     "created_at": "2025-04-04T20:49:21Z"
+  },
+  {
+    "purl": "pkg:huggingface/gtkunit/Qwen3-30B-A3B-6.0bpw-h6-exl2",
+    "name": "Qwen3-30B-A3B-6.0bpw-h6",
+    "organization": "gtkunit",
+    "architecture": "Qwen3MoeForCausalLM",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "exl2",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-30B-A3B-Base",
+    "source_url": "https://huggingface.co/gtkunit/Qwen3-30B-A3B-6.0bpw-h6-exl2",
+    "created_at": "2025-05-02T06:31:35Z"
   },
   {
     "purl": "pkg:huggingface/gtonkov/SpecAI",
@@ -184484,6 +185398,17 @@
     "created_at": "2026-06-02T01:21:21Z"
   },
   {
+    "purl": "pkg:huggingface/hswek1/hsw_submit",
+    "name": "hsw_submit",
+    "organization": "hswek1",
+    "architecture": "Qwen3MoeForCausalLM",
+    "architecture_family": "llama",
+    "license": "MIT",
+    "format": "pytorch",
+    "source_url": "https://huggingface.co/hswek1/hsw_submit",
+    "created_at": "2025-09-20T08:59:37Z"
+  },
+  {
     "purl": "pkg:huggingface/htdht/e5_base_finetune_v2",
     "name": "e5_base_finetune_v2",
     "organization": "htdht",
@@ -185486,6 +186411,20 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-2B",
     "source_url": "https://huggingface.co/huihui-ai/Huihui-Qwen3.5-2B-abliterated",
     "created_at": "2026-03-03T07:13:32Z"
+  },
+  {
+    "purl": "pkg:huggingface/huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated-NVFP4",
+    "name": "Huihui-Qwen3.5-35B-A3B-abliterated-NVFP4",
+    "organization": "huihui-ai",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "parameter_count": 20840056496,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "compressed-tensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated",
+    "source_url": "https://huggingface.co/huihui-ai/Huihui-Qwen3.5-35B-A3B-abliterated-NVFP4",
+    "created_at": "2026-03-23T15:52:12Z"
   },
   {
     "purl": "pkg:huggingface/huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated",
@@ -186831,6 +187770,20 @@
     "created_at": "2026-05-25T05:49:30Z"
   },
   {
+    "purl": "pkg:huggingface/hzchng/Huihui3.5-67B-A3B-oQ4",
+    "name": "Huihui3.5-67B-A3B-oQ4",
+    "organization": "hzchng",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 11124100976,
+    "format": "safetensors",
+    "quantization": "4bit",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/huihui-ai/Huihui3.5-67B-A3B",
+    "source_url": "https://huggingface.co/hzchng/Huihui3.5-67B-A3B-oQ4",
+    "created_at": "2026-04-21T08:20:57Z"
+  },
+  {
     "purl": "pkg:huggingface/hzchng/Qwen3.6-35B-A3B-oQ4",
     "name": "Qwen3.6-35B-A3B-oQ4",
     "organization": "hzchng",
@@ -187670,7 +188623,14 @@
     "purl": "pkg:huggingface/icedmoca/kcode-oss-20b-mxfp4",
     "name": "kcode-oss-20b-mxfp4",
     "organization": "icedmoca",
-    "parameter_count": 20000000000
+    "architecture": "gpt-oss",
+    "parameter_count": 20000000000,
+    "license": "MIT",
+    "format": "gguf",
+    "quantization": "MOSTLY_MXFP4_MOE",
+    "base_model_purl": "pkg:huggingface/openai/gpt-oss-20b",
+    "source_url": "https://huggingface.co/icedmoca/kcode-oss-20b-mxfp4",
+    "created_at": "2026-05-02T05:32:58Z"
   },
   {
     "purl": "pkg:huggingface/ichsanlook/pentlab",
@@ -188540,6 +189500,18 @@
     "task": "sentence-similarity",
     "source_url": "https://huggingface.co/imvladikon/sentence-transformers-alephbert",
     "created_at": "2023-04-04T07:57:25Z"
+  },
+  {
+    "purl": "pkg:huggingface/inceptionai/jais-6p7b-chat",
+    "name": "jais-6p7b-chat",
+    "organization": "inceptionai",
+    "architecture": "GPT2LMHeadModel",
+    "architecture_family": "gpt2",
+    "parameter_count": 7148806176,
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/inceptionai/jais-6p7b-chat",
+    "created_at": "2024-05-09T11:54:42Z"
   },
   {
     "purl": "pkg:huggingface/incidelen/xlm-roberta-base-turkish-sentiment-analysis",
@@ -189908,7 +190880,11 @@
     "organization": "internlm",
     "architecture": "internlm2",
     "parameter_count": 19861149696,
-    "license": "other"
+    "license": "other",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/internlm/internlm2_5-20b-chat",
+    "created_at": "2024-07-30T11:57:15Z"
   },
   {
     "purl": "pkg:huggingface/internlm/internlm2_5-7b-chat",
@@ -190192,6 +191168,21 @@
     "base_model_purl": "pkg:huggingface/nightmedia/Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx64-hi-mlx",
     "source_url": "https://huggingface.co/introvoyz041/Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx64-hi-mlx-mlx-6Bit",
     "created_at": "2025-12-11T20:08:40Z"
+  },
+  {
+    "purl": "pkg:huggingface/introvoyz041/Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx64-hi-mlx-mlx-8Bit",
+    "name": "Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx64-hi",
+    "organization": "introvoyz041",
+    "architecture": "Qwen3MoeForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 13424497152,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "6bit",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/nightmedia/Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx64-hi-mlx",
+    "source_url": "https://huggingface.co/introvoyz041/Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx64-hi-mlx-mlx-8Bit",
+    "created_at": "2025-12-08T21:59:31Z"
   },
   {
     "purl": "pkg:huggingface/introvoyz041/Qwen3-MOE-2x8B-TNG-Deckard-Beta-16B-qx86-hi-mlx-mlx-8Bit",
@@ -198502,6 +199493,19 @@
     "created_at": "2026-05-02T20:15:03Z"
   },
   {
+    "purl": "pkg:huggingface/juiceb0xc0de/bella-bartender-gemma-e4b-GGUF",
+    "name": "bella-bartender-gemma-e4b",
+    "organization": "juiceb0xc0de",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E4B-it",
+    "source_url": "https://huggingface.co/juiceb0xc0de/bella-bartender-gemma-e4b-GGUF",
+    "created_at": "2026-05-14T07:21:46Z"
+  },
+  {
     "purl": "pkg:huggingface/juiceb0xc0de/bella-bartender-heretic-1b",
     "name": "bella-bartender-heretic-1b",
     "organization": "juiceb0xc0de",
@@ -198960,6 +199964,20 @@
     "base_model_purl": "pkg:huggingface/meta-llama/Llama-3.2-3B-Instruct",
     "source_url": "https://huggingface.co/justindal/llama3.2-3b-leetcoder-gguf",
     "created_at": "2026-05-10T05:17:32Z"
+  },
+  {
+    "purl": "pkg:huggingface/justindal/llama3.2-3b-leetcoder-q4-mlx",
+    "name": "llama3.2-3b-leetcoder",
+    "organization": "justindal",
+    "architecture": "LlamaForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 502139904,
+    "license": "LicenseRef-Meta-Llama-3.2",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/meta-llama/Llama-3.2-3B-Instruct",
+    "source_url": "https://huggingface.co/justindal/llama3.2-3b-leetcoder-q4-mlx",
+    "created_at": "2026-05-10T08:54:45Z"
   },
   {
     "purl": "pkg:huggingface/justinhl/hybrid-qa1",
@@ -199743,6 +200761,19 @@
     "task": "text-generation",
     "source_url": "https://huggingface.co/kakaocorp/kanana-1.5-8b-instruct-2505",
     "created_at": "2025-05-21T05:42:36Z"
+  },
+  {
+    "purl": "pkg:huggingface/kakaocorp/kanana-2-30b-a3b-base-2601",
+    "name": "kanana-2-30b-a3b-base-2601",
+    "organization": "kakaocorp",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 30670815104,
+    "license": "other",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/kakaocorp/kanana-2-30b-a3b-base-2601",
+    "created_at": "2026-01-14T08:23:10Z"
   },
   {
     "purl": "pkg:huggingface/kakaocorp/kanana-2-30b-a3b-instruct",
@@ -203589,6 +204620,18 @@
     "created_at": "2025-02-28T02:44:03Z"
   },
   {
+    "purl": "pkg:huggingface/kralkan/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-voracious_armored_koala",
+    "name": "Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-voracious_armored_koala",
+    "organization": "kralkan",
+    "architecture": "Qwen2ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 494032768,
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/kralkan/Qwen2.5-Coder-0.5B-Instruct-Gensyn-Swarm-voracious_armored_koala",
+    "created_at": "2025-11-13T08:05:08Z"
+  },
+  {
     "purl": "pkg:huggingface/kranushealth/OpenMed-PII-German-SuperClinical-Large-434M-v1",
     "name": "OpenMed-PII-German-SuperClinical-Large-434M-v1",
     "organization": "kranushealth",
@@ -204423,6 +205466,20 @@
     "base_model_purl": "pkg:huggingface/kth8/gemma-3-270m-it-System-Prompt-Generator",
     "source_url": "https://huggingface.co/kth8/gemma-3-270m-it-System-Prompt-Generator-GGUF",
     "created_at": "2026-03-30T15:44:49Z"
+  },
+  {
+    "purl": "pkg:huggingface/kth8/gemma-3-270m-it-homeowner-classifier",
+    "name": "gemma-3-270m-it-homeowner-classifier",
+    "organization": "kth8",
+    "architecture": "Gemma3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 268098176,
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/unsloth/gemma-3-270m-it",
+    "source_url": "https://huggingface.co/kth8/gemma-3-270m-it-homeowner-classifier",
+    "created_at": "2026-06-17T01:06:32Z"
   },
   {
     "purl": "pkg:huggingface/kth8/gemma-3-270m-it-homeowner-classifier-GGUF",
@@ -207615,6 +208672,18 @@
     "task": "text-generation",
     "source_url": "https://huggingface.co/lethkim/codeparrot",
     "created_at": "2026-04-25T08:37:14Z"
+  },
+  {
+    "purl": "pkg:huggingface/levanell/gemma-4-OBLITERATED-IMATRIX-IQ3_M",
+    "name": "gemma-4-OBLITERATED-IMATRIX-IQ3_M",
+    "organization": "levanell",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ3_M",
+    "base_model_purl": "pkg:huggingface/OBLITERATUS/gemma-4-E4B-it-OBLITERATED",
+    "source_url": "https://huggingface.co/levanell/gemma-4-OBLITERATED-IMATRIX-IQ3_M",
+    "created_at": "2026-05-05T21:39:33Z"
   },
   {
     "purl": "pkg:huggingface/levikross127/KD1",
@@ -211994,6 +213063,21 @@
     "created_at": "2026-04-20T19:51:53Z"
   },
   {
+    "purl": "pkg:huggingface/llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-NVFP4-Experts-Only",
+    "name": "Qwen3.6-35B-A3B-uncensored-heretic-NVFP4-Experts-Only",
+    "organization": "llmfan46",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 21014381936,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "modelopt",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/llmfan46/Qwen3.6-35B-A3B-uncensored-heretic",
+    "source_url": "https://huggingface.co/llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-NVFP4-Experts-Only",
+    "created_at": "2026-05-03T22:56:20Z"
+  },
+  {
     "purl": "pkg:huggingface/llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
     "name": "Qwen3.6-35B-A3B-uncensored-heretic-Native-MTP-Preserved-NVFP4-Experts-Only",
     "organization": "llmfan46",
@@ -213770,6 +214854,51 @@
     "created_at": "2025-10-21T16:21:08Z"
   },
   {
+    "purl": "pkg:huggingface/lmstudio-community/Qwen3-VL-4B-Instruct-MLX-8bit",
+    "name": "Qwen3-VL-4B-Instruct",
+    "organization": "lmstudio-community",
+    "architecture": "Qwen3VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 1546807808,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "8bit",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-4B-Instruct",
+    "source_url": "https://huggingface.co/lmstudio-community/Qwen3-VL-4B-Instruct-MLX-8bit",
+    "created_at": "2025-10-14T16:33:14Z"
+  },
+  {
+    "purl": "pkg:huggingface/lmstudio-community/Qwen3-VL-4B-Thinking-MLX-4bit",
+    "name": "Qwen3-VL-4B-Thinking",
+    "organization": "lmstudio-community",
+    "architecture": "Qwen3VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 1044023808,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "4bit",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-4B-Thinking",
+    "source_url": "https://huggingface.co/lmstudio-community/Qwen3-VL-4B-Thinking-MLX-4bit",
+    "created_at": "2025-10-14T16:32:37Z"
+  },
+  {
+    "purl": "pkg:huggingface/lmstudio-community/Qwen3-VL-4B-Thinking-MLX-8bit",
+    "name": "Qwen3-VL-4B-Thinking",
+    "organization": "lmstudio-community",
+    "architecture": "Qwen3VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 1546807808,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "8bit",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-4B-Thinking",
+    "source_url": "https://huggingface.co/lmstudio-community/Qwen3-VL-4B-Thinking-MLX-8bit",
+    "created_at": "2025-10-14T16:35:44Z"
+  },
+  {
     "purl": "pkg:huggingface/lmstudio-community/Qwen3.5-0.8B-MLX-4bit",
     "name": "Qwen3.5-0.8B",
     "organization": "lmstudio-community",
@@ -214293,6 +215422,20 @@
     "created_at": "2026-04-03T15:56:34Z"
   },
   {
+    "purl": "pkg:huggingface/lmstudio-community/medgemma-4b-it-MLX-4bit",
+    "name": "medgemma-4b-it",
+    "organization": "lmstudio-community",
+    "architecture": "Gemma3ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 893433392,
+    "license": "other",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/medgemma-4b-it",
+    "source_url": "https://huggingface.co/lmstudio-community/medgemma-4b-it-MLX-4bit",
+    "created_at": "2025-05-29T15:50:03Z"
+  },
+  {
     "purl": "pkg:huggingface/lmsys/DeepSeek-R1-NextN",
     "name": "DeepSeek-R1-NextN",
     "organization": "lmsys",
@@ -214327,6 +215470,17 @@
     "quantization": "fp8",
     "source_url": "https://huggingface.co/lmsys/DeepSeek-V3-NextN",
     "created_at": "2025-03-03T16:44:00Z"
+  },
+  {
+    "purl": "pkg:huggingface/lmsys/fastchat-t5-3b-v1.0",
+    "name": "fastchat-t5-3b-v1.0",
+    "organization": "lmsys",
+    "architecture": "T5ForConditionalGeneration",
+    "architecture_family": "t5_v1_1",
+    "license": "Apache-2.0",
+    "format": "pytorch",
+    "source_url": "https://huggingface.co/lmsys/fastchat-t5-3b-v1.0",
+    "created_at": "2023-04-27T23:48:43Z"
   },
   {
     "purl": "pkg:huggingface/lmsys/longchat-13b-16k",
@@ -216532,6 +217686,20 @@
     "created_at": "2026-05-01T13:28:17Z"
   },
   {
+    "purl": "pkg:huggingface/lyf/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-NVFP4",
+    "name": "Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-NVFP4",
+    "organization": "lyf",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "parameter_count": 20840056496,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "compressed-tensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive",
+    "source_url": "https://huggingface.co/lyf/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-NVFP4",
+    "created_at": "2026-04-21T00:11:56Z"
+  },
+  {
     "purl": "pkg:huggingface/lyraaaa/the-archivist-Q8_0-GGUF",
     "name": "the-archivist",
     "organization": "lyraaaa",
@@ -218725,6 +219893,19 @@
     "created_at": "2026-04-13T15:01:37Z"
   },
   {
+    "purl": "pkg:huggingface/majentik/gemma-4-E2B-RotorQuant-GGUF-Q2_K",
+    "name": "gemma-4-E2B-RotorQuant",
+    "organization": "majentik",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E2B",
+    "source_url": "https://huggingface.co/majentik/gemma-4-E2B-RotorQuant-GGUF-Q2_K",
+    "created_at": "2026-04-13T15:01:06Z"
+  },
+  {
     "purl": "pkg:huggingface/majentik/gemma-4-E2B-RotorQuant-GGUF-Q3_K_M",
     "name": "gemma-4-E2B-RotorQuant",
     "organization": "majentik",
@@ -218880,6 +220061,19 @@
     "created_at": "2026-04-13T15:08:03Z"
   },
   {
+    "purl": "pkg:huggingface/majentik/gemma-4-E2B-it-RotorQuant-GGUF-Q5_K_M",
+    "name": "gemma-4-E2B-it-RotorQuant",
+    "organization": "majentik",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q5_K_M",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E2B-it",
+    "source_url": "https://huggingface.co/majentik/gemma-4-E2B-it-RotorQuant-GGUF-Q5_K_M",
+    "created_at": "2026-04-13T15:08:34Z"
+  },
+  {
     "purl": "pkg:huggingface/majentik/gemma-4-E2B-it-RotorQuant-GGUF-Q8_0",
     "name": "gemma-4-E2B-it-RotorQuant",
     "organization": "majentik",
@@ -218891,6 +220085,21 @@
     "base_model_purl": "pkg:huggingface/google/gemma-4-E2B-it",
     "source_url": "https://huggingface.co/majentik/gemma-4-E2B-it-RotorQuant-GGUF-Q8_0",
     "created_at": "2026-04-13T15:09:10Z"
+  },
+  {
+    "purl": "pkg:huggingface/majentik/gemma-4-E2B-it-RotorQuant-MLX-2bit",
+    "name": "gemma-4-E2B-it-RotorQuant",
+    "organization": "majentik",
+    "architecture": "Gemma4ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 920956483,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "2bit",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E2B-it",
+    "source_url": "https://huggingface.co/majentik/gemma-4-E2B-it-RotorQuant-MLX-2bit",
+    "created_at": "2026-04-13T10:58:44Z"
   },
   {
     "purl": "pkg:huggingface/majentik/gemma-4-E2B-it-RotorQuant-MLX-4bit",
@@ -219347,6 +220556,20 @@
     "task": "feature-extraction",
     "source_url": "https://huggingface.co/malteos/scincl",
     "created_at": "2022-03-02T23:29:05Z"
+  },
+  {
+    "purl": "pkg:huggingface/maltsevis/Qwen-AgentWorld-Heretic-HCl-NVFP4-dgx",
+    "name": "Qwen-AgentWorld-Heretic-HCl-NVFP4-dgx",
+    "organization": "maltsevis",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 19951363308,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen-AgentWorld-35B-A3B",
+    "source_url": "https://huggingface.co/maltsevis/Qwen-AgentWorld-Heretic-HCl-NVFP4-dgx",
+    "created_at": "2026-06-26T22:46:53Z"
   },
   {
     "purl": "pkg:huggingface/mamei16/Falcon3-MoE-2x7B-Insruct-Q4_K_M-GGUF",
@@ -220884,6 +222107,19 @@
     "base_model_purl": "pkg:huggingface/LCO-Embedding/LCO-Embedding-Omni-3B-2605",
     "source_url": "https://huggingface.co/marksverdhei/LCO-Embedding-Omni-3B-2605-GGUF",
     "created_at": "2026-05-16T10:13:24Z"
+  },
+  {
+    "purl": "pkg:huggingface/marksverdhei/LCO-Embedding-Omni-3B-GGUF",
+    "name": "LCO-Embedding-Omni-3B",
+    "organization": "marksverdhei",
+    "architecture": "qwen2vl",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_BF16",
+    "task": "feature-extraction",
+    "base_model_purl": "pkg:huggingface/LCO-Embedding/LCO-Embedding-Omni-3B",
+    "source_url": "https://huggingface.co/marksverdhei/LCO-Embedding-Omni-3B-GGUF",
+    "created_at": "2026-03-04T09:22:37Z"
   },
   {
     "purl": "pkg:huggingface/marksverdhei/modern-norbert3-base",
@@ -225006,6 +226242,7 @@
     "purl": "pkg:huggingface/microsoft/deberta-v3-base",
     "name": "deberta-v3-base",
     "organization": "microsoft",
+    "architecture": "deberta-v2",
     "parameter_count": 185537893,
     "license": "MIT",
     "format": "safetensors",
@@ -226496,7 +227733,12 @@
     "organization": "mistralai",
     "architecture": "mistral3",
     "parameter_count": 24011361840,
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "fp8",
+    "base_model_purl": "pkg:huggingface/mistralai/Mistral-Small-3.1-24B-Base-2503",
+    "source_url": "https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512",
+    "created_at": "2025-11-28T11:27:11Z"
   },
   {
     "purl": "pkg:huggingface/mistralai/Magistral-Small-2506",
@@ -228601,6 +229843,20 @@
     "created_at": "2025-04-14T20:24:32Z"
   },
   {
+    "purl": "pkg:huggingface/mlx-community/InternVL3-8B-3bit",
+    "name": "InternVL3-8B",
+    "organization": "mlx-community",
+    "architecture": "InternVLChatModel",
+    "architecture_family": "llama",
+    "parameter_count": 1259362560,
+    "license": "other",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/OpenGVLab/InternVL3-1B-Instruct",
+    "source_url": "https://huggingface.co/mlx-community/InternVL3-8B-3bit",
+    "created_at": "2025-04-18T12:14:26Z"
+  },
+  {
     "purl": "pkg:huggingface/mlx-community/InternVL3-8B-MLX-4bit",
     "name": "InternVL3-8B",
     "organization": "mlx-community",
@@ -228614,6 +229870,20 @@
     "base_model_purl": "pkg:huggingface/mlx-community/InternVL3-8B-bf16",
     "source_url": "https://huggingface.co/mlx-community/InternVL3-8B-MLX-4bit",
     "created_at": "2026-02-23T02:33:21Z"
+  },
+  {
+    "purl": "pkg:huggingface/mlx-community/InternVL3-9B-4bit",
+    "name": "InternVL3-9B",
+    "organization": "mlx-community",
+    "architecture": "InternVLChatModel",
+    "architecture_family": "llama",
+    "parameter_count": 1498112960,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/OpenGVLab/InternVL3-1B-Instruct",
+    "source_url": "https://huggingface.co/mlx-community/InternVL3-9B-4bit",
+    "created_at": "2025-04-30T12:06:19Z"
   },
   {
     "purl": "pkg:huggingface/mlx-community/Josiefied-Qwen2.5-3B-Instruct-abliterated-v1-4-bit",
@@ -231477,6 +232747,20 @@
     "created_at": "2025-06-06T14:11:02Z"
   },
   {
+    "purl": "pkg:huggingface/mlx-community/Qwen3-Embedding-4B-mxfp8",
+    "name": "Qwen3-Embedding-4B-mxfp8",
+    "organization": "mlx-community",
+    "architecture": "Qwen3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 1131264976,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "feature-extraction",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-4B-Base",
+    "source_url": "https://huggingface.co/mlx-community/Qwen3-Embedding-4B-mxfp8",
+    "created_at": "2026-02-11T14:41:14Z"
+  },
+  {
     "purl": "pkg:huggingface/mlx-community/Qwen3-Embedding-8B-4bit-DWQ",
     "name": "Qwen3-Embedding-8B-4bit-DWQ",
     "organization": "mlx-community",
@@ -231489,6 +232773,19 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3-Embedding-8B",
     "source_url": "https://huggingface.co/mlx-community/Qwen3-Embedding-8B-4bit-DWQ",
     "created_at": "2025-06-08T10:51:31Z"
+  },
+  {
+    "purl": "pkg:huggingface/mlx-community/Qwen3-Embedding-8B-mxfp8",
+    "name": "Qwen3-Embedding-8B-mxfp8",
+    "organization": "mlx-community",
+    "architecture": "Qwen3ForCausalLM",
+    "architecture_family": "llama",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "feature-extraction",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-8B-Base",
+    "source_url": "https://huggingface.co/mlx-community/Qwen3-Embedding-8B-mxfp8",
+    "created_at": "2026-02-11T14:44:10Z"
   },
   {
     "purl": "pkg:huggingface/mlx-community/Qwen3-Next-80B-A3B-Instruct-4bit",
@@ -231614,6 +232911,20 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3-0.6B-Base",
     "source_url": "https://huggingface.co/mlx-community/Qwen3-Reranker-0.6B-mxfp8",
     "created_at": "2026-02-11T15:02:08Z"
+  },
+  {
+    "purl": "pkg:huggingface/mlx-community/Qwen3-Reranker-4B-mxfp8",
+    "name": "Qwen3-Reranker-4B-mxfp8",
+    "organization": "mlx-community",
+    "architecture": "Qwen3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 1131267856,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-ranking",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-4B-Base",
+    "source_url": "https://huggingface.co/mlx-community/Qwen3-Reranker-4B-mxfp8",
+    "created_at": "2026-02-11T14:59:17Z"
   },
   {
     "purl": "pkg:huggingface/mlx-community/Qwen3-VL-8B-NSFW-Caption-V4.5-mxfp4",
@@ -233529,6 +234840,19 @@
     "created_at": "2025-08-09T20:19:32Z"
   },
   {
+    "purl": "pkg:huggingface/mlx-community/gemma-3-27b-it-qat-bf16",
+    "name": "gemma-3-27b-it-qat",
+    "organization": "mlx-community",
+    "architecture": "Gemma3ForConditionalGeneration",
+    "architecture_family": "llama",
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-3-27b-it",
+    "source_url": "https://huggingface.co/mlx-community/gemma-3-27b-it-qat-bf16",
+    "created_at": "2025-04-15T21:07:30Z"
+  },
+  {
     "purl": "pkg:huggingface/mlx-community/gemma-4-12B-it-qat-assistant-8bit",
     "name": "gemma-4-12B-it-qat-assistant",
     "organization": "mlx-community",
@@ -235023,6 +236347,20 @@
     "created_at": "2024-12-14T14:22:46Z"
   },
   {
+    "purl": "pkg:huggingface/mlx-community/medgemma-1.5-4b-it-4bit",
+    "name": "medgemma-1.5-4b-it",
+    "organization": "mlx-community",
+    "architecture": "Gemma3ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 1131301232,
+    "license": "other",
+    "format": "safetensors",
+    "quantization": "4bit",
+    "task": "image-text-to-text",
+    "source_url": "https://huggingface.co/mlx-community/medgemma-1.5-4b-it-4bit",
+    "created_at": "2026-01-14T00:20:33Z"
+  },
+  {
     "purl": "pkg:huggingface/mlx-community/meta-llama-Llama-4-Scout-17B-16E-8bit",
     "name": "meta-llama-Llama-4-Scout-17B-16E",
     "organization": "mlx-community",
@@ -235565,6 +236903,21 @@
     "created_at": "2026-07-08T15:33:10Z"
   },
   {
+    "purl": "pkg:huggingface/mmangkad/Qwen3.5-35B-A3B-NVFP4-V2",
+    "name": "Qwen3.5-35B-A3B-NVFP4-V2",
+    "organization": "mmangkad",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 21859022724,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "modelopt",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-35B-A3B",
+    "source_url": "https://huggingface.co/mmangkad/Qwen3.5-35B-A3B-NVFP4-V2",
+    "created_at": "2026-04-14T08:23:49Z"
+  },
+  {
     "purl": "pkg:huggingface/mmangkad/Qwen3.6-27B-NVFP4",
     "name": "Qwen3.6-27B-NVFP4",
     "organization": "mmangkad",
@@ -235578,6 +236931,21 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3.6-27B",
     "source_url": "https://huggingface.co/mmangkad/Qwen3.6-27B-NVFP4",
     "created_at": "2026-04-22T13:46:20Z"
+  },
+  {
+    "purl": "pkg:huggingface/mmangkad/Qwen3.6-35B-A3B-NVFP4",
+    "name": "Qwen3.6-35B-A3B-NVFP4",
+    "organization": "mmangkad",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 21859022724,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "modelopt",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.6-35B-A3B",
+    "source_url": "https://huggingface.co/mmangkad/Qwen3.6-35B-A3B-NVFP4",
+    "created_at": "2026-04-16T15:15:08Z"
   },
   {
     "purl": "pkg:huggingface/mmnga/DataPilot-ArrowPro-7B-KUJIRA-gguf",
@@ -236073,6 +237441,18 @@
     "base_model_purl": "pkg:huggingface/unsloth/Qwen2.5-7B-Instruct-bnb-4bit",
     "source_url": "https://huggingface.co/moe122/business-books-llama3",
     "created_at": "2026-05-09T00:15:56Z"
+  },
+  {
+    "purl": "pkg:huggingface/moe249/google_gemma-4-E4B-it-tictactoe",
+    "name": "google_gemma-4-E4B-it-tictactoe",
+    "organization": "moe249",
+    "architecture": "gemma4",
+    "license": "MIT",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-31B-it",
+    "source_url": "https://huggingface.co/moe249/google_gemma-4-E4B-it-tictactoe",
+    "created_at": "2026-04-18T19:31:31Z"
   },
   {
     "purl": "pkg:huggingface/moelanoby/phi-3-M3-coder",
@@ -238910,6 +240290,18 @@
     "created_at": "2026-03-14T11:06:39Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/Darwin-4B-David-GGUF",
+    "name": "Darwin-4B-David",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/FINAL-Bench/Darwin-4B-David",
+    "source_url": "https://huggingface.co/mradermacher/Darwin-4B-David-GGUF",
+    "created_at": "2026-04-11T06:58:06Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/DataSense-GPU-Full-GGUF",
     "name": "DataSense-GPU-Full",
     "organization": "mradermacher",
@@ -241437,6 +242829,18 @@
     "created_at": "2026-06-17T05:21:31Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/Gemma4-LitLit-e2b-GGUF",
+    "name": "Gemma4-LitLit-e2b",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/theprint/Gemma4-LitLit-e2b",
+    "source_url": "https://huggingface.co/mradermacher/Gemma4-LitLit-e2b-GGUF",
+    "created_at": "2026-04-21T07:50:38Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/Gemma4NPC-E4B-GGUF",
     "name": "Gemma4NPC-E4B",
     "organization": "mradermacher",
@@ -242436,6 +243840,18 @@
     "base_model_purl": "pkg:huggingface/EldritchLabs/Kraken-Karcher-12B-v1",
     "source_url": "https://huggingface.co/mradermacher/Kraken-Karcher-12B-v1-i1-GGUF",
     "created_at": "2026-03-20T16:33:03Z"
+  },
+  {
+    "purl": "pkg:huggingface/mradermacher/KrizNore4-E2B-v1-merged-GGUF",
+    "name": "KrizNore4-E2B-v1-merged",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "AGPL-3.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/N-Bot-Int/KrizNore4-E2B-v1-merged",
+    "source_url": "https://huggingface.co/mradermacher/KrizNore4-E2B-v1-merged-GGUF",
+    "created_at": "2026-04-12T07:43:08Z"
   },
   {
     "purl": "pkg:huggingface/mradermacher/Kunokukulemonchini-7b-GGUF",
@@ -245292,6 +246708,18 @@
     "created_at": "2024-09-15T04:14:39Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/PE-Type-1-Vera-4B-GGUF",
+    "name": "PE-Type-1-Vera-4B",
+    "organization": "mradermacher",
+    "architecture": "gemma3",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/vanta-research/PE-Type-1-Vera-4B",
+    "source_url": "https://huggingface.co/mradermacher/PE-Type-1-Vera-4B-GGUF",
+    "created_at": "2026-01-29T14:50:29Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/PE-Type-1-Vera-4B-i1-GGUF",
     "name": "PE-Type-1-Vera-4B-i1",
     "organization": "mradermacher",
@@ -245326,6 +246754,18 @@
     "base_model_purl": "pkg:huggingface/vanta-research/PE-Type-2-Alma-4B",
     "source_url": "https://huggingface.co/mradermacher/PE-Type-2-Alma-4B-i1-GGUF",
     "created_at": "2026-02-01T07:15:30Z"
+  },
+  {
+    "purl": "pkg:huggingface/mradermacher/PE-Type-3-Nova-4B-GGUF",
+    "name": "PE-Type-3-Nova-4B",
+    "organization": "mradermacher",
+    "architecture": "gemma3",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/vanta-research/PE-Type-3-Nova-4B",
+    "source_url": "https://huggingface.co/mradermacher/PE-Type-3-Nova-4B-GGUF",
+    "created_at": "2026-02-06T14:50:40Z"
   },
   {
     "purl": "pkg:huggingface/mradermacher/PE-Type-3-Nova-4B-i1-GGUF",
@@ -249753,6 +251193,18 @@
     "created_at": "2026-03-18T14:20:58Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/TurboGemma4E2B-v2-GGUF",
+    "name": "TurboGemma4E2B-v2",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/DuoNeural/TurboGemma4E2B-v2",
+    "source_url": "https://huggingface.co/mradermacher/TurboGemma4E2B-v2-GGUF",
+    "created_at": "2026-05-01T05:12:14Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/Turkish-Gemma-9b-v0.1-GGUF",
     "name": "Turkish-Gemma-9b-v0.1",
     "organization": "mradermacher",
@@ -251017,7 +252469,12 @@
     "organization": "mradermacher",
     "architecture": "gemma",
     "parameter_count": 5104297539,
-    "license": "Gemma"
+    "license": "Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/juiceb0xc0de/bella-bartender-gemma-e2b",
+    "source_url": "https://huggingface.co/mradermacher/bella-bartender-gemma-e2b-GGUF",
+    "created_at": "2026-05-03T07:43:08Z"
   },
   {
     "purl": "pkg:huggingface/mradermacher/bella-bartender-gemma-e2b-i1-GGUF",
@@ -252725,6 +254182,18 @@
     "created_at": "2026-04-29T23:07:50Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/gemma-4-E2B-it-abliterated-GGUF",
+    "name": "gemma-4-E2B-it-abliterated",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/WWTCyberLab/gemma-4-E2B-it-abliterated",
+    "source_url": "https://huggingface.co/mradermacher/gemma-4-E2B-it-abliterated-GGUF",
+    "created_at": "2026-04-09T12:46:59Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/gemma-4-E2B-it-abliterated-i1-GGUF",
     "name": "gemma-4-E2B-it-abliterated-i1",
     "organization": "mradermacher",
@@ -253237,6 +254706,18 @@
     "created_at": "2026-04-14T15:26:13Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/gemma4-E2B-it-disinhibited-GGUF",
+    "name": "gemma4-E2B-it-disinhibited",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/treadon/gemma4-E2B-it-disinhibited",
+    "source_url": "https://huggingface.co/mradermacher/gemma4-E2B-it-disinhibited-GGUF",
+    "created_at": "2026-04-30T05:58:49Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/gemma4-E2B-it-disinhibited-i1-GGUF",
     "name": "gemma4-E2B-it-disinhibited-i1",
     "organization": "mradermacher",
@@ -253273,6 +254754,18 @@
     "created_at": "2026-04-15T14:31:57Z"
   },
   {
+    "purl": "pkg:huggingface/mradermacher/gemma4-E4B-it-disinhibited-GGUF",
+    "name": "gemma4-E4B-it-disinhibited",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/treadon/gemma4-E4B-it-disinhibited",
+    "source_url": "https://huggingface.co/mradermacher/gemma4-E4B-it-disinhibited-GGUF",
+    "created_at": "2026-04-30T05:44:29Z"
+  },
+  {
     "purl": "pkg:huggingface/mradermacher/gemma4-E4B-it-disinhibited-i1-GGUF",
     "name": "gemma4-E4B-it-disinhibited-i1",
     "organization": "mradermacher",
@@ -253295,6 +254788,18 @@
     "base_model_purl": "pkg:huggingface/renierd6/gemma4-alpaca-uncensored",
     "source_url": "https://huggingface.co/mradermacher/gemma4-alpaca-uncensored-i1-GGUF",
     "created_at": "2026-04-14T12:51:24Z"
+  },
+  {
+    "purl": "pkg:huggingface/mradermacher/gemma4-e2b-it-regulatory-obligation-v1-GGUF",
+    "name": "gemma4-e2b-it-regulatory-obligation-v1",
+    "organization": "mradermacher",
+    "architecture": "gemma4",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ4_XS",
+    "base_model_purl": "pkg:huggingface/PrinceRansom7/gemma4-e2b-it-regulatory-obligation-v1",
+    "source_url": "https://huggingface.co/mradermacher/gemma4-e2b-it-regulatory-obligation-v1-GGUF",
+    "created_at": "2026-07-02T06:09:58Z"
   },
   {
     "purl": "pkg:huggingface/mradermacher/gemma4-e4b-mahou-nsfw-i1-GGUF",
@@ -258328,6 +259833,20 @@
     "base_model_purl": "pkg:huggingface/mistralai/Mistral-7B-Instruct-v0.2",
     "source_url": "https://huggingface.co/nasiruddin15/Mistral-grok-instract-2-7B-slerp",
     "created_at": "2024-03-28T23:53:42Z"
+  },
+  {
+    "purl": "pkg:huggingface/nassimjp/Gemma-4-E4B-Claude-4.6-Opus-Reasoning-Distilled",
+    "name": "Gemma-4-E4B-Claude-4.6-Opus-Reasoning-Distilled",
+    "organization": "nassimjp",
+    "architecture": "Gemma4ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 7996157418,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E4B-it",
+    "source_url": "https://huggingface.co/nassimjp/Gemma-4-E4B-Claude-4.6-Opus-Reasoning-Distilled",
+    "created_at": "2026-04-17T21:40:04Z"
   },
   {
     "purl": "pkg:huggingface/nassimjp/Ministral-8B-Instruct-2410-4bit",
@@ -263651,6 +265170,17 @@
     "created_at": "2025-04-05T16:12:27Z"
   },
   {
+    "purl": "pkg:huggingface/nokia901012/new-v2-thinking",
+    "name": "new-v2-thinking",
+    "organization": "nokia901012",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 15960111936,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/nokia901012/new-v2-thinking",
+    "created_at": "2026-05-05T12:28:05Z"
+  },
+  {
     "purl": "pkg:huggingface/nokia901012/v2",
     "name": "v2",
     "organization": "nokia901012",
@@ -264019,6 +265549,7 @@
     "architecture": "t5_v1_1",
     "architecture_family": "t5_v1_1",
     "parameter_count": 556291456,
+    "license": "other",
     "format": "safetensors",
     "source_url": "https://huggingface.co/north/t5_small_NCC_modern",
     "created_at": "2022-05-21T11:44:53Z"
@@ -264306,6 +265837,17 @@
     "format": "safetensors",
     "source_url": "https://huggingface.co/nqzfaizal77ai/dxpt-moe-m-en-1bc-exp-base",
     "created_at": "2025-08-13T10:19:57Z"
+  },
+  {
+    "purl": "pkg:huggingface/nqzfaizal77ai/dxpt-moe-m-en-sentence",
+    "name": "dxpt-moe-m-en-sentence",
+    "organization": "nqzfaizal77ai",
+    "architecture": "DeepseekV3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 1366248434,
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/nqzfaizal77ai/dxpt-moe-m-en-sentence",
+    "created_at": "2025-08-10T23:52:18Z"
   },
   {
     "purl": "pkg:huggingface/nqzfaizal77ai/nqzora-axiom-phyllo-init-550m",
@@ -267395,6 +268937,16 @@
     "format": "onnx",
     "source_url": "https://huggingface.co/onnx-community/Phi-3-mini-4k-instruct-ONNX",
     "created_at": "2025-11-23T04:24:44Z"
+  },
+  {
+    "purl": "pkg:huggingface/onnx-community/Phi-3.5-mini-instruct-ONNX-GQA",
+    "name": "Phi-3.5-mini-instruct-ONNX-GQA",
+    "organization": "onnx-community",
+    "format": "onnx",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/microsoft/Phi-3.5-mini-instruct",
+    "source_url": "https://huggingface.co/onnx-community/Phi-3.5-mini-instruct-ONNX-GQA",
+    "created_at": "2025-02-26T21:04:47Z"
   },
   {
     "purl": "pkg:huggingface/onnx-community/Phi-4-mini-instruct-ONNX",
@@ -273710,6 +275262,17 @@
     "created_at": "2022-03-02T23:29:05Z"
   },
   {
+    "purl": "pkg:huggingface/prajjwal1/bert-tiny",
+    "name": "bert-tiny",
+    "organization": "prajjwal1",
+    "architecture_family": "bert",
+    "parameter_count": 8370806,
+    "license": "MIT",
+    "format": "safetensors",
+    "source_url": "https://huggingface.co/prajjwal1/bert-tiny",
+    "created_at": "2022-03-02T23:29:05Z"
+  },
+  {
     "purl": "pkg:huggingface/pramjana/Qwen3-30B-A3B-Instruct-2507-4bit-GPTQ",
     "name": "Qwen3-30B-A3B-Instruct-2507",
     "organization": "pramjana",
@@ -276944,6 +278507,21 @@
     "created_at": "2026-05-06T21:08:11Z"
   },
   {
+    "purl": "pkg:huggingface/protoLabsAI/Agents-A1-NVFP4",
+    "name": "Agents-A1-NVFP4",
+    "organization": "protoLabsAI",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 20840056496,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "compressed-tensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/InternScience/Agents-A1",
+    "source_url": "https://huggingface.co/protoLabsAI/Agents-A1-NVFP4",
+    "created_at": "2026-07-04T04:10:44Z"
+  },
+  {
     "purl": "pkg:huggingface/protoLabsAI/Ornith-1.0-35B-NVFP4",
     "name": "Ornith-1.0-35B-NVFP4",
     "organization": "protoLabsAI",
@@ -277438,6 +279016,20 @@
     "base_model_purl": "pkg:huggingface/meta-llama/Llama-3.2-1B-Instruct",
     "source_url": "https://huggingface.co/puettmann/LlaMaestra-3.2-1B-Translation",
     "created_at": "2024-12-08T21:12:13Z"
+  },
+  {
+    "purl": "pkg:huggingface/puettmann/SmolMaestra-1.7b-Translation",
+    "name": "SmolMaestra-1.7b-Translation",
+    "organization": "puettmann",
+    "architecture": "LlamaForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 1711376384,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "translation",
+    "base_model_purl": "pkg:huggingface/HuggingFaceTB/SmolLM2-1.7B-Instruct",
+    "source_url": "https://huggingface.co/puettmann/SmolMaestra-1.7b-Translation",
+    "created_at": "2024-12-08T20:16:08Z"
   },
   {
     "purl": "pkg:huggingface/purefall/shotpath-qwen3vl8b-native-thinking-fft-fullsft-ep3-lr1e6-cot2389-20260715",
@@ -289503,6 +291095,19 @@
     "created_at": "2026-04-13T03:51:42Z"
   },
   {
+    "purl": "pkg:huggingface/sbull-dell/Qwen3.5-35B-A3B-NVFP4",
+    "name": "Qwen3.5-35B-A3B-NVFP4",
+    "organization": "sbull-dell",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 20397934576,
+    "format": "safetensors",
+    "quantization": "modelopt",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.5-35B-A3B",
+    "source_url": "https://huggingface.co/sbull-dell/Qwen3.5-35B-A3B-NVFP4",
+    "created_at": "2026-03-09T18:52:38Z"
+  },
+  {
     "purl": "pkg:huggingface/sbull-dell/gemma-4-26B-A4B-NVFP4",
     "name": "gemma-4-26B-A4B-NVFP4",
     "organization": "sbull-dell",
@@ -296937,6 +298542,17 @@
     "created_at": "2026-04-25T12:11:45Z"
   },
   {
+    "purl": "pkg:huggingface/snehmehta/sakhiya-qwen3-moe",
+    "name": "sakhiya-qwen3-moe",
+    "organization": "snehmehta",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/unsloth/Qwen3.5-35B-A3B",
+    "source_url": "https://huggingface.co/snehmehta/sakhiya-qwen3-moe",
+    "created_at": "2026-04-21T07:59:04Z"
+  },
+  {
     "purl": "pkg:huggingface/snorkelai/Snorkel-Mistral-PairRM-DPO",
     "name": "Snorkel-Mistral-PairRM-DPO",
     "organization": "snorkelai",
@@ -297705,6 +299321,18 @@
     "created_at": "2025-02-23T09:15:22Z"
   },
   {
+    "purl": "pkg:huggingface/somosnlp-hackathon-2022/bertin-roberta-base-zeroshot-esnli",
+    "name": "bertin-roberta-base-zeroshot-esnli",
+    "organization": "somosnlp-hackathon-2022",
+    "architecture": "RobertaForSequenceClassification",
+    "architecture_family": "bert",
+    "parameter_count": 124648453,
+    "format": "safetensors",
+    "task": "zero-shot-classification",
+    "source_url": "https://huggingface.co/somosnlp-hackathon-2022/bertin-roberta-base-zeroshot-esnli",
+    "created_at": "2022-04-04T15:05:03Z"
+  },
+  {
     "purl": "pkg:huggingface/somosnlp-hackathon-2022/paraphrase-spanish-distilroberta",
     "name": "paraphrase-spanish-distilroberta",
     "organization": "somosnlp-hackathon-2022",
@@ -297780,6 +299408,20 @@
     "base_model_purl": "pkg:huggingface/unsloth/phi-3-mini-4k-instruct-bnb-4bit",
     "source_url": "https://huggingface.co/somrajmondal/phi3-mini-finance-lora-fp16",
     "created_at": "2026-05-13T17:59:28Z"
+  },
+  {
+    "purl": "pkg:huggingface/somukandula/maskara",
+    "name": "maskara",
+    "organization": "somukandula",
+    "architecture": "BertForTokenClassification",
+    "architecture_family": "bert",
+    "parameter_count": 108918563,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "token-classification",
+    "base_model_purl": "pkg:huggingface/google-bert/bert-base-uncased",
+    "source_url": "https://huggingface.co/somukandula/maskara",
+    "created_at": "2026-06-09T17:45:33Z"
   },
   {
     "purl": "pkg:huggingface/songjhPKU/RxnCaption-VL",
@@ -297910,6 +299552,19 @@
     "base_model_purl": "pkg:huggingface/soob3123/amoral-gemma3-1B-v2",
     "source_url": "https://huggingface.co/soob3123/amoral-gemma3-1B-v2-gguf",
     "created_at": "2025-03-25T20:13:43Z"
+  },
+  {
+    "purl": "pkg:huggingface/soob3123/amoral-gemma3-27B-v2-gguf",
+    "name": "amoral-gemma3-27B-v2",
+    "organization": "soob3123",
+    "architecture": "gemma3",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/soob3123/amoral-gemma3-27B-v2",
+    "source_url": "https://huggingface.co/soob3123/amoral-gemma3-27B-v2-gguf",
+    "created_at": "2025-04-06T06:53:46Z"
   },
   {
     "purl": "pkg:huggingface/soob3123/amoral-gemma3-27B-v2-qat-Q4_0-GGUF",
@@ -298439,6 +300094,20 @@
     "created_at": "2026-01-27T10:00:01Z"
   },
   {
+    "purl": "pkg:huggingface/specialv/Vims-7b",
+    "name": "Vims-7b",
+    "organization": "specialv",
+    "architecture": "MistralForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 7241732096,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Open-Orca/Mistral-7B-OpenOrca",
+    "source_url": "https://huggingface.co/specialv/Vims-7b",
+    "created_at": "2026-03-28T11:06:59Z"
+  },
+  {
     "purl": "pkg:huggingface/spectator2026/Infinity-Parser2-Flash-AWQ-W4A16",
     "name": "Infinity-Parser2-Flash-AWQ-W4A16",
     "organization": "spectator2026",
@@ -298582,6 +300251,21 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3.6-35B-A3B",
     "source_url": "https://huggingface.co/spicyneuron/Qwen3.6-35B-A3B-MLX-4.8bit-vision",
     "created_at": "2026-04-18T07:50:41Z"
+  },
+  {
+    "purl": "pkg:huggingface/spicyneuron/Qwen3.6-35B-A3B-MLX-5.4bit",
+    "name": "Qwen3.6-35B-A3B-MLX-5",
+    "organization": "spicyneuron",
+    "architecture": "Qwen3_5MoeForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 34660608768,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "4bit",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3.6-35B-A3B",
+    "source_url": "https://huggingface.co/spicyneuron/Qwen3.6-35B-A3B-MLX-5.4bit",
+    "created_at": "2026-04-16T14:05:59Z"
   },
   {
     "purl": "pkg:huggingface/spideystreet/DrBERT-MedicalNER-FR",
@@ -303911,7 +305595,11 @@
     "name": "adam-gemma4-e4b",
     "organization": "swazona",
     "architecture": "qwen",
-    "license": "Gemma"
+    "license": "Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q4_K_M",
+    "source_url": "https://huggingface.co/swazona/adam-gemma4-e4b",
+    "created_at": "2026-04-10T21:47:58Z"
   },
   {
     "purl": "pkg:huggingface/sweenk/snt-classifier",
@@ -303967,6 +305655,20 @@
     "base_model_purl": "pkg:huggingface/google-bert/bert-base-multilingual-uncased",
     "source_url": "https://huggingface.co/swissgeol/lithology",
     "created_at": "2026-06-17T12:50:32Z"
+  },
+  {
+    "purl": "pkg:huggingface/swlkk/basee4bf",
+    "name": "basee4bf",
+    "organization": "swlkk",
+    "architecture": "Gemma4ForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 7996157418,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-E4B",
+    "source_url": "https://huggingface.co/swlkk/basee4bf",
+    "created_at": "2026-05-26T10:46:30Z"
   },
   {
     "purl": "pkg:huggingface/swlkk/gefr",
@@ -304988,6 +306690,18 @@
     "task": "text-classification",
     "source_url": "https://huggingface.co/tamarasuarezrod/longeval-baseline-valloss-seed42",
     "created_at": "2026-06-08T02:19:31Z"
+  },
+  {
+    "purl": "pkg:huggingface/tamarasuarezrod/longeval-s10-s2backbone-s8mechanism-seed1",
+    "name": "longeval-s10-s2backbone-s8mechanism-seed1",
+    "organization": "tamarasuarezrod",
+    "architecture": "RobertaForSequenceClassification",
+    "architecture_family": "bert",
+    "parameter_count": 124647170,
+    "format": "safetensors",
+    "task": "text-classification",
+    "source_url": "https://huggingface.co/tamarasuarezrod/longeval-s10-s2backbone-s8mechanism-seed1",
+    "created_at": "2026-06-19T05:49:21Z"
   },
   {
     "purl": "pkg:huggingface/tamarasuarezrod/longeval-s10-s2backbone-s8mechanism-seed42",
@@ -307520,6 +309234,18 @@
     "created_at": "2024-12-23T11:48:38Z"
   },
   {
+    "purl": "pkg:huggingface/tensorblock/codegemma-7b-it-GGUF",
+    "name": "codegemma-7b-it",
+    "organization": "tensorblock",
+    "architecture": "gemma",
+    "license": "Apache-2.0",
+    "format": "gguf",
+    "quantization": "MOSTLY_Q2_K",
+    "base_model_purl": "pkg:huggingface/unsloth/codegemma-7b-it",
+    "source_url": "https://huggingface.co/tensorblock/codegemma-7b-it-GGUF",
+    "created_at": "2024-11-21T17:59:56Z"
+  },
+  {
     "purl": "pkg:huggingface/tensorblock/ehristoforu_Falcon3-MoE-2x7B-Insruct-GGUF",
     "name": "ehristoforu_Falcon3-MoE-2x7B-Insruct",
     "organization": "tensorblock",
@@ -309066,6 +310792,19 @@
     "task": "text-generation",
     "source_url": "https://huggingface.co/thelamapi/next-1b",
     "created_at": "2025-10-15T11:09:56Z"
+  },
+  {
+    "purl": "pkg:huggingface/thelamapi/next-270m",
+    "name": "next-270m",
+    "organization": "thelamapi",
+    "architecture": "Gemma3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 268098176,
+    "license": "MIT",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/thelamapi/next-270m",
+    "created_at": "2025-10-18T15:16:36Z"
   },
   {
     "purl": "pkg:huggingface/thelamapi/next-4b",
@@ -310632,6 +312371,19 @@
     "format": "safetensors",
     "source_url": "https://huggingface.co/tistak/dippy_fIHkXaWz2JRbetOc",
     "created_at": "2024-09-04T15:28:18Z"
+  },
+  {
+    "purl": "pkg:huggingface/titan087/LHK_DPO_v1-GPTQ-4bit",
+    "name": "LHK_DPO_v1",
+    "organization": "titan087",
+    "architecture": "MixtralForCausalLM",
+    "architecture_family": "llama",
+    "license": "MIT",
+    "format": "safetensors",
+    "quantization": "gptq",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/titan087/LHK_DPO_v1-GPTQ-4bit",
+    "created_at": "2024-03-01T07:21:35Z"
   },
   {
     "purl": "pkg:huggingface/tiyupi-ece/TUP-Manila-ECE-Bot",
@@ -319348,6 +321100,21 @@
     "created_at": "2025-10-21T17:44:04Z"
   },
   {
+    "purl": "pkg:huggingface/unsloth/Qwen3-VL-2B-Thinking-FP8",
+    "name": "Qwen3-VL-2B-Thinking",
+    "organization": "unsloth",
+    "architecture": "Qwen3VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 2438782976,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "fp8",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-2B-Thinking-FP8",
+    "source_url": "https://huggingface.co/unsloth/Qwen3-VL-2B-Thinking-FP8",
+    "created_at": "2025-11-24T10:24:20Z"
+  },
+  {
     "purl": "pkg:huggingface/unsloth/Qwen3-VL-2B-Thinking-bnb-4bit",
     "name": "Qwen3-VL-2B-Thinking",
     "organization": "unsloth",
@@ -319477,6 +321244,21 @@
     "created_at": "2025-10-30T21:38:51Z"
   },
   {
+    "purl": "pkg:huggingface/unsloth/Qwen3-VL-4B-Thinking-bnb-4bit",
+    "name": "Qwen3-VL-4B-Thinking",
+    "organization": "unsloth",
+    "architecture": "Qwen3VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 2678262139,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "quantization": "bitsandbytes",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-4B-Thinking",
+    "source_url": "https://huggingface.co/unsloth/Qwen3-VL-4B-Thinking-bnb-4bit",
+    "created_at": "2025-10-14T10:19:03Z"
+  },
+  {
     "purl": "pkg:huggingface/unsloth/Qwen3-VL-4B-Thinking-unsloth-bnb-4bit",
     "name": "Qwen3-VL-4B-Thinking-unsloth",
     "organization": "unsloth",
@@ -319549,6 +321331,20 @@
     "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-8B-Instruct",
     "source_url": "https://huggingface.co/unsloth/Qwen3-VL-8B-Instruct-unsloth-bnb-4bit",
     "created_at": "2025-10-14T10:09:20Z"
+  },
+  {
+    "purl": "pkg:huggingface/unsloth/Qwen3-VL-8B-Thinking",
+    "name": "Qwen3-VL-8B-Thinking",
+    "organization": "unsloth",
+    "architecture": "Qwen3VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 8767123696,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/Qwen/Qwen3-VL-8B-Thinking",
+    "source_url": "https://huggingface.co/unsloth/Qwen3-VL-8B-Thinking",
+    "created_at": "2025-10-14T10:21:33Z"
   },
   {
     "purl": "pkg:huggingface/unsloth/Qwen3-VL-8B-Thinking-FP8",
@@ -320737,6 +322533,20 @@
     "base_model_purl": "pkg:huggingface/google/gemma-3-1b-it",
     "source_url": "https://huggingface.co/unsloth/gemma-3-1b-it-unsloth-bnb-4bit",
     "created_at": "2025-03-13T10:56:10Z"
+  },
+  {
+    "purl": "pkg:huggingface/unsloth/gemma-3-1b-pt",
+    "name": "gemma-3-1b-pt",
+    "organization": "unsloth",
+    "architecture": "Gemma3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 999885952,
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-3-1b-pt",
+    "source_url": "https://huggingface.co/unsloth/gemma-3-1b-pt",
+    "created_at": "2025-03-12T07:06:37Z"
   },
   {
     "purl": "pkg:huggingface/unsloth/gemma-3-1b-pt-bnb-4bit",
@@ -324988,6 +326798,20 @@
     "created_at": "2023-09-19T22:37:47Z"
   },
   {
+    "purl": "pkg:huggingface/vi-c0de/gemmaiku-3-1b-it-experimental",
+    "name": "gemmaiku-3-1b-it-experimental",
+    "organization": "vi-c0de",
+    "architecture": "Gemma3ForCausalLM",
+    "architecture_family": "llama",
+    "parameter_count": 999885952,
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-3-1b-it",
+    "source_url": "https://huggingface.co/vi-c0de/gemmaiku-3-1b-it-experimental",
+    "created_at": "2026-06-17T10:09:07Z"
+  },
+  {
     "purl": "pkg:huggingface/vi-c0de/gemmaiku-3-270m-it-experimental",
     "name": "gemmaiku-3-270m-it-experimental",
     "organization": "vi-c0de",
@@ -326335,6 +328159,7 @@
     "purl": "pkg:huggingface/vitax10/mistral_erotic",
     "name": "mistral_erotic",
     "organization": "vitax10",
+    "architecture": "MistralForCausalLM",
     "architecture_family": "llama",
     "format": "safetensors",
     "source_url": "https://huggingface.co/vitax10/mistral_erotic",
@@ -326668,6 +328493,20 @@
     "task": "text-classification",
     "source_url": "https://huggingface.co/vraj33/ai-text-detector-deberta",
     "created_at": "2026-01-02T11:25:16Z"
+  },
+  {
+    "purl": "pkg:huggingface/vrashad/az-legal-retrieval-xlm",
+    "name": "az-legal-retrieval-xlm",
+    "organization": "vrashad",
+    "architecture": "XLMRobertaModel",
+    "architecture_family": "bert",
+    "parameter_count": 278043648,
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "sentence-similarity",
+    "base_model_purl": "pkg:huggingface/xlm-roberta-base",
+    "source_url": "https://huggingface.co/vrashad/az-legal-retrieval-xlm",
+    "created_at": "2026-03-05T16:16:41Z"
   },
   {
     "purl": "pkg:huggingface/vrathi101/moe-mergekit-v0-llama8binstructv3",
@@ -328354,6 +330193,20 @@
     "base_model_purl": "pkg:huggingface/google/gemma-3-4b-it",
     "source_url": "https://huggingface.co/waynehwang/multimodal_sport_gemma3",
     "created_at": "2026-06-23T00:27:20Z"
+  },
+  {
+    "purl": "pkg:huggingface/wazimondo/Gemma-4-12B-OBLITERATED",
+    "name": "Gemma-4-12B-OBLITERATED",
+    "organization": "wazimondo",
+    "architecture": "Gemma4UnifiedForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 11959730224,
+    "license": "LicenseRef-Gemma",
+    "format": "safetensors",
+    "task": "text-generation",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-12B-it",
+    "source_url": "https://huggingface.co/wazimondo/Gemma-4-12B-OBLITERATED",
+    "created_at": "2026-06-10T11:32:42Z"
   },
   {
     "purl": "pkg:huggingface/wazimondo/Qwen3-Uncensored-TextEncoders-FLUX-Klein-Z-Image-Turbo-GGUF",
@@ -331639,6 +333492,18 @@
     "created_at": "2026-06-22T12:01:04Z"
   },
   {
+    "purl": "pkg:huggingface/xxx777xxxASD/PrimaMonarch-EroSumika-2x10.7B-128k",
+    "name": "PrimaMonarch-EroSumika-2x10.7B-128k",
+    "organization": "xxx777xxxASD",
+    "architecture": "MixtralForCausalLM",
+    "architecture_family": "llama",
+    "license": "Apache-2.0",
+    "format": "safetensors",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/xxx777xxxASD/PrimaMonarch-EroSumika-2x10.7B-128k",
+    "created_at": "2024-03-16T20:05:20Z"
+  },
+  {
     "purl": "pkg:huggingface/xy4286/yang-model",
     "name": "yang-model",
     "organization": "xy4286",
@@ -332655,6 +334520,32 @@
     "task": "text-generation",
     "source_url": "https://huggingface.co/yejingfu/Meta-Llama-3.1-8B-Instruct-FP8-128K",
     "created_at": "2024-08-27T07:59:30Z"
+  },
+  {
+    "purl": "pkg:huggingface/yejunliang23/ShapeLLM-7B-omni",
+    "name": "ShapeLLM-7B-omni",
+    "organization": "yejunliang23",
+    "architecture": "Qwen2_5_VLForConditionalGeneration",
+    "architecture_family": "llama",
+    "parameter_count": 8348134400,
+    "license": "MIT",
+    "format": "safetensors",
+    "task": "image-to-3d",
+    "source_url": "https://huggingface.co/yejunliang23/ShapeLLM-7B-omni",
+    "created_at": "2025-05-28T13:37:11Z"
+  },
+  {
+    "purl": "pkg:huggingface/yemmygold/Gemma-4-E4B-Uncensored-HauhauCS-Aggressive",
+    "name": "Gemma-4-E4B-Uncensored-HauhauCS-Aggressive",
+    "organization": "yemmygold",
+    "architecture": "gemma4",
+    "license": "LicenseRef-Gemma",
+    "format": "gguf",
+    "quantization": "MOSTLY_IQ3_M",
+    "task": "image-text-to-text",
+    "base_model_purl": "pkg:huggingface/google/gemma-4-e4b-it",
+    "source_url": "https://huggingface.co/yemmygold/Gemma-4-E4B-Uncensored-HauhauCS-Aggressive",
+    "created_at": "2026-04-22T01:46:20Z"
   },
   {
     "purl": "pkg:huggingface/yeniceriSGK/Falcon-PiBrain-V1",
@@ -338049,6 +339940,18 @@
     "task": "text-classification",
     "source_url": "https://huggingface.co/zhayunduo/roberta-base-stocktwits-finetuned",
     "created_at": "2022-04-02T13:48:34Z"
+  },
+  {
+    "purl": "pkg:huggingface/zhengchenphd/Mistral-Plus-7B",
+    "name": "Mistral-Plus-7B",
+    "organization": "zhengchenphd",
+    "architecture": "MistralForCausalLM",
+    "architecture_family": "llama",
+    "license": "Apache-2.0",
+    "format": "pytorch",
+    "task": "text-generation",
+    "source_url": "https://huggingface.co/zhengchenphd/Mistral-Plus-7B",
+    "created_at": "2024-03-04T20:55:59Z"
   },
   {
     "purl": "pkg:huggingface/zhenqingli/gemma-2-2b-it-homedepot",
