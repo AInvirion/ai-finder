@@ -98,6 +98,13 @@ class ModelEnrichment:
     task: str | None = None
     base_model_purl: str | None = None
     datasets: list[str] | None = None
+    # Every purl claiming the looked-up file hash, oldest registration first,
+    # when there was more than one; None for an unambiguous hit. ``purl`` above
+    # is always the first entry — the earliest-registered candidate, asserted
+    # as the presumed original. Callers that want to disclose the ambiguity
+    # (identify's JSON output does) read this; callers that just want the
+    # best-effort answer keep reading ``purl``.
+    candidate_purls: list[str] | None = None
 
 
 @dataclass
@@ -152,11 +159,64 @@ class KBEnricher:
         cache[key] = value
 
     def __enter__(self) -> KBEnricher:
-        """Open database connection."""
+        """Open database connection, migrating the KB forward first if needed.
+
+        scan and identify open the enricher directly — they never pass through
+        ``KnowledgeBase`` — so this is the only place their database can be
+        brought up to the current schema. Without it, an existing pre-v4 KB
+        keeps its old schema forever under new code, the hash lookup's SELECT
+        fails on the missing ``repo_created_at`` column, and identification
+        silently degrades to filename matching (review finding). initialize()
+        is idempotent: an up-to-date database is a version check and nothing
+        else. Migration failure must not take enrichment down with it — the
+        old-schema connection still serves every pre-v4 query — so it is
+        logged, not raised.
+        """
         if self.db_path and self.db_path.exists():
+            # Migrate before opening the connection this class reads through,
+            # so every later query sees the finished schema on one connection
+            # rather than depending on cross-connection visibility.
+            if self._looks_like_knowledge_base():
+                try:
+                    from ai_finder_kb.database import Database
+
+                    with Database(self.db_path) as kb_db:
+                        kb_db.initialize()
+                except Exception as e:
+                    logger.warning("KB schema migration failed; continuing as-is: %s", e)
             self._conn = sqlite3.connect(self.db_path)
             self._conn.row_factory = sqlite3.Row
         return self
+
+    def _looks_like_knowledge_base(self) -> bool:
+        """True when ``db_path`` is actually a KB, not some other database.
+
+        The migration writes — it creates tables and stamps a version — so it
+        must never run against a file that merely happens to sit at the given
+        path. ``--kb-path`` aimed at the wrong database used to be a read-only
+        mistake; unguarded, migration-on-open silently rewrites that file with
+        the full KB schema (review finding). Enrichment only ever reads
+        ``models`` and ``model_files``, so the presence of ``models`` is both
+        what makes migrating meaningful and what makes it safe.
+
+        Uses its own short-lived connection: probing through ``self._conn``
+        would mean opening it before the migration runs.
+        """
+        if not self.db_path:
+            return False
+        try:
+            with contextlib.closing(sqlite3.connect(self.db_path)) as probe:
+                return (
+                    probe.execute(
+                        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'models'"
+                    ).fetchone()
+                    is not None
+                )
+        except sqlite3.Error as e:
+            # Not a readable sqlite database at all. Enrichment's own queries
+            # fail the same way and are already handled as a lookup miss.
+            logger.debug("KB probe failed: %s", e)
+            return False
 
     def __exit__(self, *args) -> None:
         """Close database connection."""
@@ -200,15 +260,16 @@ class KBEnricher:
                 FROM model_files f JOIN models m ON m.id = f.model_id
                 WHERE f.h = ?
                 GROUP BY m.purl
-                ORDER BY m.purl
-                LIMIT 2
+                ORDER BY (m.repo_created_at IS NULL), m.repo_created_at, m.purl
                 """,
                 (blob,),
             )
             rows = cursor.fetchall()
         except sqlite3.Error as e:
-            # A pre-v3 KB has no model_files table. Not an error: the caller falls
-            # back to filename matching.
+            # A pre-v3 KB has no model_files table, and a pre-v4 one has no
+            # repo_created_at column. Not an error: the caller falls back to
+            # filename matching. (An up-to-date client never hits the v4 case:
+            # Database.initialize migrates its own KB on open.)
             logger.debug("Model hash lookup failed: %s", e)
             return None
 
@@ -217,9 +278,17 @@ class KBEnricher:
             self._cache_set(self._model_cache, cache_key, None)
             return None
 
-        # LIMIT 2 is enough to tell "one purl" from "more than one" without
-        # dragging back every mirror. The first row wins; ORDER BY purl makes that
-        # deterministic so repeated scans of the same file agree.
+        # A hash claimed by several models cannot be resolved by content alone —
+        # a base model and its quantization legitimately share the shards
+        # quantization left untouched. Policy: assert the EARLIEST-REGISTERED
+        # repo (the presumed original that was later forked or re-uploaded) and
+        # carry the full candidate list for disclosure. The ORDER BY does the
+        # pick: dated candidates before undated (a known registration beats an
+        # unknown one), then oldest first — safe as a string comparison because
+        # the seed only ships the canonical whole-second UTC form — then purl
+        # for determinism on ties. Exact identification through quantization or
+        # conversion is fingerprint territory, structurally beyond a hash
+        # lookup.
         row = rows[0]
         datasets = None
         if row["datasets"]:
@@ -242,6 +311,7 @@ class KBEnricher:
             task=row["task"],
             base_model_purl=row["base_model_purl"],
             datasets=datasets,
+            candidate_purls=[r["purl"] for r in rows] if len(rows) > 1 else None,
         )
         self._cache_set(self._model_cache, cache_key, result)
         return result

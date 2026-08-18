@@ -1,5 +1,15 @@
 -- SCANOSS AI Knowledge Base Schema v1
 
+-- One transaction, deliberately. executescript() runs each statement in its own
+-- implicit transaction, so a crash partway through this file used to leave a
+-- database with some tables and no schema_version stamp. That shape is
+-- indistinguishable from a legacy pre-stamp install, and guessing wrong about
+-- it means replaying ALTER-based migrations against columns this file already
+-- created — which fails with "duplicate column name" on every subsequent open.
+-- Wrapped, a fresh initialize is all-or-nothing: either a complete stamped
+-- schema or an untouched file the next open initializes cleanly.
+BEGIN;
+
 -- Schema version tracking
 CREATE TABLE IF NOT EXISTS schema_version (
     version INTEGER PRIMARY KEY,
@@ -39,6 +49,12 @@ CREATE TABLE IF NOT EXISTS models (
     base_model_purl TEXT,         -- Fine-tuned from
     datasets TEXT,                -- JSON array of dataset names
     source TEXT DEFAULT 'crawled',  -- seed, crawled, user
+    -- HF repo registration date from the seed (provenance.created_at in the
+    -- corpus; 'created_at' in models.json). Deliberately NOT named created_at:
+    -- that column below is this row's insertion audit stamp, and reusing the
+    -- name would compare registration dates against row-insertion times in the
+    -- oldest-candidate pick. Canonical whole-second UTC ('...Z') or NULL.
+    repo_created_at TEXT,
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now'))
 );
@@ -135,8 +151,10 @@ CREATE TABLE IF NOT EXISTS sync_state (
 );
 
 -- Insert initial schema version
-INSERT OR IGNORE INTO schema_version (version) VALUES (3);
+INSERT OR IGNORE INTO schema_version (version) VALUES (4);
 
 -- Initialize KB sync state
 INSERT OR IGNORE INTO sync_state (key, value) VALUES ('kb_version', '0');
 INSERT OR IGNORE INTO sync_state (key, value) VALUES ('kb_last_sync', NULL);
+
+COMMIT;
