@@ -5,8 +5,9 @@ from __future__ import annotations
 import hashlib
 import logging
 import time
+from collections.abc import Callable
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 from .detectors import (
     AgentDetector,
