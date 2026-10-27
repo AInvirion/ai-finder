@@ -238,10 +238,12 @@ def _spdx(value: Any) -> str | None:
     if isinstance(value, dict):
         return _spdx(value.get("type") or value.get("id") or value.get("name"))
     if isinstance(value, list):
-        for item in value:
-            found = _spdx(item)
-            if found:
-                return found
+        # Every entry, not the first: RubyGems writes ["MIT", "Apache-2.0"] for
+        # a dual-licensed gem, and returning "MIT" alone both loses half the
+        # answer and reports a licence change against a committed
+        # "MIT OR Apache-2.0".
+        found = [text for text in (_spdx(item) for item in value) if text]
+        return " OR ".join(dict.fromkeys(found)) or None
     return None
 
 
@@ -315,11 +317,14 @@ def _pypi(name: str, fetch: FetchJson) -> RegistryFacts:
 # seed says "Apache-2.0". Reporting that as a licence change would bury the real
 # ones in 40 lines of noise and, worse, would write the vaguer name into the
 # seed, so classifiers are translated rather than copied.
+# "License :: OSI Approved :: BSD License" is deliberately absent: it does not
+# say which BSD, and guessing BSD-3-Clause would overwrite a correctly committed
+# BSD-2-Clause. Left untranslated, it fails is_spdx_like and the committed
+# identifier stands.
 _TROVE_TO_SPDX = {
     "Apache Software License": "Apache-2.0",
     "MIT License": "MIT",
     "MIT No Attribution License (MIT-0)": "MIT-0",
-    "BSD License": "BSD-3-Clause",
     "GNU General Public License v2 (GPLv2)": "GPL-2.0-only",
     "GNU General Public License v3 (GPLv3)": "GPL-3.0-only",
     "GNU Lesser General Public License v2 (LGPLv2)": "LGPL-2.0-only",
@@ -366,10 +371,16 @@ def _cargo(name: str, fetch: FetchJson) -> RegistryFacts:
         return RegistryFacts(error=str(body))
     crate = body.get("crate") or {}
     versions = body.get("versions") or []
+    chosen = crate.get("max_stable_version") or crate.get("max_version")
+    # The licence and yanked flag must come from the version actually reported.
+    # versions[] is newest first, so versions[0] is a prerelease whenever one
+    # exists, and reading it would pair the stable version number with a
+    # prerelease's licence.
+    release = next((v for v in versions if v.get("num") == chosen), None)
     return RegistryFacts(
-        version=crate.get("max_stable_version") or crate.get("max_version"),
-        license=_spdx(versions[0].get("license")) if versions else None,
-        deprecated=bool(versions and versions[0].get("yanked")),
+        version=chosen,
+        license=_spdx(release.get("license")) if release else None,
+        deprecated=bool(release and release.get("yanked")),
         repository=_github_repo(crate.get("repository")),
         downloads=crate.get("downloads") if isinstance(crate.get("downloads"), int) else None,
     )
@@ -451,8 +462,18 @@ def _maven(name: str, fetch: FetchJson) -> RegistryFacts:
     return RegistryFacts(version=docs[0].get("latestVersion"))
 
 
+def _escape_go_module(name: str) -> str:
+    """Go proxy escaping: an upper-case letter becomes ``!`` plus its lower case.
+
+    Module paths are case-sensitive and the proxy requires this encoding, so
+    lower-casing the path asks for a module that does not exist and gets a 404
+    for a package that is perfectly alive.
+    """
+    return "".join(f"!{c.lower()}" if c.isupper() else c for c in name)
+
+
 def _golang(name: str, fetch: FetchJson) -> RegistryFacts:
-    status, body = fetch(f"https://proxy.golang.org/{name.lower()}/@latest")
+    status, body = fetch(f"https://proxy.golang.org/{_escape_go_module(name)}/@latest")
     if status == 404:
         return RegistryFacts(exists=False)
     if status != 200 or not isinstance(body, dict):

@@ -71,12 +71,17 @@ def _module_literal(path: Path, name: str | None = None) -> list[str]:
     tree = ast.parse(path.read_text(), filename=str(path))
     found: dict[str, ast.AST] = {}
     for node in tree.body:
-        if not isinstance(node, ast.Assign) or len(node.targets) != 1:
+        # AnnAssign as well as Assign: `AI_PACKAGES: frozenset[str] = frozenset(...)`
+        # is a different node type, and reading only Assign would report the
+        # list as absent the day someone adds the annotation.
+        if isinstance(node, ast.AnnAssign):
+            target, value = node.target, node.value
+        elif isinstance(node, ast.Assign) and len(node.targets) == 1:
+            target, value = node.targets[0], node.value
+        else:
             continue
-        target = node.targets[0]
-        if not isinstance(target, ast.Name):
+        if not isinstance(target, ast.Name) or value is None:
             continue
-        value = node.value
         if isinstance(value, ast.Call) and getattr(value.func, "id", None) == "frozenset":
             found[target.id] = value.args[0] if value.args else ast.Set(elts=[])
         elif isinstance(value, (ast.List, ast.Set, ast.Tuple)):

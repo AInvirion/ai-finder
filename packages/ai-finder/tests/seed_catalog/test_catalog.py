@@ -353,3 +353,39 @@ def test_cargos_slash_form_is_read_as_an_spdx_or():
 def test_a_non_spdx_answer_is_still_used_when_nothing_better_is_committed():
     entry = verify(sdk("thing", "pkg:cargo/thing"), RegistryFacts(license="Apache 2.0"), None)
     assert entry.license == "Apache 2.0"
+
+
+def test_a_full_ecosystem_does_not_cut_a_committed_package_whose_lookup_failed():
+    """The rule "an unverifiable package keeps its committed row" must hold at the limit.
+
+    An unranked entry sorts after every ranked one, so without this the first
+    timeout in a full ecosystem drops a package that has shipped for months.
+    """
+    ranked = [
+        verify(sdk(f"py{i}", f"pkg:pypi/py{i}"), RegistryFacts(downloads=100 - i), None)
+        for i in range(2)
+    ]
+    stranded = verify(
+        sdk("committed", "pkg:pypi/committed"),
+        RegistryFacts(error="TimeoutError"),
+        previous={"id": "committed", "license": "MIT"},
+    )
+    kept, cut = select([*ranked, stranded], limit=2)
+    assert "committed" in [e.candidate.id for e in kept]
+    assert "committed" not in [e.candidate.id for e in cut]
+    assert sorted(e.candidate.id for e in kept) == ["committed", "py0", "py1"]
+
+
+def test_a_new_candidate_whose_lookup_failed_is_still_subject_to_the_limit():
+    """The negative control: only an already-shipped row holds its place.
+
+    A brand new candidate that could not be checked has no committed row to
+    protect, so letting it bypass the limit would make the limit optional.
+    """
+    ranked = [
+        verify(sdk(f"py{i}", f"pkg:pypi/py{i}"), RegistryFacts(downloads=100 - i), None)
+        for i in range(2)
+    ]
+    newcomer = verify(sdk("newcomer", "pkg:pypi/newcomer"), RegistryFacts(error="Timeout"), None)
+    kept, cut = select([*ranked, newcomer], limit=2)
+    assert [e.candidate.id for e in cut] == ["newcomer"]

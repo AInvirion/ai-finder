@@ -89,11 +89,24 @@ class Verified:
     rank_value: int | None = None
     rank_basis: str = "curated order"
     notes: list[str] = field(default_factory=list)
+    was_committed: bool = False
 
     @property
     def gone(self) -> bool:
         """The registry answered and does not have this package."""
         return self.facts.usable and not self.facts.exists
+
+    @property
+    def holds_its_place(self) -> bool:
+        """An already-shipped row whose lookup failed, which the limit may not cut.
+
+        Without this the rule "an unverifiable package keeps its committed row"
+        holds only until an ecosystem fills its quota. An unranked entry sorts
+        after every ranked one, so the first timeout at a full limit would drop
+        a package that has been shipping for months — the exact silent
+        shrinkage the error/absence distinction exists to prevent.
+        """
+        return self.was_committed and not self.facts.usable
 
 
 def load_candidates(path: Path = CANDIDATES_PATH) -> tuple[list[Candidate], int]:
@@ -204,8 +217,11 @@ def select(entries: list[Verified], limit: int) -> tuple[list[Verified], list[Ve
 
     for group in by_group.values():
         group.sort(key=rank_key)
-        kept.extend(group[:limit])
-        cut.extend(group[limit:])
+        held = [e for e in group if e.holds_its_place]
+        rankable = [e for e in group if not e.holds_its_place]
+        kept.extend(held)
+        kept.extend(rankable[:limit])
+        cut.extend(rankable[limit:])
     return kept, cut
 
 
@@ -242,7 +258,7 @@ def verify(
     star_count: int | None = None,
 ) -> Verified:
     """Combine a candidate with its registry answer into a ranked, annotated row."""
-    entry = Verified(candidate=candidate, facts=facts)
+    entry = Verified(candidate=candidate, facts=facts, was_committed=previous is not None)
     previous_license = (previous or {}).get("license")
 
     if not facts.usable:

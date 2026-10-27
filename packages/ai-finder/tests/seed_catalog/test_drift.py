@@ -155,3 +155,11 @@ def test_every_real_manifest_literal_parses():
         path = MANIFESTS_DIR / name
         if path.exists():
             assert _module_literal(path), f"{name} parsed to an empty list"
+
+
+def test_an_annotated_assignment_is_still_read(tmp_path):
+    """`AI_PACKAGES: frozenset[str] = frozenset(...)` is an AnnAssign, not an Assign."""
+    (tmp_path / "annotated.py").write_text(
+        'AI_PACKAGES: frozenset[str] = frozenset({"openai", "anthropic"})\n'
+    )
+    assert sorted(_module_literal(tmp_path / "annotated.py")) == ["anthropic", "openai"]

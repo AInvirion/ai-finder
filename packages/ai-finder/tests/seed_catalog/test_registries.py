@@ -282,3 +282,79 @@ def test_github_repo_is_recognised_in_every_url_shape_registries_use(url, expect
     from scripts.seed_catalog.registries import _github_repo
 
     assert _github_repo(url) == expected
+
+
+# -------------------------------------------------------------------------------------------
+# found by review; each of these shipped wrong before the fix
+# -------------------------------------------------------------------------------------------
+
+
+def test_a_dual_licensed_gem_keeps_both_licences():
+    """RubyGems writes ["MIT", "Apache-2.0"]; taking the first loses half the answer."""
+    facts = lookup(
+        "pkg:gem/thing",
+        fake({"rubygems.org": (200, {"version": "1.0", "licenses": ["MIT", "Apache-2.0"]})}),
+    )
+    assert facts.license == "MIT OR Apache-2.0"
+
+
+def test_cargo_reads_the_licence_of_the_version_it_reports():
+    """versions[] is newest first, so versions[0] is a prerelease when one exists."""
+    facts = lookup(
+        "pkg:cargo/thing",
+        fake(
+            {
+                "crates.io": (
+                    200,
+                    {
+                        "crate": {"max_stable_version": "1.0.0", "downloads": 10},
+                        "versions": [
+                            {"num": "2.0.0-alpha.1", "license": "GPL-3.0-only", "yanked": True},
+                            {"num": "1.0.0", "license": "MIT", "yanked": False},
+                        ],
+                    },
+                )
+            }
+        ),
+    )
+    assert facts.version == "1.0.0"
+    assert facts.license == "MIT", "the prerelease's licence must not be attached to 1.0.0"
+    assert facts.deprecated is False
+
+
+def test_a_go_module_with_capitals_is_escaped_not_lowercased():
+    """proxy.golang.org is case-sensitive: lower-casing 404s a live module."""
+    seen = []
+
+    def fetch(url):
+        seen.append(url)
+        return 200, {"Version": "v1.2.3"}
+
+    lookup("pkg:golang/github.com/Azure/azure-sdk-for-go", fetch)
+    assert "github.com/!azure/azure-sdk-for-go" in seen[0]
+    assert "/azure/" not in seen[0]
+
+
+def test_the_ambiguous_bsd_classifier_is_not_resolved_to_a_specific_bsd():
+    """ "BSD License" does not say which BSD; guessing could overwrite BSD-2-Clause."""
+    from scripts.seed_catalog.registries import is_spdx_like
+
+    facts = lookup(
+        "pkg:pypi/thing",
+        fake(
+            {
+                "pypi.org": (
+                    200,
+                    {
+                        "info": {
+                            "version": "1.0",
+                            "classifiers": ["License :: OSI Approved :: BSD License"],
+                        },
+                        "urls": [],
+                    },
+                )
+            }
+        ),
+    )
+    assert facts.license == "BSD License"
+    assert not is_spdx_like(facts.license), "so a committed BSD-2-Clause survives"
