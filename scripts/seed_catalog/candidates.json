@@ -1,0 +1,1952 @@
+{
+  "about": "Curated candidate pool for the AI Finder seed. Entries are added and removed by hand; scripts/seed_catalog/refresh.py verifies each one against its registry on every run and ranks it within its own ecosystem. Nothing here is discovered automatically, because these rows decide what appears in a customer's AI bill of materials.",
+  "per_ecosystem_limit": 50,
+  "entries": [
+    {
+      "id": "mcp-everything",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-everything",
+      "patterns": [
+        "@modelcontextprotocol/server-everything"
+      ],
+      "description": "MCP reference server exercising every protocol feature",
+      "priority": 11
+    },
+    {
+      "id": "mcp-fetch",
+      "kind": "mcp_server",
+      "purl": "pkg:pypi/mcp-server-fetch",
+      "patterns": [
+        "mcp-server-fetch"
+      ],
+      "description": "MCP server for fetching and converting web content",
+      "priority": 19
+    },
+    {
+      "id": "mcp-filesystem",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-filesystem",
+      "patterns": [
+        "@modelcontextprotocol/server-filesystem"
+      ],
+      "description": "MCP server for filesystem access",
+      "priority": 10
+    },
+    {
+      "id": "mcp-git",
+      "kind": "mcp_server",
+      "purl": "pkg:pypi/mcp-server-git",
+      "patterns": [
+        "mcp-server-git"
+      ],
+      "description": "MCP server for reading and searching Git repositories",
+      "priority": 20
+    },
+    {
+      "id": "mcp-github",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-github",
+      "patterns": [
+        "@modelcontextprotocol/server-github"
+      ],
+      "description": "MCP server for GitHub integration",
+      "priority": 14
+    },
+    {
+      "id": "mcp-inspector",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/inspector",
+      "patterns": [
+        "@modelcontextprotocol/inspector"
+      ],
+      "description": "MCP developer inspector and test harness",
+      "priority": 17
+    },
+    {
+      "id": "mcp-memory",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-memory",
+      "patterns": [
+        "@modelcontextprotocol/server-memory"
+      ],
+      "description": "MCP server providing a knowledge-graph memory",
+      "priority": 12
+    },
+    {
+      "id": "mcp-pdf",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-pdf",
+      "patterns": [
+        "@modelcontextprotocol/server-pdf"
+      ],
+      "description": "MCP server for extracting text from PDF files",
+      "priority": 13
+    },
+    {
+      "id": "mcp-postgres",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-postgres",
+      "patterns": [
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "description": "MCP server for PostgreSQL database access",
+      "priority": 15
+    },
+    {
+      "id": "mcp-sentry",
+      "kind": "mcp_server",
+      "purl": "pkg:pypi/mcp-server-sentry",
+      "patterns": [
+        "mcp-server-sentry"
+      ],
+      "description": "MCP server for retrieving issues from Sentry",
+      "priority": 22
+    },
+    {
+      "id": "mcp-slack",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-slack",
+      "patterns": [
+        "@modelcontextprotocol/server-slack"
+      ],
+      "description": "MCP server for Slack integration",
+      "priority": 16
+    },
+    {
+      "id": "mcp-sqlite-python",
+      "kind": "mcp_server",
+      "purl": "pkg:pypi/mcp-server-sqlite",
+      "patterns": [
+        "mcp-server-sqlite"
+      ],
+      "description": "MCP server for SQLite database access",
+      "priority": 21
+    },
+    {
+      "id": "mcp-time",
+      "kind": "mcp_server",
+      "purl": "pkg:pypi/mcp-server-time",
+      "patterns": [
+        "mcp-server-time"
+      ],
+      "description": "MCP server for time and timezone conversion",
+      "priority": 18
+    },
+    {
+      "id": "accelerate",
+      "kind": "sdk",
+      "purl": "pkg:pypi/accelerate",
+      "patterns": [
+        "accelerate"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "ai-sdk-anthropic",
+      "kind": "sdk",
+      "purl": "pkg:npm/@ai-sdk/anthropic",
+      "patterns": [
+        "@ai-sdk/anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 50
+    },
+    {
+      "id": "ai-sdk-openai",
+      "kind": "sdk",
+      "purl": "pkg:npm/@ai-sdk/openai",
+      "patterns": [
+        "@ai-sdk/openai"
+      ],
+      "category": "llm-client",
+      "priority": 50
+    },
+    {
+      "id": "aiproxyguard-python-sdk",
+      "kind": "sdk",
+      "purl": "pkg:pypi/aiproxyguard-python-sdk",
+      "patterns": [
+        "aiproxyguard"
+      ],
+      "category": "ai-safety",
+      "priority": 100
+    },
+    {
+      "id": "anthropic",
+      "kind": "sdk",
+      "purl": "pkg:pypi/anthropic",
+      "patterns": [
+        "anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Anthropic",
+      "patterns": [
+        "Anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.anthropic/anthropic-sdk",
+      "patterns": [
+        "com.anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/anthropic/sdk",
+      "patterns": [
+        "Anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-ruby",
+      "kind": "sdk",
+      "purl": "pkg:gem/anthropic",
+      "patterns": [
+        "anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-sdk",
+      "kind": "sdk",
+      "purl": "pkg:npm/@anthropic-ai/sdk",
+      "patterns": [
+        "@anthropic-ai/sdk"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-sdk-go",
+      "kind": "sdk",
+      "purl": "pkg:golang/github.com/anthropics/anthropic-sdk-go",
+      "patterns": [
+        "github.com/anthropics/anthropic-sdk-go"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/anthropics/anthropic-swift",
+      "patterns": [
+        "Anthropic"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "async-openai",
+      "kind": "sdk",
+      "purl": "pkg:cargo/async-openai",
+      "patterns": [
+        "async_openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "autogen-agentchat",
+      "kind": "sdk",
+      "purl": "pkg:pypi/autogen-agentchat",
+      "patterns": [
+        "autogen_agentchat"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "azure-ai-openai",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Azure.AI.OpenAI",
+      "patterns": [
+        "Azure.AI",
+        "Azure.AI.OpenAI"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "bigdl",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.intel.analytics.bigdl/bigdl",
+      "patterns": [
+        "com.intel.analytics.bigdl"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "caffe",
+      "kind": "sdk",
+      "purl": "pkg:conan/caffe",
+      "patterns": [
+        "caffe",
+        "caffe2"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "candle",
+      "kind": "sdk",
+      "purl": "pkg:cargo/candle-core",
+      "patterns": [
+        "candle_core",
+        "candle_nn",
+        "candle_transformers"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "catboost-scala",
+      "kind": "sdk",
+      "purl": "pkg:maven/ai.catboost/catboost-spark",
+      "patterns": [
+        "ai.catboost"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "chromadb",
+      "kind": "sdk",
+      "purl": "pkg:pypi/chromadb",
+      "patterns": [
+        "chromadb"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "chromadb-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/chromadb",
+      "patterns": [
+        "chromadb"
+      ],
+      "category": "vector-database",
+      "priority": 50
+    },
+    {
+      "id": "cohere",
+      "kind": "sdk",
+      "purl": "pkg:pypi/cohere",
+      "patterns": [
+        "cohere"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "cohere-ai-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/cohere-ai",
+      "patterns": [
+        "cohere-ai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "cohere-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Cohere",
+      "patterns": [
+        "Cohere"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "cohere-go",
+      "kind": "sdk",
+      "purl": "pkg:golang/github.com/cohere-ai/cohere-go",
+      "patterns": [
+        "github.com/cohere-ai/cohere-go"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "cohere-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/io.cohere/cohere-kotlin",
+      "patterns": [
+        "io.cohere"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "cohere-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/cohere/cohere-php",
+      "patterns": [
+        "Cohere"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "cohere-ruby",
+      "kind": "sdk",
+      "purl": "pkg:gem/cohere-ruby",
+      "patterns": [
+        "cohere-ruby"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "coreml",
+      "kind": "sdk",
+      "purl": "pkg:swift/apple/coreml",
+      "patterns": [
+        "CoreML"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "createml",
+      "kind": "sdk",
+      "purl": "pkg:swift/apple/createml",
+      "patterns": [
+        "CreateML"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "crewai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/crewai",
+      "patterns": [
+        "crewai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "datasets",
+      "kind": "sdk",
+      "purl": "pkg:pypi/datasets",
+      "patterns": [
+        "datasets"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "deeplearning4j",
+      "kind": "sdk",
+      "purl": "pkg:maven/org.deeplearning4j/deeplearning4j-core",
+      "patterns": [
+        "org.deeplearning4j"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "djl",
+      "kind": "sdk",
+      "purl": "pkg:maven/ai.djl/api",
+      "patterns": [
+        "ai.djl"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "dlib",
+      "kind": "sdk",
+      "purl": "pkg:conan/dlib",
+      "patterns": [
+        "dlib"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "elevenlabs",
+      "kind": "sdk",
+      "purl": "pkg:pypi/elevenlabs",
+      "patterns": [
+        "elevenlabs"
+      ],
+      "category": "speech-audio",
+      "priority": 100
+    },
+    {
+      "id": "faiss-cpu",
+      "kind": "sdk",
+      "purl": "pkg:pypi/faiss-cpu",
+      "patterns": [
+        "faiss"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "faiss-gpu",
+      "kind": "sdk",
+      "purl": "pkg:pypi/faiss-gpu",
+      "patterns": [
+        "faiss"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "fastapi-mcp",
+      "kind": "sdk",
+      "purl": "pkg:pypi/fastapi-mcp",
+      "patterns": [
+        "fastapi_mcp"
+      ],
+      "category": "mcp",
+      "priority": 17
+    },
+    {
+      "id": "faster-whisper",
+      "kind": "sdk",
+      "purl": "pkg:pypi/faster-whisper",
+      "patterns": [
+        "faster_whisper"
+      ],
+      "category": "speech-audio",
+      "priority": 100
+    },
+    {
+      "id": "fastmcp",
+      "kind": "sdk",
+      "purl": "pkg:pypi/fastmcp",
+      "patterns": [
+        "fastmcp"
+      ],
+      "category": "mcp",
+      "priority": 16
+    },
+    {
+      "id": "ggml",
+      "kind": "sdk",
+      "purl": "pkg:github/ggerganov/ggml",
+      "patterns": [
+        "ggml"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "go-openai",
+      "kind": "sdk",
+      "purl": "pkg:golang/github.com/sashabaranov/go-openai",
+      "patterns": [
+        "github.com/sashabaranov/go-openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-ai-generativelanguage-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Google.Ai.Generativelanguage",
+      "patterns": [
+        "Google.Ai.Generativelanguage",
+        "Google.Cloud.AIPlatform"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-ai-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.google.ai/generativeai",
+      "patterns": [
+        "com.google.ai",
+        "com.google.mlkit"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-cloud-aiplatform-java",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.google.cloud/google-cloud-aiplatform",
+      "patterns": [
+        "com.google.cloud.aiplatform"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-generative-ai-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@google/generative-ai",
+      "patterns": [
+        "@google/generative-ai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-generative-ai-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/google/generative-ai-swift",
+      "patterns": [
+        "GoogleGenerativeAI"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-generativeai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/google-generativeai",
+      "patterns": [
+        "google.generativeai",
+        "google-generativeai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "google-generativeai-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/google/generative-ai",
+      "patterns": [
+        "Google\\GenerativeAI",
+        "Google\\Cloud\\AIPlatform"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "groq",
+      "kind": "sdk",
+      "purl": "pkg:pypi/groq",
+      "patterns": [
+        "groq"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "groq-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.groq/groq-kotlin",
+      "patterns": [
+        "com.groq"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "groq-sdk",
+      "kind": "sdk",
+      "purl": "pkg:npm/groq-sdk",
+      "patterns": [
+        "groq-sdk"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "guardrails-ai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/guardrails-ai",
+      "patterns": [
+        "guardrails"
+      ],
+      "category": "ai-safety",
+      "priority": 100
+    },
+    {
+      "id": "hugging-face-rb",
+      "kind": "sdk",
+      "purl": "pkg:gem/hugging-face",
+      "patterns": [
+        "hugging-face"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "huggingface-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/HuggingFace",
+      "patterns": [
+        "HuggingFace"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "huggingface-hub",
+      "kind": "sdk",
+      "purl": "pkg:pypi/huggingface-hub",
+      "patterns": [
+        "huggingface_hub"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "huggingface-hub-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@huggingface/hub",
+      "patterns": [
+        "@huggingface/hub"
+      ],
+      "category": "llm-client",
+      "priority": 50
+    },
+    {
+      "id": "huggingface-inference",
+      "kind": "sdk",
+      "purl": "pkg:npm/@huggingface/inference",
+      "patterns": [
+        "@huggingface/inference"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "huggingface-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.huggingface/transformers",
+      "patterns": [
+        "com.huggingface"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "huggingface-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/huggingface/transformers",
+      "patterns": [
+        "HuggingFace"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "keras",
+      "kind": "sdk",
+      "purl": "pkg:pypi/keras",
+      "patterns": [
+        "keras"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "lancedb",
+      "kind": "sdk",
+      "purl": "pkg:pypi/lancedb",
+      "patterns": [
+        "lancedb"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "langchain",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain",
+      "patterns": [
+        "langchain",
+        "langchain_core",
+        "langchain_openai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-anthropic",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-anthropic",
+      "patterns": [
+        "langchain_anthropic"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "langchain-anthropic-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@langchain/anthropic",
+      "patterns": [
+        "@langchain/anthropic"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "langchain-core",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-core",
+      "patterns": [
+        "langchain_core"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "langchain-core-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@langchain/core",
+      "patterns": [
+        "@langchain/core"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "langchain-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/LangChain",
+      "patterns": [
+        "LangChain"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/langchain",
+      "patterns": [
+        "langchain",
+        "@langchain/core",
+        "@langchain/openai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-mcp-adapters",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-mcp-adapters",
+      "patterns": [
+        "langchain_mcp_adapters"
+      ],
+      "category": "mcp",
+      "priority": 18
+    },
+    {
+      "id": "langchain-openai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-openai",
+      "patterns": [
+        "langchain_openai"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "langchain-openai-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@langchain/openai",
+      "patterns": [
+        "@langchain/openai"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "langchain-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/langchain/langchain",
+      "patterns": [
+        "LangChain"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/langchain-ai/langchain-swift",
+      "patterns": [
+        "LangChain"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain4j",
+      "kind": "sdk",
+      "purl": "pkg:maven/dev.langchain4j/langchain4j",
+      "patterns": [
+        "dev.langchain4j"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchaingo",
+      "kind": "sdk",
+      "purl": "pkg:golang/github.com/tmc/langchaingo",
+      "patterns": [
+        "github.com/tmc/langchaingo"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchainrb",
+      "kind": "sdk",
+      "purl": "pkg:gem/langchainrb",
+      "patterns": [
+        "langchain",
+        "langchainrb"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langsmith",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langsmith",
+      "patterns": [
+        "langsmith"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "libtorch",
+      "kind": "sdk",
+      "purl": "pkg:conan/libtorch",
+      "patterns": [
+        "torch",
+        "libtorch",
+        "ATen"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "llama-cpp",
+      "kind": "sdk",
+      "purl": "pkg:github/ggerganov/llama.cpp",
+      "patterns": [
+        "llama"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "llama-index",
+      "kind": "sdk",
+      "purl": "pkg:pypi/llama-index",
+      "patterns": [
+        "llama_index"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "llama-index-core",
+      "kind": "sdk",
+      "purl": "pkg:pypi/llama-index-core",
+      "patterns": [
+        "llama_index"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "llamaindex-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/llamaindex",
+      "patterns": [
+        "llamaindex"
+      ],
+      "category": "agent-framework",
+      "priority": 50
+    },
+    {
+      "id": "llm-guard",
+      "kind": "sdk",
+      "purl": "pkg:pypi/llm-guard",
+      "patterns": [
+        "llm_guard"
+      ],
+      "category": "ai-safety",
+      "priority": 100
+    },
+    {
+      "id": "llm-rs",
+      "kind": "sdk",
+      "purl": "pkg:cargo/llm",
+      "patterns": [
+        "llm",
+        "llm_chain"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "mcp-agent",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mcp-agent",
+      "patterns": [
+        "mcp_agent"
+      ],
+      "category": "mcp",
+      "priority": 20
+    },
+    {
+      "id": "mcp-client-typescript",
+      "kind": "sdk",
+      "purl": "pkg:npm/@modelcontextprotocol/client",
+      "patterns": [
+        "@modelcontextprotocol/client"
+      ],
+      "category": "mcp",
+      "priority": 13
+    },
+    {
+      "id": "mcp-core-typescript",
+      "kind": "sdk",
+      "purl": "pkg:npm/@modelcontextprotocol/core",
+      "patterns": [
+        "@modelcontextprotocol/core"
+      ],
+      "category": "mcp",
+      "priority": 11
+    },
+    {
+      "id": "mcp-node-typescript",
+      "kind": "sdk",
+      "purl": "pkg:npm/@modelcontextprotocol/node",
+      "patterns": [
+        "@modelcontextprotocol/node"
+      ],
+      "category": "mcp",
+      "priority": 14
+    },
+    {
+      "id": "mcp-proxy",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mcp-proxy",
+      "patterns": [
+        "mcp_proxy"
+      ],
+      "category": "mcp",
+      "priority": 21
+    },
+    {
+      "id": "mcp-python",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mcp",
+      "patterns": [
+        "mcp"
+      ],
+      "category": "mcp",
+      "priority": 15
+    },
+    {
+      "id": "mcp-sdk-typescript",
+      "kind": "sdk",
+      "purl": "pkg:npm/@modelcontextprotocol/sdk",
+      "patterns": [
+        "@modelcontextprotocol/sdk"
+      ],
+      "category": "mcp",
+      "priority": 10
+    },
+    {
+      "id": "mcp-server-typescript",
+      "kind": "sdk",
+      "purl": "pkg:npm/@modelcontextprotocol/server",
+      "patterns": [
+        "@modelcontextprotocol/server"
+      ],
+      "category": "mcp",
+      "priority": 12
+    },
+    {
+      "id": "mcp-use",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mcp-use",
+      "patterns": [
+        "mcp_use"
+      ],
+      "category": "mcp",
+      "priority": 19
+    },
+    {
+      "id": "microsoft-ml",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Microsoft.ML",
+      "patterns": [
+        "Microsoft.ML"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "mistralai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mistralai",
+      "patterns": [
+        "mistralai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "mistralai-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@mistralai/mistralai",
+      "patterns": [
+        "@mistralai/mistralai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "mleap",
+      "kind": "sdk",
+      "purl": "pkg:maven/ml.combust.mleap/mleap-runtime",
+      "patterns": [
+        "ml.combust.mleap"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "mlflow",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mlflow",
+      "patterns": [
+        "mlflow"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "mlkit-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/google/mlkit",
+      "patterns": [
+        "MLKit"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "mxnet-cpp",
+      "kind": "sdk",
+      "purl": "pkg:conan/mxnet",
+      "patterns": [
+        "mxnet"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "naturallanguage",
+      "kind": "sdk",
+      "purl": "pkg:swift/apple/naturallanguage",
+      "patterns": [
+        "NaturalLanguage"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "nemoguardrails",
+      "kind": "sdk",
+      "purl": "pkg:pypi/nemoguardrails",
+      "patterns": [
+        "nemoguardrails"
+      ],
+      "category": "ai-safety",
+      "priority": 100
+    },
+    {
+      "id": "ollama",
+      "kind": "sdk",
+      "purl": "pkg:pypi/ollama",
+      "patterns": [
+        "ollama"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "ollama-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/ollama-js",
+      "patterns": [
+        "ollama-js"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "onnx",
+      "kind": "sdk",
+      "purl": "pkg:pypi/onnx",
+      "patterns": [
+        "onnx"
+      ],
+      "category": "ml-runtime",
+      "priority": 50
+    },
+    {
+      "id": "onnx-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Microsoft.ML.OnnxRuntime",
+      "patterns": [
+        "ONNX"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "onnx-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/onnx/onnx-swift",
+      "patterns": [
+        "ONNX"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "onnxruntime",
+      "kind": "sdk",
+      "purl": "pkg:pypi/onnxruntime",
+      "patterns": [
+        "onnxruntime"
+      ],
+      "category": "ml-runtime",
+      "priority": 50
+    },
+    {
+      "id": "onnxruntime-cpp",
+      "kind": "sdk",
+      "purl": "pkg:conan/onnxruntime",
+      "patterns": [
+        "onnxruntime"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "onnxruntime-java",
+      "kind": "sdk",
+      "purl": "pkg:maven/ai.onnxruntime/onnxruntime",
+      "patterns": [
+        "ai.onnxruntime"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "onnxruntime-node",
+      "kind": "sdk",
+      "purl": "pkg:npm/onnxruntime-node",
+      "patterns": [
+        "onnxruntime-node"
+      ],
+      "category": "ml-runtime",
+      "priority": 50
+    },
+    {
+      "id": "onnxruntime-scala",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.microsoft.onnxruntime/onnxruntime",
+      "patterns": [
+        "com.microsoft.onnxruntime"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "onnxruntime-web",
+      "kind": "sdk",
+      "purl": "pkg:npm/onnxruntime-web",
+      "patterns": [
+        "onnxruntime-web"
+      ],
+      "category": "ml-runtime",
+      "priority": 50
+    },
+    {
+      "id": "openai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/openai",
+      "patterns": [
+        "openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-agents",
+      "kind": "sdk",
+      "purl": "pkg:pypi/openai-agents",
+      "patterns": [
+        "agents"
+      ],
+      "category": "agent-framework",
+      "priority": 20
+    },
+    {
+      "id": "openai-api-rs",
+      "kind": "sdk",
+      "purl": "pkg:cargo/openai_api",
+      "patterns": [
+        "openai_api"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/OpenAI",
+      "patterns": [
+        "OpenAI"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-java",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.theokanning.openai-gpt3-java/client",
+      "patterns": [
+        "com.theokanning.openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/openai",
+      "patterns": [
+        "openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.aallam.openai/openai-client",
+      "patterns": [
+        "com.openai",
+        "com.aallam.openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/openai-php/client",
+      "patterns": [
+        "OpenAI"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/macpaw/openai",
+      "patterns": [
+        "OpenAI",
+        "SwiftOpenAI"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "openai-whisper",
+      "kind": "sdk",
+      "purl": "pkg:pypi/openai-whisper",
+      "patterns": [
+        "whisper"
+      ],
+      "category": "speech-audio",
+      "priority": 100
+    },
+    {
+      "id": "opencv",
+      "kind": "sdk",
+      "purl": "pkg:conan/opencv",
+      "patterns": [
+        "opencv"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "ort",
+      "kind": "sdk",
+      "purl": "pkg:cargo/ort",
+      "patterns": [
+        "ort"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "pinecone",
+      "kind": "sdk",
+      "purl": "pkg:pypi/pinecone",
+      "patterns": [
+        "pinecone"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "pinecone-client",
+      "kind": "sdk",
+      "purl": "pkg:pypi/pinecone-client",
+      "patterns": [
+        "pinecone"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "pinecone-database-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@pinecone-database/pinecone",
+      "patterns": [
+        "@pinecone-database/pinecone"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "pyautogen",
+      "kind": "sdk",
+      "purl": "pkg:pypi/pyautogen",
+      "patterns": [
+        "pyautogen",
+        "autogen"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "pymilvus",
+      "kind": "sdk",
+      "purl": "pkg:pypi/pymilvus",
+      "patterns": [
+        "pymilvus"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "pytorch-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/org.pytorch/pytorch_android",
+      "patterns": [
+        "org.pytorch"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "pytorch-scala",
+      "kind": "sdk",
+      "purl": "pkg:maven/org.bytedeco/pytorch",
+      "patterns": [
+        "org.bytedeco.pytorch"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "qdrant-client",
+      "kind": "sdk",
+      "purl": "pkg:pypi/qdrant-client",
+      "patterns": [
+        "qdrant_client"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "qdrant-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@qdrant/js-client-rest",
+      "patterns": [
+        "@qdrant/js-client-rest",
+        "qdrant"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "replicate",
+      "kind": "sdk",
+      "purl": "pkg:pypi/replicate",
+      "patterns": [
+        "replicate"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Replicate",
+      "patterns": [
+        "Replicate"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-go",
+      "kind": "sdk",
+      "purl": "pkg:golang/github.com/replicate/replicate-go",
+      "patterns": [
+        "github.com/replicate/replicate-go"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/replicate",
+      "patterns": [
+        "replicate"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-kotlin",
+      "kind": "sdk",
+      "purl": "pkg:maven/io.replicate/replicate-kotlin",
+      "patterns": [
+        "io.replicate"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-php",
+      "kind": "sdk",
+      "purl": "pkg:composer/replicate/replicate-php",
+      "patterns": [
+        "Replicate"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-ruby",
+      "kind": "sdk",
+      "purl": "pkg:gem/replicate-ruby",
+      "patterns": [
+        "replicate-ruby"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "replicate-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/replicate/replicate-swift",
+      "patterns": [
+        "Replicate"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "ruby-openai",
+      "kind": "sdk",
+      "purl": "pkg:gem/ruby-openai",
+      "patterns": [
+        "ruby-openai",
+        "openai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "rust-bert",
+      "kind": "sdk",
+      "purl": "pkg:cargo/rust-bert",
+      "patterns": [
+        "rust_bert"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "safetensors",
+      "kind": "sdk",
+      "purl": "pkg:pypi/safetensors",
+      "patterns": [
+        "safetensors"
+      ],
+      "category": "ml-framework",
+      "priority": 50
+    },
+    {
+      "id": "semantic-kernel",
+      "kind": "sdk",
+      "purl": "pkg:nuget/Microsoft.SemanticKernel",
+      "patterns": [
+        "Microsoft.SemanticKernel"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "sentence-transformers",
+      "kind": "sdk",
+      "purl": "pkg:pypi/sentence-transformers",
+      "patterns": [
+        "sentence_transformers"
+      ],
+      "category": "ml-framework",
+      "priority": 50
+    },
+    {
+      "id": "soundanalysis",
+      "kind": "sdk",
+      "purl": "pkg:swift/apple/soundanalysis",
+      "patterns": [
+        "SoundAnalysis"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "spark-ml",
+      "kind": "sdk",
+      "purl": "pkg:maven/org.apache.spark/spark-mllib",
+      "patterns": [
+        "org.apache.spark.ml",
+        "org.apache.spark.mllib"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "spark-nlp",
+      "kind": "sdk",
+      "purl": "pkg:maven/com.johnsnowlabs.nlp/spark-nlp",
+      "patterns": [
+        "com.johnsnowlabs.nlp"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "speech",
+      "kind": "sdk",
+      "purl": "pkg:swift/apple/speech",
+      "patterns": [
+        "Speech"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "strands-agents",
+      "kind": "sdk",
+      "purl": "pkg:pypi/strands-agents",
+      "patterns": [
+        "strands_agents",
+        "strands"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "strands-agents-tools",
+      "kind": "sdk",
+      "purl": "pkg:pypi/strands-agents-tools",
+      "patterns": [
+        "strands_agents_tools"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "suno-bark",
+      "kind": "sdk",
+      "purl": "pkg:pypi/suno-bark",
+      "patterns": [
+        "bark"
+      ],
+      "category": "speech-audio",
+      "priority": 100
+    },
+    {
+      "id": "tavily-python",
+      "kind": "sdk",
+      "purl": "pkg:pypi/tavily-python",
+      "patterns": [
+        "tavily"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "tch-rs",
+      "kind": "sdk",
+      "purl": "pkg:cargo/tch",
+      "patterns": [
+        "tch"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "tensorflow",
+      "kind": "sdk",
+      "purl": "pkg:pypi/tensorflow",
+      "patterns": [
+        "tensorflow"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "tensorflow-cpp",
+      "kind": "sdk",
+      "purl": "pkg:conan/tensorflow",
+      "patterns": [
+        "tensorflow"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "tensorflow-dotnet",
+      "kind": "sdk",
+      "purl": "pkg:nuget/TensorFlow.NET",
+      "patterns": [
+        "TensorFlow"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "tensorflow-java",
+      "kind": "sdk",
+      "purl": "pkg:maven/org.tensorflow/tensorflow",
+      "patterns": [
+        "org.tensorflow"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "tensorflow-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/@tensorflow/tfjs",
+      "patterns": [
+        "@tensorflow/tfjs"
+      ],
+      "category": "ml-framework",
+      "priority": 50
+    },
+    {
+      "id": "tensorflow-lite-swift",
+      "kind": "sdk",
+      "purl": "pkg:swift/tensorflow/tensorflow-lite-swift",
+      "patterns": [
+        "TensorFlowLite",
+        "TensorFlowLiteSwift"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "tensorflow-scala",
+      "kind": "sdk",
+      "purl": "pkg:maven/org.platanios/tensorflow",
+      "patterns": [
+        "org.tensorflow",
+        "org.platanios.tensorflow"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "together",
+      "kind": "sdk",
+      "purl": "pkg:pypi/together",
+      "patterns": [
+        "together"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "together-ai-js",
+      "kind": "sdk",
+      "purl": "pkg:npm/together-ai",
+      "patterns": [
+        "together-ai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "torch",
+      "kind": "sdk",
+      "purl": "pkg:pypi/torch",
+      "patterns": [
+        "torch"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "tract",
+      "kind": "sdk",
+      "purl": "pkg:cargo/tract",
+      "patterns": [
+        "tract"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "transformers",
+      "kind": "sdk",
+      "purl": "pkg:pypi/transformers",
+      "patterns": [
+        "transformers"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "vercel-ai",
+      "kind": "sdk",
+      "purl": "pkg:npm/ai",
+      "patterns": [
+        "ai",
+        "@vercel/ai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "vertexai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/google-cloud-aiplatform",
+      "patterns": [
+        "vertexai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "vertexai-sdk",
+      "kind": "sdk",
+      "purl": "pkg:pypi/vertexai",
+      "patterns": [
+        "vertexai"
+      ],
+      "category": "llm-client",
+      "priority": 50
+    },
+    {
+      "id": "vision",
+      "kind": "sdk",
+      "purl": "pkg:swift/apple/vision",
+      "patterns": [
+        "Vision"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "wandb",
+      "kind": "sdk",
+      "purl": "pkg:pypi/wandb",
+      "patterns": [
+        "wandb"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "weaviate-client",
+      "kind": "sdk",
+      "purl": "pkg:pypi/weaviate-client",
+      "patterns": [
+        "weaviate"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "weaviate-ts-client",
+      "kind": "sdk",
+      "purl": "pkg:npm/weaviate-ts-client",
+      "patterns": [
+        "weaviate-ts-client"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "whisper-cpp",
+      "kind": "sdk",
+      "purl": "pkg:github/ggerganov/whisper.cpp",
+      "patterns": [
+        "whisper"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "xenova-transformers",
+      "kind": "sdk",
+      "purl": "pkg:npm/@xenova/transformers",
+      "patterns": [
+        "@xenova/transformers"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    }
+  ]
+}
