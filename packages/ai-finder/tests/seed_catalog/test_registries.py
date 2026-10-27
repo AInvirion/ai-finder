@@ -289,13 +289,30 @@ def test_github_repo_is_recognised_in_every_url_shape_registries_use(url, expect
 # -------------------------------------------------------------------------------------------
 
 
-def test_a_dual_licensed_gem_keeps_both_licences():
-    """RubyGems writes ["MIT", "Apache-2.0"]; taking the first loses half the answer."""
+def test_a_multi_licence_array_is_reported_ambiguous_not_joined_with_or():
+    """RubyGems does not say how the entries in `licenses` combine.
+
+    Taking the first loses half the answer; joining them with OR asserts a
+    choice the registry never made. "MIT OR Apache-2.0" and "MIT AND
+    Apache-2.0" are different obligations, so neither is guessed.
+    """
+    from scripts.seed_catalog.registries import AMBIGUOUS_LICENSE, is_spdx_like
+
     facts = lookup(
         "pkg:gem/thing",
         fake({"rubygems.org": (200, {"version": "1.0", "licenses": ["MIT", "Apache-2.0"]})}),
     )
-    assert facts.license == "MIT OR Apache-2.0"
+    assert facts.license == AMBIGUOUS_LICENSE + "MIT, Apache-2.0"
+    assert not is_spdx_like(facts.license)
+
+
+def test_a_single_entry_licence_array_is_read_normally():
+    """The negative control: one licence in a list is not ambiguous."""
+    facts = lookup(
+        "pkg:gem/thing",
+        fake({"rubygems.org": (200, {"version": "1.0", "licenses": ["MIT"]})}),
+    )
+    assert facts.license == "MIT"
 
 
 def test_cargo_reads_the_licence_of_the_version_it_reports():

@@ -389,3 +389,32 @@ def test_a_new_candidate_whose_lookup_failed_is_still_subject_to_the_limit():
     newcomer = verify(sdk("newcomer", "pkg:pypi/newcomer"), RegistryFacts(error="Timeout"), None)
     kept, cut = select([*ranked, newcomer], limit=2)
     assert [e.candidate.id for e in cut] == ["newcomer"]
+
+
+def test_an_ambiguous_multi_licence_never_reaches_the_seed():
+    """A registry naming two licences without an operator states no obligation.
+
+    The committed identifier stands and the report says why; writing either
+    operator would publish a legal claim the registry never made.
+    """
+    from scripts.seed_catalog.registries import AMBIGUOUS_LICENSE
+
+    entry = verify(
+        sdk("thing", "pkg:gem/thing"),
+        RegistryFacts(license=AMBIGUOUS_LICENSE + "MIT, Apache-2.0"),
+        previous={"id": "thing", "license": "MIT"},
+    )
+    assert entry.license == "MIT"
+    assert any("relationship not stated" in note for note in entry.notes)
+
+
+def test_an_ambiguous_licence_with_nothing_committed_stays_empty():
+    from scripts.seed_catalog.registries import AMBIGUOUS_LICENSE
+
+    entry = verify(
+        sdk("thing", "pkg:gem/thing"),
+        RegistryFacts(license=AMBIGUOUS_LICENSE + "MIT, Apache-2.0"),
+        previous=None,
+    )
+    assert entry.license is None
+    assert any("relationship not stated" in note for note in entry.notes)

@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Any
 
 from .registries import (
+    AMBIGUOUS_LICENSE,
     POPULARITY_SIGNAL,
     RegistryFacts,
     is_spdx_like,
@@ -269,6 +270,12 @@ def verify(
         entry.license = previous_license
     else:
         published = normalise_license(facts.license)
+        if published and published.startswith(AMBIGUOUS_LICENSE):
+            # Keep whatever is committed and say so. Writing either operator
+            # would publish an obligation the registry never stated.
+            entry.license = previous_license
+            entry.notes.append(f"{published}; keeping {previous_license or 'no licence'}")
+            published = None
         # A registry answer only replaces a committed SPDX id when it is itself
         # an identifier. Registries publish "SEE LICENSE IN LICENSE", "Apache
         # 2.0" and "non-standard" in this field, and writing any of those over

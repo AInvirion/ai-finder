@@ -177,6 +177,11 @@ def _github_repo(url: str | None) -> str | None:
 # from "this is a sentence", which is the distinction the seed needs.
 _SPDX_SHAPE = re.compile(r"^[A-Za-z0-9.+-]+(?: (?:OR|AND|WITH) [A-Za-z0-9.+-]+)*$")
 
+# Marks a registry answer that names several licences without saying how they
+# combine. Never written to the seed: "MIT OR Apache-2.0" and "MIT AND
+# Apache-2.0" are different obligations, and the registry stated neither.
+AMBIGUOUS_LICENSE = "several licences, relationship not stated: "
+
 
 def normalise_license(value: str | None) -> str | None:
     """Tidy a registry's licence string without inventing one.
@@ -238,12 +243,18 @@ def _spdx(value: Any) -> str | None:
     if isinstance(value, dict):
         return _spdx(value.get("type") or value.get("id") or value.get("name"))
     if isinstance(value, list):
-        # Every entry, not the first: RubyGems writes ["MIT", "Apache-2.0"] for
-        # a dual-licensed gem, and returning "MIT" alone both loses half the
-        # answer and reports a licence change against a committed
-        # "MIT OR Apache-2.0".
-        found = [text for text in (_spdx(item) for item in value) if text]
-        return " OR ".join(dict.fromkeys(found)) or None
+        # RubyGems writes ["MIT", "Apache-2.0"] for a dual-licensed gem and its
+        # specification does not say how the entries combine. Returning the
+        # first loses half the answer; joining them with OR asserts a choice the
+        # registry never made, and for a compliance product an invented
+        # disjunction is a wrong legal answer, not an untidy one. So the
+        # ambiguity is carried out of here intact for a human to settle.
+        found = list(dict.fromkeys(text for text in (_spdx(item) for item in value) if text))
+        if not found:
+            return None
+        if len(found) == 1:
+            return found[0]
+        return AMBIGUOUS_LICENSE + ", ".join(found)
     return None
 
 
