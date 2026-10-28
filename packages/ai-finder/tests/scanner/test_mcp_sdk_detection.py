@@ -836,3 +836,13 @@ def test_sdk_v2_split_packages(matcher) -> None:
         matcher.match_sdk_identifier("@modelcontextprotocol/server-memory", frozenset({"npm"}))
         is None
     )
+
+
+def test_launch_args_with_an_escaped_quote(matcher) -> None:
+    src = (
+        'import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";\n'
+        'const t = new StdioClientTransport({ command: "npx", '
+        'args: ["-y", "@modelcontextprotocol/server-filesystem", \'/srv/O\\\'Brien\'] });\n'
+    )
+    findings = MCPDetector().detect(src, Path("c.ts"), matcher.scoped({"npm"}))
+    assert [f.mcp_info.kb_id for f in findings if f.mcp_info.package] == ["mcp-filesystem"]
