@@ -535,6 +535,9 @@ class TestRound2Launches:
         )
         assert info.package == "@modelcontextprotocol/server-github"
         assert "sk-abcdefghijklmnop" not in repr(info)
+        # Nothing before `--` names a package: what follows is the server's.
+        after = self._cfg(matcher, "npx", ["-y", "--", "--package", "swordfish"])
+        assert after.package is None and "swordfish" not in repr(after)
 
     def test_tarball_is_not_a_package_and_requirement_is(self, matcher) -> None:
         assert self._cfg(matcher, "npx", ["server-1.0.0.tgz"]).package is None
@@ -562,12 +565,14 @@ class TestRound2Code:
         src = (
             "from mcp import StdioServerParameters\n"
             'server_args = ["@modelcontextprotocol/server-memory"]\n'
-            'other = dict(args=["sk-abcdefghijklmnop"])\n'
+            # A plain value, so no token-shape rule is what keeps it out.
+            'other = dict(args=["swordfish"])\n'
             'p = StdioServerParameters(command="npx", args=server_args)\n'
         )
         findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
+        assert findings  # the client construct is still reported
         assert all(f.mcp_info.package is None for f in findings)
-        assert "sk-abcdefghijklmnop" not in _all_text(findings)
+        assert "swordfish" not in _all_text(findings)
 
     def test_known_launch_without_sdk_import(self, matcher) -> None:
         src = (
