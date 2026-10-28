@@ -577,9 +577,8 @@ class TestRound2Code:
     def test_known_launch_without_sdk_import(self, matcher) -> None:
         src = (
             "import subprocess\n"
-            'command = "npx"\n'
-            'args = ["@modelcontextprotocol/server-memory"]\n'
-            "subprocess.run([command, *args])\n"
+            'spec = {"command": "npx", "args": ["@modelcontextprotocol/server-memory"]}\n'
+            'subprocess.run([spec["command"], *spec["args"]])\n'
         )
         findings = list(MCPDetector().detect(src, Path("run.py"), matcher.scoped({"pypi"})))
         assert [f.mcp_info.kb_id for f in findings] == ["mcp-memory"]
@@ -693,3 +692,104 @@ class TestRound2SPDX3:
             ]
         )
         assert len([e for e in graph if e["name"] == "mcp"]) == 1
+
+
+# --- review round 3 ------------------------------------------------------------
+
+
+class TestRound3:
+    def _code(self, matcher, src: str, name: str = "c.py", eco: str = "pypi"):
+        return list(MCPDetector().detect(src, Path(name), matcher.scoped({eco})))
+
+    def _cfg(self, matcher, argv: list[str]):
+        config = {"mcpServers": {"s": {"command": argv[0], "args": argv[1:]}}}
+        (finding,) = parse_mcp_config(json.dumps(config), Path("m.json"), matcher)
+        return finding.mcp_info
+
+    def test_nested_args_are_not_the_launch_args(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'p = launch(command="npx", args=server_args,\n'
+            '           metadata=dict(args=["swordfish"]))\n'
+        )
+        assert "swordfish" not in _all_text(self._code(matcher, src))
+
+    def test_separate_assignments_are_not_a_launch(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'args = ["swordfish"]\n'
+            "consume(args)\n"
+            'command = "npx"\n'
+            "args = server_args\n"
+        )
+        assert "swordfish" not in _all_text(self._code(matcher, src))
+
+    def test_bracket_inside_a_string_does_not_hide_the_launch(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            "p = StdioServerParameters(\n"
+            '    command="npx", args=["@modelcontextprotocol/server-memory"],\n'
+            '    env={"NOTE": "("})\n'
+        )
+        assert [f.mcp_info.kb_id for f in self._code(matcher, src) if f.mcp_info.kb_id] == [
+            "mcp-memory"
+        ]
+
+    def test_url_string_before_an_import_on_one_line(self, matcher) -> None:
+        src = (
+            'const endpoint = "https://example.com"; import { Client } from "fastmcp";\n'
+            "const client = new Client();\n"
+        )
+        kinds = [f.type for f in self._code(matcher, src, "a.js", "npm")]
+        assert kinds == [FindingType.MCP_CLIENT]
+
+    def test_full_exact_versions_are_kept(self, matcher) -> None:
+        assert self._cfg(matcher, ["npx", "@acme/server@1.2.3-rc.1+build.2"]).version == (
+            "1.2.3-rc.1+build.2"
+        )
+        assert self._cfg(matcher, ["uvx", "mcp-server-fetch==0.6.2+local"]).version == (
+            "0.6.2+local"
+        )
+
+    def test_docker_terminator_then_image(self, matcher) -> None:
+        info = self._cfg(matcher, ["docker", "run", "--", "ghcr.io/github/github-mcp-server"])
+        assert info.kb_id == "github-mcp-server"
+
+    def test_non_registry_source_is_not_the_package(self, matcher) -> None:
+        assert self._cfg(matcher, ["npx", "@acme/server@file:../local"]).package is None
+
+    def test_token_prefix_inside_a_name_is_not_a_token(self, matcher) -> None:
+        info = self._cfg(matcher, ["npx", "@acme/task-management-server"])
+        assert info.package == "@acme/task-management-server"
+
+    def test_kb_gate_is_exact_package_identity(self, matcher) -> None:
+        near = 'p = dict(command="npx", args=["@modelcontextprotocol/server-memory.evil"])\n'
+        assert self._code(matcher, near) == []
+        exact = 'p = dict(command="npx", args=["@modelcontextprotocol/server-memory"])\n'
+        assert [f.mcp_info.kb_id for f in self._code(matcher, exact)] == ["mcp-memory"]
+
+    def test_first_positional_ends_launcher_options(self, matcher) -> None:
+        info = self._cfg(
+            matcher, ["npx", "@modelcontextprotocol/server-github", "--package", "swordfish"]
+        )
+        assert info.package == "@modelcontextprotocol/server-github"
+        assert "swordfish" not in repr(info)
+
+    def test_spdx3_unresolved_rust_import_meets_its_cargo_entry(self) -> None:
+        findings = [
+            Finding(
+                file_path="src/main.rs",
+                confidence=1.0,
+                type=FindingType.SDK_USAGE,
+                sdk_usage=SDKUsage(sdk="async-openai", import_statement="use async_openai;"),
+            ),
+            Finding(
+                file_path="Cargo.toml",
+                confidence=1.0,
+                type=FindingType.MANIFEST_DEP,
+                manifest_dep=ManifestDep("async-openai", "0.1", "Cargo.toml"),
+            ),
+        ]
+        doc = SPDX3Formatter().format(ScanResult(root_path="/", findings=findings))
+        graph = json.loads(doc)["@graph"]
+        assert len([e for e in graph if e.get("name") == "async-openai"]) == 1

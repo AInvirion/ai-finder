@@ -61,6 +61,7 @@ from .parsers import (
     TFLiteParser,
 )
 from .parsers.base import BaseModelParser
+from .registries import EXT_ECOSYSTEMS
 
 if TYPE_CHECKING:
     from .analyzers.graph import ComponentGraph, RelationshipAnalyzer
@@ -73,29 +74,6 @@ ProgressCallback = Callable[[int, int, str], None]
 TelemetryCallback = Callable[[str, dict[str, Any]], None]
 
 logger = logging.getLogger(__name__)
-
-# Registries each source language imports from. A KB pattern only counts for a
-# file whose language can import from that pattern's registry: `openai` is a
-# different package on PyPI, npm and RubyGems.
-_EXT_ECOSYSTEMS: dict[str, frozenset[str]] = {
-    ".py": frozenset({"pypi"}),
-    ".go": frozenset({"golang"}),
-    ".rs": frozenset({"cargo"}),
-    ".java": frozenset({"maven"}),
-    ".kt": frozenset({"maven"}),
-    ".kts": frozenset({"maven"}),
-    ".scala": frozenset({"maven"}),
-    ".sc": frozenset({"maven"}),
-    ".rb": frozenset({"gem"}),
-    ".php": frozenset({"composer"}),
-    ".cs": frozenset({"nuget"}),
-    ".swift": frozenset({"swift", "github"}),
-    **{ext: frozenset({"npm"}) for ext in (".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs")},
-    **{
-        ext: frozenset({"conan", "github"})
-        for ext in (".c", ".cpp", ".cc", ".cxx", ".h", ".hpp", ".hxx")
-    },
-}
 
 _MANIFEST_ECOSYSTEMS: dict[str, frozenset[str]] = {
     "PythonManifestParser": frozenset({"pypi"}),
@@ -357,7 +335,7 @@ class Scanner:
             except OSError as e:
                 logger.warning("Failed to read %s: %s", file_path, e)
                 continue
-            file_matcher = scoped_for(_EXT_ECOSYSTEMS.get(ext))
+            file_matcher = scoped_for(EXT_ECOSYSTEMS.get(ext))
             if sdk_detector:
                 for finding in sdk_detector.detect(content, file_path, file_matcher):
                     findings.append(finding)

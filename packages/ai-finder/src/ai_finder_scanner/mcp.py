@@ -82,8 +82,14 @@ _DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 # Exact versions only. A range (`1.x`, `^1.2`, `>=0.6`) or a moving tag
 # (`latest`, `next`) is what the launcher resolves at run time, not a version.
 _EXACT_VERSION = {
-    "npm": re.compile(r"^\d+\.\d+\.\d+(?:[-+][\w.\-]+)?$"),
-    "pypi": re.compile(r"^\d+(?:\.\d+)*(?:(?:a|b|rc|\.post|\.dev)\d+)?$"),
+    # SemVer 2.0: prerelease and build metadata both allowed.
+    "npm": re.compile(r"^\d+\.\d+\.\d+(?:-[0-9A-Za-z.\-]+)?(?:\+[0-9A-Za-z.\-]+)?$"),
+    # PEP 440 release, pre/post/dev, and a local label.
+    "pypi": re.compile(
+        r"^(?:\d+!)?\d+(?:\.\d+)*(?:(?:a|b|rc)\d+)?(?:\.post\d+)?(?:\.dev\d+)?"
+        r"(?:\+[a-z0-9]+(?:\.[a-z0-9]+)*)?$",
+        re.IGNORECASE,
+    ),
     "docker": re.compile(r"^v?\d+(?:\.\d+)*(?:[-+_][\w.\-]+)?$"),
 }
 
@@ -107,7 +113,7 @@ def _split_version(spec: str, ecosystem: str) -> tuple[str, str | None] | None:
         "://" in spec
         or spec.startswith((".", "/", "~", "\\"))
         or spec.lower().endswith(_ARCHIVE_SUFFIXES)
-        or _TOKEN_RE.search(spec)
+        or _TOKEN_RE.fullmatch(spec)
     ):
         return None
     if ecosystem == "pypi":
@@ -118,6 +124,10 @@ def _split_version(spec: str, ecosystem: str) -> tuple[str, str | None] | None:
     head, sep, tail = spec.rpartition("@")
     name, version = (head, tail) if sep and head else (spec, None)
     if not _NPM_NAME.match(name):
+        return None
+    # `pkg@file:../x`, `pkg@github:o/r`, `pkg@npm:other`: not this registry
+    # package at a version, so not this package at all.
+    if version and (":" in version or "/" in version):
         return None
     return name, _exact(version, "npm")
 
@@ -200,7 +210,10 @@ def _launch_package(command: str, args: list[str]) -> tuple[str, str, str | None
                 skip = False
                 continue
             if arg == "--":
-                return None
+                # Docker's options end here; the next argument is the image.
+                rest = argv[argv.index("--", 1) + 1 :]
+                image = _split_image(rest[0]) if rest else None
+                return ("docker", *image) if image else None
             if arg in _CONTAINER_VALUE_FLAGS:
                 skip = True
                 continue
@@ -237,12 +250,14 @@ def _package_purl(ecosystem: str, name: str, version: str | None) -> str:
 
 # Token shapes that must never become a component name.
 _TOKEN_RE = re.compile(r"(?:sk|pk|ghp|gho|ghs|xox[bpas]|glpat|AKIA)[-_A-Za-z0-9]{12,}")
+# The same shape inside free text, only where a token can start.
+_TOKEN_IN_TEXT = re.compile(r"(?<![\w-])" + _TOKEN_RE.pattern)
 _SAFE_NAME = re.compile(r"^[A-Za-z0-9][\w .:@/\-]{0,63}$")
 
 
 def _safe_name(name: str | None) -> str | None:
     """A declared server name, or None if it does not look like a name."""
-    if not name or not _SAFE_NAME.match(name) or "://" in name or _TOKEN_RE.search(name):
+    if not name or not _SAFE_NAME.match(name) or "://" in name or _TOKEN_IN_TEXT.search(name):
         return None
     return name
 
@@ -357,9 +372,12 @@ _PY_SDK_IMPORT = re.compile(
     r"|import\s+(?P<b>mcp|fastmcp)\b)",
     re.MULTILINE,
 )
-# A real import or require of an MCP SDK, not merely the string appearing.
+# A real import or require of an MCP SDK: an `import ... from` statement at the
+# start of a line or after a `;` (so `// import ...` is not one), a bare `import "x"`, or a
+# `require("x")` / `import("x")` call. Anchoring beats stripping comments,
+# which needs a lexer to tell `//` in a URL string from a comment.
 _JS_SDK_IMPORT = re.compile(
-    r"""(?:\bfrom\s*|^\s*import\s*|\bimport\s*\(\s*|\brequire\s*\(\s*)"""
+    r"""(?:(?:^|;)\s*import\b[^;"'`]*?\bfrom\s*|(?:^|;)\s*import\s*|\brequire\s*\(\s*|\bimport\s*\(\s*)"""
     r"""["'](?:@modelcontextprotocol/sdk|fastmcp)(?:/[^"']*)?["']""",
     re.MULTILINE,
 )
@@ -388,54 +406,31 @@ _JS_CONSTRUCTS: list[tuple[re.Pattern[str], str, str | None]] = [
     (re.compile(r"\bnew\s+Client\("), "client", None),
 ]
 
-# A launch inside code: `command="npx"` / `command: "uvx"` with its args list.
-_CODE_COMMAND = re.compile(
-    r"""\bcommand\s*[=:]\s*["'`]"""
-    r"""(npx|bunx|pnpx|npm|pnpm|yarn|uvx|pipx|docker|podman)["'`]"""
+# A launch inside code: `command` and a literal `args` list written side by
+# side as one pair, in either order, as keyword arguments (`command="npx",
+# args=[...]`), object properties (`command: "npx", args: [...]`) or dict
+# entries (`"command": "npx", "args": [...]`). Requiring the pair rather than
+# searching around the command is what keeps another call's `args`, or an
+# `args` that is a variable, from being attributed to this launch.
+_LAUNCHERS = r"(npx|bunx|pnpx|npm|pnpm|yarn|uvx|pipx|docker|podman)"
+_KEY = r"""["']?{}["']?\s*[=:]\s*"""
+_ARGS_LIST = r"\[([^\[\]]*)\]"
+_CODE_LAUNCH = re.compile(
+    _KEY.format("command")
+    + r"""["'`]"""
+    + _LAUNCHERS
+    + r"""["'`]\s*,\s*"""
+    + _KEY.format("args")
+    + _ARGS_LIST
+    + "|"
+    + _KEY.format("args")
+    + _ARGS_LIST
+    + r"\s*,\s*"
+    + _KEY.format("command")
+    + r"""["'`]"""
+    + _LAUNCHERS
+    + r"""["'`]"""
 )
-_CODE_ARGS = re.compile(r"""\bargs\s*[=:]\s*\[([^\]]*)\]""")
-_JS_COMMENTS = re.compile(r"/\*.*?\*/|//[^\n]*", re.DOTALL)
-_OPENERS = {"(": ")", "{": "}"}
-
-
-def _enclosing_span(content: str, start: int, end: int) -> str | None:
-    """The call or object literal around content[start:end], or None at top level.
-
-    An `args` list is only evidence for the `command` in the same call. Taking
-    the nearest list in the file attributes another construct's arguments,
-    which may be anything, to this launch.
-    """
-    depth = 0
-    for i in range(start - 1, max(-1, start - 4000), -1):
-        ch = content[i]
-        if ch in ")}]":
-            depth += 1
-        elif ch in "({[":
-            if depth == 0:
-                if ch not in _OPENERS:
-                    return None
-                close, level = _OPENERS[ch], 0
-                for j in range(i + 1, min(len(content), end + 4000)):
-                    cj = content[j]
-                    if cj in "({[":
-                        level += 1
-                    elif cj in ")}]":
-                        if level == 0:
-                            return content[i : j + 1] if cj == close else None
-                        level -= 1
-                return None
-            depth -= 1
-    return None
-
-
-def _statement_block(content: str, start: int) -> str:
-    """Top-level `command = ...` / `args = [...]` written as adjacent lines."""
-    lines = content.splitlines()
-    line_no = content[:start].count("\n")
-    block = lines[max(0, line_no - 3) : line_no + 4]
-    return "\n".join(line for line in block if re.match(r"^\s*(command|args)\s*[=:]", line))
-
-
 _CODE_STRING = re.compile(r"""["'`]([^"'`]*)["'`]""")
 
 
@@ -459,9 +454,7 @@ class MCPDetector(BaseDetector):
         credentials, and an SBOM is passed around.
         """
         is_py = path.suffix.lower() == ".py"
-        # Comments are not imports (`// import { Client } from "fastmcp"`).
-        searchable = content if is_py else _JS_COMMENTS.sub("", content)
-        has_sdk = bool((_PY_SDK_IMPORT if is_py else _JS_SDK_IMPORT).search(searchable))
+        has_sdk = bool((_PY_SDK_IMPORT if is_py else _JS_SDK_IMPORT).search(content))
         if has_sdk:
             yield from self._constructs(content, path, is_py)
         yield from self._launches(content, path, matcher, require_kb=not has_sdk)
@@ -510,29 +503,25 @@ class MCPDetector(BaseDetector):
     def _launches(
         self, content: str, path: Path, matcher: Any | None, require_kb: bool
     ) -> Iterator[Finding]:
-        """Servers this code launches.
-
-        The launcher rules a config file gets, applied to a `command` literal and
-        the literal `args` list of the same call, or of the adjacent top-level
-        assignment. An `args` given as a variable resolves to nothing.
+        """Servers this code launches: the launcher rules a config file gets,
+        applied to a `command` / `args` pair (see `_CODE_LAUNCH`). In a file
+        without an MCP SDK import, a launch counts only when the KB lists that
+        exact package as an MCP server.
         """
         launched: set[tuple[str, str]] = set()
-        scoped = getattr(matcher, "match_mcp_in", None)
-        for cm in _CODE_COMMAND.finditer(content):
-            span = _enclosing_span(content, cm.start(), cm.end())
-            if span is None:
-                span = _statement_block(content, cm.start())
-            arg_list = _CODE_ARGS.search(span)
-            if not arg_list:
-                continue
-            argv = [sm.group(1) for sm in _CODE_STRING.finditer(arg_list.group(1))]
-            resolved = _launch_package(cm.group(1), argv)
+        exact = getattr(matcher, "match_mcp_package", None)
+        for lm in _CODE_LAUNCH.finditer(content):
+            # Groups: (command, args) in the first order, (args, command) in the second.
+            command = lm.group(1) or lm.group(4)
+            arg_text = lm.group(2) if lm.group(2) is not None else lm.group(3)
+            argv = [sm.group(1) for sm in _CODE_STRING.finditer(arg_text)]
+            resolved = _launch_package(command, argv)
             if not resolved:
                 continue
             ecosystem, package, version = resolved
             if (ecosystem, package) in launched:
                 continue
-            kb = scoped(package, ecosystem) if scoped is not None else None
+            kb = exact(package, ecosystem) if exact is not None else None
             if require_kb and kb is None:
                 continue
             launched.add((ecosystem, package))
@@ -540,7 +529,7 @@ class MCPDetector(BaseDetector):
                 type=FindingType.MCP_SERVER,
                 file_path=str(path),
                 confidence=0.9,
-                line=content[: cm.start()].count("\n") + 1,
+                line=content[: lm.start()].count("\n") + 1,
                 mcp_info=MCPInfo(
                     name=package,
                     role="server",
@@ -550,6 +539,6 @@ class MCPDetector(BaseDetector):
                     version=version,
                     transport="stdio",
                     kb_id=kb.id if kb else None,
-                    how=f"{cm.group(1)} {package}" + (f"@{version}" if version else ""),
+                    how=f"{command} {package}" + (f"@{version}" if version else ""),
                 ),
             )

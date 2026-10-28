@@ -13,12 +13,12 @@ from ai_finder_kb.matcher import purl_ecosystem, purl_name
 
 from .. import __version__
 from ..models import Finding, FindingType, ScanResult
+from ..registries import EXT_ECOSYSTEMS
 from .cyclonedx import CycloneDXFormatter
 
-_SOURCE_REGISTRY = {
-    ".py": "pypi",
-    **{ext: "npm" for ext in (".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs")},
-}
+# An unresolved import's registry, for identity, only where its language
+# imports from exactly one registry.
+_SOURCE_REGISTRY = {ext: next(iter(ecos)) for ext, ecos in EXT_ECOSYSTEMS.items() if len(ecos) == 1}
 
 if TYPE_CHECKING:
     from ..analyzers.graph import ComponentGraph

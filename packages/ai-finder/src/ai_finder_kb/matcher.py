@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import sqlite3
 from collections.abc import Iterator
 
@@ -70,6 +71,11 @@ def purl_name(purl: str) -> str:
     if sep and head and "/" not in tail:
         body = head
     return body.replace("%40", "@")
+
+
+def _normalize_package(name: str, ecosystem: str | None) -> str:
+    name = name.lower()
+    return re.sub(r"[-_.]+", "-", name) if ecosystem == "pypi" else name
 
 
 def _segment_match(identifier: str, pattern: str) -> bool:
@@ -191,6 +197,16 @@ class Matcher:
             if ecosystems is not None and eco not in ecosystems:
                 continue
             if _segment_match(ident, pattern):
+                return match
+        return None
+
+    def match_mcp_package(self, name: str, ecosystem: str) -> MCPMatch | None:
+        """The MCP server whose registry package is exactly `name` in `ecosystem`."""
+        wanted = _normalize_package(name, ecosystem)
+        for row_purl, match in ((m.purl, m) for _, _, m in self._load_mcp_index()):
+            if purl_ecosystem(row_purl) != ecosystem:
+                continue
+            if _normalize_package(purl_name(row_purl), ecosystem) == wanted:
                 return match
         return None
 
@@ -485,11 +501,13 @@ class ScopedMatcher:
     def match_mcp(self, text: str) -> MCPMatch | None:
         return self._matcher.match_mcp_identifier(text, self.ecosystems)
 
-    def match_mcp_in(self, text: str, ecosystem: str) -> MCPMatch | None:
-        """Match an MCP server package in the registry its launcher installs from.
+    def match_mcp_package(self, name: str, ecosystem: str) -> MCPMatch | None:
+        """The KB MCP server that IS this registry package, or None.
 
-        Code in one language routinely launches a server published in another
-        (Python spawning `npx @modelcontextprotocol/server-github`), so the scope
-        comes from the launcher, not from the file.
+        Exact package identity: a launched package is a package, not an import
+        path, so `@modelcontextprotocol/server-memory.evil` is not
+        `@modelcontextprotocol/server-memory`. Code in one language routinely
+        launches a server published in another, so the registry comes from the
+        launcher, not from the file.
         """
-        return self._matcher.match_mcp_identifier(text, frozenset({ecosystem}))
+        return self._matcher.match_mcp_package(name, ecosystem)
