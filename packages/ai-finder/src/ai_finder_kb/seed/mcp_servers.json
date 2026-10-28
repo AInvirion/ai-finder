@@ -2,31 +2,130 @@
   {
     "id": "mcp-filesystem",
     "purl": "pkg:npm/@modelcontextprotocol/server-filesystem",
-    "patterns": ["@modelcontextprotocol/server-filesystem"],
+    "patterns": [
+      "@modelcontextprotocol/server-filesystem"
+    ],
     "description": "MCP server for filesystem access"
   },
   {
     "id": "mcp-github",
     "purl": "pkg:npm/@modelcontextprotocol/server-github",
-    "patterns": ["@modelcontextprotocol/server-github"],
+    "patterns": [
+      "@modelcontextprotocol/server-github"
+    ],
     "description": "MCP server for GitHub integration"
   },
   {
     "id": "mcp-postgres",
     "purl": "pkg:npm/@modelcontextprotocol/server-postgres",
-    "patterns": ["@modelcontextprotocol/server-postgres"],
+    "patterns": [
+      "@modelcontextprotocol/server-postgres"
+    ],
     "description": "MCP server for PostgreSQL database access"
   },
   {
     "id": "mcp-sqlite",
     "purl": "pkg:npm/@modelcontextprotocol/server-sqlite",
-    "patterns": ["@modelcontextprotocol/server-sqlite"],
+    "patterns": [
+      "@modelcontextprotocol/server-sqlite"
+    ],
     "description": "MCP server for SQLite database access"
   },
   {
     "id": "mcp-slack",
     "purl": "pkg:npm/@modelcontextprotocol/server-slack",
-    "patterns": ["@modelcontextprotocol/server-slack"],
+    "patterns": [
+      "@modelcontextprotocol/server-slack"
+    ],
     "description": "MCP server for Slack integration"
+  },
+  {
+    "id": "mcp-memory",
+    "purl": "pkg:npm/@modelcontextprotocol/server-memory",
+    "patterns": [
+      "@modelcontextprotocol/server-memory"
+    ],
+    "description": "MCP server for a knowledge-graph memory"
+  },
+  {
+    "id": "mcp-everything",
+    "purl": "pkg:npm/@modelcontextprotocol/server-everything",
+    "patterns": [
+      "@modelcontextprotocol/server-everything"
+    ],
+    "description": "MCP reference server exercising every protocol feature"
+  },
+  {
+    "id": "mcp-sequential-thinking",
+    "purl": "pkg:npm/@modelcontextprotocol/server-sequential-thinking",
+    "patterns": [
+      "@modelcontextprotocol/server-sequential-thinking"
+    ],
+    "description": "MCP server for step-by-step reasoning"
+  },
+  {
+    "id": "mcp-brave-search",
+    "purl": "pkg:npm/@modelcontextprotocol/server-brave-search",
+    "patterns": [
+      "@modelcontextprotocol/server-brave-search"
+    ],
+    "description": "MCP server for Brave web search"
+  },
+  {
+    "id": "mcp-puppeteer",
+    "purl": "pkg:npm/@modelcontextprotocol/server-puppeteer",
+    "patterns": [
+      "@modelcontextprotocol/server-puppeteer"
+    ],
+    "description": "MCP server for browser automation with Puppeteer"
+  },
+  {
+    "id": "mcp-fetch",
+    "purl": "pkg:pypi/mcp-server-fetch",
+    "patterns": [
+      "mcp-server-fetch"
+    ],
+    "description": "MCP server for fetching web content"
+  },
+  {
+    "id": "mcp-git",
+    "purl": "pkg:pypi/mcp-server-git",
+    "patterns": [
+      "mcp-server-git"
+    ],
+    "description": "MCP server for Git repositories"
+  },
+  {
+    "id": "mcp-time",
+    "purl": "pkg:pypi/mcp-server-time",
+    "patterns": [
+      "mcp-server-time"
+    ],
+    "description": "MCP server for time and timezone conversion"
+  },
+  {
+    "id": "mcp-sqlite-python",
+    "purl": "pkg:pypi/mcp-server-sqlite",
+    "patterns": [
+      "mcp-server-sqlite"
+    ],
+    "description": "MCP server for SQLite database access (Python)"
+  },
+  {
+    "id": "playwright-mcp",
+    "purl": "pkg:npm/@playwright/mcp",
+    "patterns": [
+      "@playwright/mcp"
+    ],
+    "description": "MCP server for browser automation with Playwright"
+  },
+  {
+    "id": "github-mcp-server",
+    "purl": "pkg:docker/github/github-mcp-server?repository_url=ghcr.io",
+    "patterns": [
+      "ghcr.io/github/github-mcp-server",
+      "github/github-mcp-server"
+    ],
+    "description": "GitHub's official MCP server (container image)"
   }
 ]

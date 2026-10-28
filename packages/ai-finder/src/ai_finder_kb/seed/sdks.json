@@ -1374,5 +1374,41 @@
     ],
     "category": "vector-database",
     "license": "BSD-3-Clause"
+  },
+  {
+    "id": "mcp",
+    "purl": "pkg:pypi/mcp",
+    "patterns": [
+      "mcp"
+    ],
+    "category": "mcp",
+    "license": "MIT"
+  },
+  {
+    "id": "fastmcp",
+    "purl": "pkg:pypi/fastmcp",
+    "patterns": [
+      "fastmcp"
+    ],
+    "category": "mcp",
+    "license": "Apache-2.0"
+  },
+  {
+    "id": "langchain-mcp-adapters",
+    "purl": "pkg:pypi/langchain-mcp-adapters",
+    "patterns": [
+      "langchain_mcp_adapters"
+    ],
+    "category": "mcp",
+    "license": "MIT"
+  },
+  {
+    "id": "modelcontextprotocol-sdk",
+    "purl": "pkg:npm/@modelcontextprotocol/sdk",
+    "patterns": [
+      "@modelcontextprotocol/sdk"
+    ],
+    "category": "mcp",
+    "license": "MIT"
   }
 ]
