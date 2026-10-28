@@ -89,6 +89,8 @@ AI-Finder produces the inventory that AI governance work starts from:
 
 Detection is driven by a local knowledge base of SDKs, MCP servers and models that ships with the package. `ai-finder kb update` downloads the latest version, which is refreshed from the package registries and the MCP Registry. It adds new entries and removes ones that no longer exist.
 
+**Limitations.** AI-Finder identifies components and models by exact matching: package and import names for components, and file hashes and names for models. It cannot identify a component or model that has been modified, quantized, fine-tuned or retrained, because those change the very things it matches on. For those cases, [AI-Finder Pro from SCANOSS](https://scanoss.com) adds fingerprint matching for AI.
+
 ## Privacy
 
 - **Your code never leaves your machine.** The scan runs locally.
@@ -108,6 +110,9 @@ CycloneDX 1.6, SPDX 2.3 and SPDX 3.0, plus plain JSON and a text summary.
 
 **Which languages are supported?**
 SDK imports are detected in Python, JavaScript/TypeScript, Go, Rust, Java, Kotlin, Scala, Ruby, PHP, C#, C/C++ and Swift. MCP servers and clients are detected in Python and JavaScript/TypeScript code, and in MCP client configs regardless of language.
+
+**Can AI-Finder detect modified, retrained, fine-tuned or quantized models?**
+No. Recognising a model after it has been changed needs fingerprint matching, which this version does not include. [Contact SCANOSS](https://scanoss.com) for AI-Finder Pro, which adds that layer.
 
 ## Contributing
 
