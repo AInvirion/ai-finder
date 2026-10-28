@@ -32,7 +32,7 @@ from .registries import Fetcher
 
 REGISTRY_URL = "https://registry.modelcontextprotocol.io/v0/servers"
 SOURCE = "mcp-registry"
-MAX_PAGES = 2000  # the registry held ~20,000 records in Oct 2026, 100 a page
+MAX_PAGES = 5000  # Oct 2026: well over 41,000 servers, 100 a page
 
 _NPM_NAME = re.compile(r"^(@[a-z0-9][\w.\-~]*/)?[a-z0-9][\w.\-~]*$", re.IGNORECASE)
 _PYPI_NAME = re.compile(r"^[a-z0-9][\w.\-]*$", re.IGNORECASE)
@@ -47,7 +47,9 @@ def fetch_servers(fetch=None, max_pages: int = MAX_PAGES) -> list[dict[str, Any]
     servers: list[dict[str, Any]] = []
     cursor: str | None = None
     for _ in range(max_pages):
-        query = {"limit": "100", **({"cursor": cursor} if cursor else {})}
+        # version=latest: one record per server rather than one per release,
+        # which is most of the listing (150,000 records for ~41,000 servers).
+        query = {"limit": "100", "version": "latest", **({"cursor": cursor} if cursor else {})}
         status, body = fetch(f"{REGISTRY_URL}?{urllib.parse.urlencode(query)}")
         if status != 200 or not isinstance(body, dict):
             raise RuntimeError(f"MCP registry answered {status}; refusing a partial list")
@@ -97,8 +99,16 @@ def _slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:80]
 
 
+# Registry namespaces that name a personal account rather than a domain the
+# publisher proved it owns. Sampled Oct 2026: 1 in 100 of these npm packages
+# took 1,000+ downloads a month, against 11 in 100 under a verified domain.
+PERSONAL_NAMESPACES = ("io.github.", "io.gitlab.")
+
+
 def proposals(
-    servers: list[dict[str, Any]], existing: list[dict[str, Any]]
+    servers: list[dict[str, Any]],
+    existing: list[dict[str, Any]],
+    include_personal: bool = False,
 ) -> list[dict[str, Any]]:
     """New candidate rows: active, latest, in scope, and not already in the pool."""
     have_purls = {e["purl"] for e in existing}
@@ -109,6 +119,8 @@ def proposals(
         if not meta.get("isLatest") or meta.get("status") != "active":
             continue
         server = record.get("server") or {}
+        if not include_personal and str(server.get("name", "")).startswith(PERSONAL_NAMESPACES):
+            continue
         description = _CONTROL.sub(" ", str(server.get("description") or "")).strip()[:200]
         for package in server.get("packages") or []:
             found = candidate_for(package)
@@ -141,11 +153,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--write", action="store_true", help="add proposals to candidates.json")
     parser.add_argument("--from-file", type=Path, help="read a saved registry dump instead")
+    parser.add_argument(
+        "--include-personal",
+        action="store_true",
+        help="also propose servers published under a personal GitHub/GitLab namespace",
+    )
     args = parser.parse_args(argv)
 
     servers = json.loads(args.from_file.read_text()) if args.from_file else fetch_servers()
     document = json.loads(CANDIDATES_PATH.read_text())
-    new = proposals(servers, document["entries"])
+    new = proposals(servers, document["entries"], include_personal=args.include_personal)
     by_type: dict[str, int] = {}
     for row in new:
         eco = row["purl"][4:].split("/", 1)[0]

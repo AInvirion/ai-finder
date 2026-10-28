@@ -69,3 +69,12 @@ def test_a_partial_registry_listing_is_refused() -> None:
     endless = lambda url: (200, {"servers": [], "metadata": {"nextCursor": "again"}})  # noqa: E731
     with pytest.raises(RuntimeError, match="partial"):
         fetch_servers(endless, max_pages=3)
+
+
+def test_personal_namespaces_only_on_request() -> None:
+    servers = [
+        _record("com.acme/tool", [{"registryType": "npm", "identifier": "acme-tool-mcp"}]),
+        _record("io.github.someone/tool", [{"registryType": "npm", "identifier": "someone-mcp"}]),
+    ]
+    assert [r["purl"] for r in proposals(servers, [])] == ["pkg:npm/acme-tool-mcp"]
+    assert len(proposals(servers, [], include_personal=True)) == 2
