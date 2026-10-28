@@ -1,6 +1,6 @@
 {
   "about": "Curated candidate pool for the AI Finder seed. Entries are added and removed by hand; scripts/seed_catalog/refresh.py verifies each one against its registry on every run and ranks it within its own ecosystem. Nothing here is discovered automatically, because these rows decide what appears in a customer's AI bill of materials.",
-  "per_ecosystem_limit": 1000,
+  "per_ecosystem_limit": 5000,
   "entries": [
     {
       "id": "mcp-everything",
