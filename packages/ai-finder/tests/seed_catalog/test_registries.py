@@ -222,7 +222,7 @@ def test_composer_reports_an_abandoned_package_with_its_replacement():
         "pkg:composer/vendor/pkg",
         fake(
             {
-                "repo.packagist.org": (
+                "https://packagist.org/packages/": (
                     200,
                     {
                         "package": {
@@ -238,6 +238,20 @@ def test_composer_reports_an_abandoned_package_with_its_replacement():
     assert facts.deprecated is True
     assert facts.deprecation_reason == "abandoned: other/pkg"
     assert facts.downloads == 1234
+
+
+def test_composer_asks_the_host_that_serves_package_metadata():
+    # repo.packagist.org/packages/<name>.json is a 404 for every package, so a
+    # lookup there reported every Composer SDK as deleted.
+    asked: list[str] = []
+
+    def fetch(url: str):
+        asked.append(url)
+        return 200, {"package": {"versions": {"1.0.0": {"version": "1.0.0", "license": ["MIT"]}}}}
+
+    facts = lookup("pkg:composer/openai-php/client", fetch)
+    assert asked == ["https://packagist.org/packages/openai-php/client.json"]
+    assert facts.exists is True and facts.license == "MIT"
 
 
 def test_maven_publishes_no_licence_or_downloads_and_does_not_invent_them():

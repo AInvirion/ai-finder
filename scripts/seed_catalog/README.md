@@ -19,9 +19,28 @@ download or never see one. The release pipeline fails if it is skipped.
 
 `candidates.json` is the curated pool and the only file a human edits. Each
 entry names a package, its purl, the patterns the scanner matches, and whether
-it is an `sdk` or an `mcp_server`. Nothing is discovered automatically: these
-rows decide what appears in a customer's AI bill of materials, and a registry
-search for "ai" returns a great deal that is not an AI SDK.
+it is an `sdk` or an `mcp_server`. SDKs are never discovered automatically:
+these rows decide what appears in a customer's AI bill of materials, and a
+registry search for "ai" returns a great deal that is not an AI SDK.
+
+MCP servers are the exception, because there is a source that makes exactly the
+claim a row makes. `mcp_registry.py` reads the official MCP Registry, where
+authors publish each server with the package that runs it, and proposes the
+active, latest npm, PyPI and container-image servers as candidates:
+
+```
+python -m scripts.seed_catalog.mcp_registry            # report what would be added
+python -m scripts.seed_catalog.mcp_registry --write    # add them to candidates.json
+```
+
+Proposals are candidates, not seed rows: `refresh.py` still verifies each one
+and drops any package its registry does not have. The importer refuses a
+partial listing rather than proposing from one.
+
+`per_ecosystem_limit` ranks; it is set above the size of every group so it
+never cuts a curated row. At 50 it dropped real packages (`mcp-agent`,
+`guardrails-ai`) from detection to make room, and a package that verifies is a
+package a customer may depend on.
 
 `registries.py` asks each ecosystem the same four questions — does this still
 exist, what is the latest version, what licence, how popular — and records which
@@ -53,6 +72,10 @@ count of zero.
 publish `SEE LICENSE IN LICENSE`, `Apache 2.0` and `non-standard` in the licence
 field. Writing any of those over `Apache-2.0` makes the seed worse while looking
 like an update.
+
+**Container images are unverifiable, not missing.** Registries other than
+Docker Hub need a token to read, so a `pkg:docker` row is kept and reported as
+not checked, the same as Conan.
 
 **Swift 404s are unverifiable, not missing.** Half the Swift rows are Apple
 system frameworks — `apple/coreml`, `apple/vision` — which are real things to

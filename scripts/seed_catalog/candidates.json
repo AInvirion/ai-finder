@@ -1,6 +1,6 @@
 {
   "about": "Curated candidate pool for the AI Finder seed. Entries are added and removed by hand; scripts/seed_catalog/refresh.py verifies each one against its registry on every run and ranks it within its own ecosystem. Nothing here is discovered automatically, because these rows decide what appears in a customer's AI bill of materials.",
-  "per_ecosystem_limit": 50,
+  "per_ecosystem_limit": 1000,
   "entries": [
     {
       "id": "mcp-everything",
@@ -1946,6 +1946,587 @@
         "@xenova/transformers"
       ],
       "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "mcp-sequential-thinking",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-sequential-thinking",
+      "patterns": [
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "description": "MCP server for step-by-step reasoning",
+      "priority": 100
+    },
+    {
+      "id": "mcp-brave-search",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-brave-search",
+      "patterns": [
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "description": "MCP server for Brave web search",
+      "priority": 100
+    },
+    {
+      "id": "mcp-puppeteer",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@modelcontextprotocol/server-puppeteer",
+      "patterns": [
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "description": "MCP server for browser automation with Puppeteer",
+      "priority": 100
+    },
+    {
+      "id": "playwright-mcp",
+      "kind": "mcp_server",
+      "purl": "pkg:npm/@playwright/mcp",
+      "patterns": [
+        "@playwright/mcp"
+      ],
+      "description": "MCP server for browser automation with Playwright",
+      "priority": 100
+    },
+    {
+      "id": "github-mcp-server",
+      "kind": "mcp_server",
+      "purl": "pkg:docker/github/github-mcp-server?repository_url=ghcr.io",
+      "patterns": [
+        "ghcr.io/github/github-mcp-server",
+        "github/github-mcp-server"
+      ],
+      "description": "GitHub's official MCP server (container image)",
+      "priority": 100
+    },
+    {
+      "id": "litellm",
+      "kind": "sdk",
+      "purl": "pkg:pypi/litellm",
+      "patterns": [
+        "litellm"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "instructor",
+      "kind": "sdk",
+      "purl": "pkg:pypi/instructor",
+      "patterns": [
+        "instructor"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "dspy",
+      "kind": "sdk",
+      "purl": "pkg:pypi/dspy",
+      "patterns": [
+        "dspy"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "haystack-ai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/haystack-ai",
+      "patterns": [
+        "haystack"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "smolagents",
+      "kind": "sdk",
+      "purl": "pkg:pypi/smolagents",
+      "patterns": [
+        "smolagents"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "pydantic-ai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/pydantic-ai",
+      "patterns": [
+        "pydantic_ai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "google-genai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/google-genai",
+      "patterns": [
+        "google.genai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "langgraph",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langgraph",
+      "patterns": [
+        "langgraph"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-community",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-community",
+      "patterns": [
+        "langchain_community"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-google-genai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-google-genai",
+      "patterns": [
+        "langchain_google_genai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "langchain-aws",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langchain-aws",
+      "patterns": [
+        "langchain_aws"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "llama-index-llms-openai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/llama-index-llms-openai",
+      "patterns": [
+        "llama_index.llms.openai"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "autogen-core",
+      "kind": "sdk",
+      "purl": "pkg:pypi/autogen-core",
+      "patterns": [
+        "autogen_core"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "autogen-ext",
+      "kind": "sdk",
+      "purl": "pkg:pypi/autogen-ext",
+      "patterns": [
+        "autogen_ext"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "agno",
+      "kind": "sdk",
+      "purl": "pkg:pypi/agno",
+      "patterns": [
+        "agno"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "letta",
+      "kind": "sdk",
+      "purl": "pkg:pypi/letta",
+      "patterns": [
+        "letta"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "mem0ai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/mem0ai",
+      "patterns": [
+        "mem0"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "browser-use",
+      "kind": "sdk",
+      "purl": "pkg:pypi/browser-use",
+      "patterns": [
+        "browser_use"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "crewai-tools",
+      "kind": "sdk",
+      "purl": "pkg:pypi/crewai-tools",
+      "patterns": [
+        "crewai_tools"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "e2b",
+      "kind": "sdk",
+      "purl": "pkg:pypi/e2b",
+      "patterns": [
+        "e2b"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "e2b-code-interpreter",
+      "kind": "sdk",
+      "purl": "pkg:pypi/e2b-code-interpreter",
+      "patterns": [
+        "e2b_code_interpreter"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "voyageai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/voyageai",
+      "patterns": [
+        "voyageai"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "vllm",
+      "kind": "sdk",
+      "purl": "pkg:pypi/vllm",
+      "patterns": [
+        "vllm"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "diffusers",
+      "kind": "sdk",
+      "purl": "pkg:pypi/diffusers",
+      "patterns": [
+        "diffusers"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "peft",
+      "kind": "sdk",
+      "purl": "pkg:pypi/peft",
+      "patterns": [
+        "peft"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "trl",
+      "kind": "sdk",
+      "purl": "pkg:pypi/trl",
+      "patterns": [
+        "trl"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "bitsandbytes",
+      "kind": "sdk",
+      "purl": "pkg:pypi/bitsandbytes",
+      "patterns": [
+        "bitsandbytes"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "tiktoken",
+      "kind": "sdk",
+      "purl": "pkg:pypi/tiktoken",
+      "patterns": [
+        "tiktoken"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "tokenizers",
+      "kind": "sdk",
+      "purl": "pkg:pypi/tokenizers",
+      "patterns": [
+        "tokenizers"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "outlines",
+      "kind": "sdk",
+      "purl": "pkg:pypi/outlines",
+      "patterns": [
+        "outlines"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "guidance",
+      "kind": "sdk",
+      "purl": "pkg:pypi/guidance",
+      "patterns": [
+        "guidance"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "jax",
+      "kind": "sdk",
+      "purl": "pkg:pypi/jax",
+      "patterns": [
+        "jax"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "flax",
+      "kind": "sdk",
+      "purl": "pkg:pypi/flax",
+      "patterns": [
+        "flax"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "scikit-learn",
+      "kind": "sdk",
+      "purl": "pkg:pypi/scikit-learn",
+      "patterns": [
+        "sklearn"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "xgboost",
+      "kind": "sdk",
+      "purl": "pkg:pypi/xgboost",
+      "patterns": [
+        "xgboost"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "lightgbm",
+      "kind": "sdk",
+      "purl": "pkg:pypi/lightgbm",
+      "patterns": [
+        "lightgbm"
+      ],
+      "category": "ml-framework",
+      "priority": 100
+    },
+    {
+      "id": "llama-cpp-python",
+      "kind": "sdk",
+      "purl": "pkg:pypi/llama-cpp-python",
+      "patterns": [
+        "llama_cpp"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "ctransformers",
+      "kind": "sdk",
+      "purl": "pkg:pypi/ctransformers",
+      "patterns": [
+        "ctransformers"
+      ],
+      "category": "ml-runtime",
+      "priority": 100
+    },
+    {
+      "id": "langfuse",
+      "kind": "sdk",
+      "purl": "pkg:pypi/langfuse",
+      "patterns": [
+        "langfuse"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "arize-phoenix",
+      "kind": "sdk",
+      "purl": "pkg:pypi/arize-phoenix",
+      "patterns": [
+        "phoenix"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "ragas",
+      "kind": "sdk",
+      "purl": "pkg:pypi/ragas",
+      "patterns": [
+        "ragas"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "deepeval",
+      "kind": "sdk",
+      "purl": "pkg:pypi/deepeval",
+      "patterns": [
+        "deepeval"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "opik",
+      "kind": "sdk",
+      "purl": "pkg:pypi/opik",
+      "patterns": [
+        "opik"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "weave",
+      "kind": "sdk",
+      "purl": "pkg:pypi/weave",
+      "patterns": [
+        "weave"
+      ],
+      "category": "observability",
+      "priority": 100
+    },
+    {
+      "id": "pgvector",
+      "kind": "sdk",
+      "purl": "pkg:pypi/pgvector",
+      "patterns": [
+        "pgvector"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "milvus-lite",
+      "kind": "sdk",
+      "purl": "pkg:pypi/milvus-lite",
+      "patterns": [
+        "milvus_lite"
+      ],
+      "category": "vector-database",
+      "priority": 100
+    },
+    {
+      "id": "presidio-analyzer",
+      "kind": "sdk",
+      "purl": "pkg:pypi/presidio-analyzer",
+      "patterns": [
+        "presidio_analyzer"
+      ],
+      "category": "ai-safety",
+      "priority": 100
+    },
+    {
+      "id": "anthropic-bedrock",
+      "kind": "sdk",
+      "purl": "pkg:pypi/anthropic-bedrock",
+      "patterns": [
+        "anthropic_bedrock"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "azure-ai-inference",
+      "kind": "sdk",
+      "purl": "pkg:pypi/azure-ai-inference",
+      "patterns": [
+        "azure.ai.inference"
+      ],
+      "category": "llm-client",
+      "priority": 100
+    },
+    {
+      "id": "azure-ai-projects",
+      "kind": "sdk",
+      "purl": "pkg:pypi/azure-ai-projects",
+      "patterns": [
+        "azure.ai.projects"
+      ],
+      "category": "agent-framework",
+      "priority": 100
+    },
+    {
+      "id": "deepgram-sdk",
+      "kind": "sdk",
+      "purl": "pkg:pypi/deepgram-sdk",
+      "patterns": [
+        "deepgram"
+      ],
+      "category": "speech-audio",
+      "priority": 100
+    },
+    {
+      "id": "assemblyai",
+      "kind": "sdk",
+      "purl": "pkg:pypi/assemblyai",
+      "patterns": [
+        "assemblyai"
+      ],
+      "category": "speech-audio",
+      "priority": 100
+    },
+    {
+      "id": "cartesia",
+      "kind": "sdk",
+      "purl": "pkg:pypi/cartesia",
+      "patterns": [
+        "cartesia"
+      ],
+      "category": "speech-audio",
       "priority": 100
     }
   ]

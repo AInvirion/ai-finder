@@ -46,6 +46,7 @@ POPULARITY_SIGNAL = {
     "swift": "GitHub stars",
     "github": "GitHub stars",
     "conan": "none published; ranked by curated order",
+    "docker": "none published; ranked by curated order",
 }
 
 ECOSYSTEMS = frozenset(POPULARITY_SIGNAL)
@@ -429,7 +430,10 @@ def _nuget(name: str, fetch: FetchJson) -> RegistryFacts:
 
 
 def _composer(name: str, fetch: FetchJson) -> RegistryFacts:
-    status, body = fetch(f"https://repo.packagist.org/packages/{name}.json")
+    # packagist.org, not repo.packagist.org: the repo host serves only the
+    # Composer v2 metadata (/p2/...) and answers 404 for /packages/ for every
+    # package, which read as "deleted" for all of them.
+    status, body = fetch(f"https://packagist.org/packages/{name}.json")
     if status == 404:
         return RegistryFacts(exists=False)
     if status != 200 or not isinstance(body, dict):
@@ -540,6 +544,15 @@ def _conan(name: str, fetch: FetchJson) -> RegistryFacts:
     return RegistryFacts(error="conan center publishes no lookup API; not verified")
 
 
+def _docker(name: str, fetch: FetchJson) -> RegistryFacts:
+    """Container images: registries other than Docker Hub need a token to read.
+
+    Unverifiable rather than guessed at, the same as Conan: a committed row is
+    kept and the report says it was not checked.
+    """
+    return RegistryFacts(error="container registries publish no anonymous lookup; not verified")
+
+
 CLIENTS: dict[str, Callable[[str, FetchJson], RegistryFacts]] = {
     "npm": _npm,
     "pypi": _pypi,
@@ -552,6 +565,7 @@ CLIENTS: dict[str, Callable[[str, FetchJson], RegistryFacts]] = {
     "github": _github,
     "swift": _swift,
     "conan": _conan,
+    "docker": _docker,
 }
 
 

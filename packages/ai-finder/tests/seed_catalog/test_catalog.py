@@ -196,7 +196,13 @@ def test_rows_are_ordered_by_id_so_a_rank_change_does_not_reshuffle_the_file():
 
 def test_the_committed_candidate_pool_validates():
     candidates, limit = load_candidates()
-    assert limit == 50
+    # The limit ranks; it must not cut a curated row. Every package that verifies
+    # is a package a customer may depend on, and a cap at 50 dropped real ones
+    # (mcp-agent, guardrails-ai) from detection to make room.
+    groups: dict[tuple[str, str], int] = {}
+    for c in candidates:
+        groups[(c.kind, c.ecosystem)] = groups.get((c.kind, c.ecosystem), 0) + 1
+    assert limit >= max(groups.values())
     assert len(candidates) > 150
     assert {c.kind for c in candidates} == {SDK, MCP_SERVER}
 
