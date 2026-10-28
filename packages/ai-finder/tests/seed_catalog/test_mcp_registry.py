@@ -78,3 +78,42 @@ def test_personal_namespaces_only_on_request() -> None:
     ]
     assert [r["purl"] for r in proposals(servers, [])] == ["pkg:npm/acme-tool-mcp"]
     assert len(proposals(servers, [], include_personal=True)) == 2
+
+
+def test_a_package_on_another_registry_is_not_proposed() -> None:
+    private = {
+        "registryType": "npm",
+        "identifier": "mcp-server",
+        "registryBaseUrl": "https://npm.example.com",
+    }
+    public = {
+        "registryType": "npm",
+        "identifier": "mcp-server",
+        "registryBaseUrl": "https://registry.npmjs.org/",
+    }
+    assert candidate_for(private) is None
+    assert candidate_for(public) == ("pkg:npm/mcp-server", ["mcp-server"])
+
+
+def test_pypi_names_are_normalised() -> None:
+    assert candidate_for({"registryType": "pypi", "identifier": "My_MCP.Server"}) == (
+        "pkg:pypi/my-mcp-server",
+        ["my-mcp-server"],
+    )
+
+
+def test_a_200_that_is_not_a_listing_is_refused() -> None:
+    pages = iter(
+        [(200, {"servers": [], "metadata": {"nextCursor": "c1"}}), (200, {"error": "unavailable"})]
+    )
+    with pytest.raises(RuntimeError, match="partial"):
+        fetch_servers(lambda url: next(pages))
+
+
+def test_images_whose_names_slug_alike_are_both_proposed() -> None:
+    servers = [
+        _record("com.acme/a", [{"registryType": "oci", "identifier": "docker.io/acme/server:1"}]),
+        _record("com.acme/b", [{"registryType": "oci", "identifier": "ghcr.io/acme/server:1"}]),
+    ]
+    rows = proposals(servers, [])
+    assert len(rows) == 2 and len({r["id"] for r in rows}) == 2

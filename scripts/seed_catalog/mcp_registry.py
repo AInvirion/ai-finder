@@ -20,6 +20,7 @@ than seed rows.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -53,8 +54,16 @@ def fetch_servers(fetch=None, max_pages: int = MAX_PAGES) -> list[dict[str, Any]
         status, body = fetch(f"{REGISTRY_URL}?{urllib.parse.urlencode(query)}")
         if status != 200 or not isinstance(body, dict):
             raise RuntimeError(f"MCP registry answered {status}; refusing a partial list")
-        servers.extend(body.get("servers") or [])
-        cursor = (body.get("metadata") or {}).get("nextCursor")
+        # A 200 that is not a listing (an error object, a maintenance page)
+        # carries no cursor, and reading it as the last page would return the
+        # pages so far as if they were everything.
+        page, metadata = body.get("servers"), body.get("metadata")
+        if not isinstance(page, list) or not isinstance(metadata, dict):
+            raise RuntimeError(
+                "MCP registry answered 200 without a listing; refusing a partial list"
+            )
+        servers.extend(page)
+        cursor = metadata.get("nextCursor")
         if not cursor:
             return servers
     raise RuntimeError(
@@ -81,14 +90,23 @@ def _image_purl(identifier: str) -> tuple[str, list[str]] | None:
     return f"pkg:docker/{repo}?repository_url={registry}", [f"{registry}/{repo}"]
 
 
+# The public registry each type resolves against. A package published to a
+# different registry is a different package that may share a public name, and
+# refresh.py can only verify the public one, so it is not proposed.
+_PUBLIC_REGISTRY = {"npm": "https://registry.npmjs.org", "pypi": "https://pypi.org"}
+
+
 def candidate_for(package: dict[str, Any]) -> tuple[str, list[str]] | None:
     """(purl, patterns) for one registry package entry, or None if out of scope."""
     kind = package.get("registryType")
     identifier = str(package.get("identifier") or "").strip()
+    base = str(package.get("registryBaseUrl") or "").rstrip("/")
+    if kind in _PUBLIC_REGISTRY and base and base != _PUBLIC_REGISTRY[kind]:
+        return None
     if kind == "npm" and _NPM_NAME.match(identifier):
         return f"pkg:npm/{identifier}", [identifier]
     if kind == "pypi" and _PYPI_NAME.match(identifier):
-        name = identifier.lower()
+        name = re.sub(r"[-_.]+", "-", identifier).lower()  # PEP 503
         return f"pkg:pypi/{name}", [name]
     if kind == "oci":
         return _image_purl(identifier)
@@ -129,7 +147,12 @@ def proposals(
             purl, patterns = found
             if purl in have_purls:
                 continue
-            ident = _slug(f"mcpreg-{purl.split('/', 1)[1].split('?', 1)[0]}")
+            # The whole purl, ecosystem and qualifiers included, plus a short
+            # hash: a slug alone maps docker.io/acme/server and
+            # ghcr.io/acme/server (or a.b and a-b) to one id, and the second
+            # package was skipped as a duplicate.
+            digest = hashlib.sha256(purl.encode()).hexdigest()[:8]
+            ident = f"{_slug(f'mcpreg-{purl[4:]}')[:70]}-{digest}"
             if ("mcp_server", ident) in have_ids:
                 continue
             have_purls.add(purl)
