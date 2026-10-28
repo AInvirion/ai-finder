@@ -6,6 +6,7 @@ import json
 import re
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from ai_finder_kb.matcher import purl_ecosystem, purl_name
@@ -13,6 +14,11 @@ from ai_finder_kb.matcher import purl_ecosystem, purl_name
 from .. import __version__
 from ..models import Finding, FindingType, ScanResult
 from .cyclonedx import CycloneDXFormatter
+
+_SOURCE_REGISTRY = {
+    ".py": "pypi",
+    **{ext: "npm" for ext in (".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs")},
+}
 
 if TYPE_CHECKING:
     from ..analyzers.graph import ComponentGraph
@@ -180,6 +186,14 @@ class SPDX3Formatter:
             else:
                 # Merge metadata from new element into existing
                 self._merge_element_metadata(existing, element)
+                merged_version = existing.get("software_packageVersion", "")
+                if not key[3] and merged_version:
+                    # It has a version now: re-key it, so a later, different
+                    # version does not also land here as if unversioned.
+                    new_key = (*key[:3], merged_version)
+                    elements_by_key[new_key] = elements_by_key.pop(key)
+                    siblings = keys_by_base[base]
+                    siblings[siblings.index(key)] = new_key
                 prior = existing.get("software_sourceInfo")
                 if (
                     seen_at
@@ -190,12 +204,19 @@ class SPDX3Formatter:
                         f"{prior}; {seen_at}" if prior else f"found at: {seen_at}"
                     )
 
-        # Same name in two registries: give the later one its own spdxId.
+        # Two elements, one generated id (same name in two registries, or a
+        # package and a local MCP server sharing a name): every id stays unique.
         used_ids: set[str] = set()
         for (_, eco, _, _), element in elements_by_key.items():
-            if element["spdxId"] in used_ids and eco:
-                element["spdxId"] = f"{element['spdxId']}-{eco}"
-            used_ids.add(element["spdxId"])
+            spdx_id = element["spdxId"]
+            if spdx_id in used_ids:
+                stem = f"{spdx_id}-{eco}" if eco else spdx_id
+                spdx_id, n = stem, 2
+                while spdx_id in used_ids:
+                    spdx_id = f"{stem}-{n}"
+                    n += 1
+                element["spdxId"] = spdx_id
+            used_ids.add(spdx_id)
 
         # Convert dict to list and collect root elements
         for element in elements_by_key.values():
@@ -243,8 +264,12 @@ class SPDX3Formatter:
     @staticmethod
     def _registry(finding: Finding) -> str:
         """The registry a finding's package lives in, or "" when unknown."""
-        if finding.sdk_usage and finding.sdk_usage.purl:
-            return purl_ecosystem(finding.sdk_usage.purl) or ""
+        if finding.sdk_usage:
+            if finding.sdk_usage.purl:
+                return purl_ecosystem(finding.sdk_usage.purl) or ""
+            # Unresolved import: the registry its language imports from, so it
+            # still meets its manifest entry. Identity only; it is not enriched.
+            return _SOURCE_REGISTRY.get(Path(finding.file_path).suffix.lower(), "")
         if finding.mcp_info and finding.mcp_info.purl:
             return purl_ecosystem(finding.mcp_info.purl) or ""
         if finding.manifest_dep:

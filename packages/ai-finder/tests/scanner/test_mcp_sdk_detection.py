@@ -19,7 +19,14 @@ from ai_finder_kb.matcher import Matcher, purl_ecosystem, purl_name
 from ai_finder_scanner.detectors.javascript import JavaScriptDetector
 from ai_finder_scanner.detectors.tools import ToolsDetector
 from ai_finder_scanner.mcp import MCPDetector, parse_mcp_config
-from ai_finder_scanner.models import FindingType
+from ai_finder_scanner.models import (
+    Finding,
+    FindingType,
+    ManifestDep,
+    MCPInfo,
+    ScanResult,
+    SDKUsage,
+)
 from ai_finder_scanner.output.cyclonedx import CycloneDXFormatter
 from ai_finder_scanner.output.spdx import SPDX23Formatter
 from ai_finder_scanner.output.spdx3 import SPDX3Formatter
@@ -509,3 +516,175 @@ def test_spdx3_does_not_enrich_an_unresolved_import(tmp_path: Path) -> None:
     enricher = RecordingEnricher()
     SPDX3Formatter().format(result, enricher=enricher)
     assert enricher.calls == []
+
+
+# --- review round 2 ------------------------------------------------------------
+
+
+class TestRound2Launches:
+    def _cfg(self, matcher, command: str, args: list[str]):
+        config = {"mcpServers": {"s": {"command": command, "args": args}}}
+        (finding,) = parse_mcp_config(json.dumps(config), Path("m.json"), matcher)
+        return finding.mcp_info
+
+    def test_server_arguments_are_never_launcher_options(self, matcher) -> None:
+        info = self._cfg(
+            matcher,
+            "npx",
+            ["@modelcontextprotocol/server-github", "--", "--package", "sk-abcdefghijklmnop"],
+        )
+        assert info.package == "@modelcontextprotocol/server-github"
+        assert "sk-abcdefghijklmnop" not in repr(info)
+
+    def test_tarball_is_not_a_package_and_requirement_is(self, matcher) -> None:
+        assert self._cfg(matcher, "npx", ["server-1.0.0.tgz"]).package is None
+        req = self._cfg(matcher, "uvx", ["mcp-server-fetch>=0.6.2"])
+        assert (req.package, req.version) == ("mcp-server-fetch", None)
+        pinned = self._cfg(matcher, "uvx", ["mcp-server-fetch==0.6.2"])
+        assert pinned.version == "0.6.2"
+
+    def test_a_range_is_not_a_version(self, matcher) -> None:
+        info = self._cfg(matcher, "npx", ["@acme/server@1.x"])
+        assert (info.package, info.version) == ("@acme/server", None)
+        assert self._cfg(matcher, "npx", ["@acme/server@1.2.3"]).version == "1.2.3"
+
+    def test_tag_and_digest_together(self, matcher) -> None:
+        digest = "sha256:" + "a" * 64
+        info = self._cfg(
+            matcher, "docker", ["run", f"ghcr.io/github/github-mcp-server:v0.5.0@{digest}"]
+        )
+        assert info.kb_id == "github-mcp-server"
+        assert info.version == digest
+
+
+class TestRound2Code:
+    def test_args_from_another_construct_are_not_borrowed(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'server_args = ["@modelcontextprotocol/server-memory"]\n'
+            'other = dict(args=["sk-abcdefghijklmnop"])\n'
+            'p = StdioServerParameters(command="npx", args=server_args)\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
+        assert all(f.mcp_info.package is None for f in findings)
+        assert "sk-abcdefghijklmnop" not in _all_text(findings)
+
+    def test_known_launch_without_sdk_import(self, matcher) -> None:
+        src = (
+            "import subprocess\n"
+            'command = "npx"\n'
+            'args = ["@modelcontextprotocol/server-memory"]\n'
+            "subprocess.run([command, *args])\n"
+        )
+        findings = list(MCPDetector().detect(src, Path("run.py"), matcher.scoped({"pypi"})))
+        assert [f.mcp_info.kb_id for f in findings] == ["mcp-memory"]
+        # Without an SDK import an unknown package is not claimed as a server.
+        other = src.replace("@modelcontextprotocol/server-memory", "left-pad")
+        assert list(MCPDetector().detect(other, Path("run.py"), matcher.scoped({"pypi"}))) == []
+
+    def test_pipx_launch_from_code(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'p = StdioServerParameters(command="pipx", args=["run", "mcp-server-fetch"])\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
+        assert [f.mcp_info.kb_id for f in findings if f.mcp_info.package] == ["mcp-fetch"]
+
+    def test_same_name_launched_from_two_registries(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'a = StdioServerParameters(command="npx", args=["fastmcp"])\n'
+            'b = StdioServerParameters(command="uvx", args=["fastmcp"])\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
+        ecos = sorted(purl_ecosystem(f.mcp_info.purl) for f in findings if f.mcp_info.purl)
+        assert ecos == ["npm", "pypi"]
+
+    def test_commented_import_is_not_an_import(self) -> None:
+        src = '// import { Client } from "fastmcp";\nconst client = new Client();\n'
+        assert list(MCPDetector().detect(src, Path("a.js"))) == []
+
+    def test_two_servers_with_unusable_names_are_two(self, matcher) -> None:
+        src = (
+            "from fastmcp import FastMCP\n"
+            'weather = FastMCP("weather!")\n'
+            'calendar = FastMCP("calendar!")\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("a.py"), matcher.scoped({"pypi"})))
+        assert [f.line for f in findings] == [2, 3]
+
+
+class TestRound2SPDX3:
+    @staticmethod
+    def _graph(findings):
+        doc = SPDX3Formatter().format(ScanResult(root_path="/", findings=findings))
+        return [e for e in json.loads(doc)["@graph"] if e.get("type") == "software_Package"]
+
+    @staticmethod
+    def _f(path: str, **kw) -> Finding:
+        return Finding(file_path=path, confidence=1.0, **kw)
+
+    def test_an_import_does_not_absorb_every_later_version(self) -> None:
+        f = self._f
+        graph = self._graph(
+            [
+                f(
+                    "a.py",
+                    type=FindingType.SDK_USAGE,
+                    sdk_usage=SDKUsage(
+                        sdk="openai", import_statement="import openai", purl="pkg:pypi/openai"
+                    ),
+                ),
+                f(
+                    "requirements.txt",
+                    type=FindingType.MANIFEST_DEP,
+                    manifest_dep=ManifestDep("openai", "==1.60.0", "requirements.txt"),
+                ),
+                f(
+                    "old/requirements.txt",
+                    type=FindingType.MANIFEST_DEP,
+                    manifest_dep=ManifestDep("openai", "==1.61.0", "old/requirements.txt"),
+                ),
+            ]
+        )
+        versions = sorted(e["software_packageVersion"] for e in graph if e["name"] == "openai")
+        assert versions == ["==1.60.0", "==1.61.0"]
+
+    def test_ids_unique_when_a_local_server_shares_a_package_name(self) -> None:
+        f = self._f
+        graph = self._graph(
+            [
+                f(
+                    "a.py",
+                    type=FindingType.SDK_USAGE,
+                    sdk_usage=SDKUsage(
+                        sdk="openai", import_statement="import openai", purl="pkg:pypi/openai"
+                    ),
+                ),
+                f(
+                    "a.py",
+                    type=FindingType.MCP_SERVER,
+                    mcp_info=MCPInfo(name="openai", role="server", source="code"),
+                ),
+            ]
+        )
+        ids = [e["spdxId"] for e in graph if e["name"] == "openai"]
+        assert len(ids) == 2 and len(set(ids)) == 2
+
+    def test_unresolved_import_still_meets_its_manifest_entry(self) -> None:
+        f = self._f
+        graph = self._graph(
+            [
+                f(
+                    "a.py",
+                    type=FindingType.SDK_USAGE,
+                    sdk_usage=SDKUsage(sdk="mcp", import_statement="import mcp"),
+                ),
+                f(
+                    "requirements.txt",
+                    type=FindingType.MANIFEST_DEP,
+                    manifest_dep=ManifestDep("mcp", "", "requirements.txt"),
+                ),
+            ]
+        )
+        assert len([e for e in graph if e["name"] == "mcp"]) == 1

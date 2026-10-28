@@ -66,62 +66,78 @@ _CONTAINER_VALUE_FLAGS = frozenset(
 _LAUNCHER_VALUE_FLAGS = frozenset({"--from", "--with", "-p", "--package", "--python", "--index"})
 
 
-# What a registry package spec may look like. Anything else a launcher is handed
-# (a URL, a tarball, a path) is not a registry package and must not become a
-# purl: those are also where credentials ride (`https://u:pw@host/x.tgz`).
-_NPM_SPEC = re.compile(r"^(@[a-z0-9][\w.\-~]*/)?[a-z0-9][\w.\-~]*(@[\w.\-+^~]+)?$", re.IGNORECASE)
-_PYPI_SPEC = re.compile(r"^[a-z0-9][\w.\-]*(\[[\w,\-]+\])?((==|@)[\w.\-+]+)?$", re.IGNORECASE)
+# What a registry package name may look like. Anything else a launcher is
+# handed (a URL, a tarball, a path) is not a registry package and must not
+# become a purl: those are also where credentials ride.
+_NPM_NAME = re.compile(r"^(@[a-z0-9][\w.\-~]*/)?[a-z0-9][\w.\-~]*$", re.IGNORECASE)
+_PYPI_REQ = re.compile(
+    r"^(?P<name>[a-z0-9][\w.\-]*)(\[[\w,\-]+\])?\s*"
+    r"(?:(?:==|@)\s*(?P<exact>[\w.\-+!]+)|(?P<range>[<>=!~][^;]*))?$",
+    re.IGNORECASE,
+)
+_ARCHIVE_SUFFIXES = (".tgz", ".tar.gz", ".tar", ".zip", ".whl", ".tar.bz2", ".git")
 _IMAGE_REPO = re.compile(r"^[a-z0-9][a-z0-9._\-/]*$")
 _IMAGE_TAG = re.compile(r"^[\w][\w.\-]{0,127}$")
+_DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
+# Exact versions only. A range (`1.x`, `^1.2`, `>=0.6`) or a moving tag
+# (`latest`, `next`) is what the launcher resolves at run time, not a version.
+_EXACT_VERSION = {
+    "npm": re.compile(r"^\d+\.\d+\.\d+(?:[-+][\w.\-]+)?$"),
+    "pypi": re.compile(r"^\d+(?:\.\d+)*(?:(?:a|b|rc|\.post|\.dev)\d+)?$"),
+    "docker": re.compile(r"^v?\d+(?:\.\d+)*(?:[-+_][\w.\-]+)?$"),
+}
 
 
-def _is_version(version: str | None, ecosystem: str) -> bool:
-    """A real version, not a moving tag such as `latest`, `next` or `stable`."""
+def _exact(version: str | None, ecosystem: str) -> str | None:
     if not version:
-        return False
-    if ecosystem == "docker":
-        return bool(re.match(r"^v?\d", version)) or version.startswith("sha256:")
-    return version[0].isdigit()
+        return None
+    if ecosystem == "docker" and _DIGEST.match(version):
+        return version
+    pattern = _EXACT_VERSION.get(ecosystem)
+    return version if pattern and pattern.match(version) else None
 
 
 def _split_version(spec: str, ecosystem: str) -> tuple[str, str | None] | None:
-    """Split a registry spec into (name, version), or None if it is not one.
+    """Split a registry spec into (name, exact version), or None if it is not one.
 
-    `pkg@1.2.3` / `@scope/pkg@1` (npm), `pkg==1.2` / `pkg@1.2` (pypi). A dist-tag
-    such as `@latest` is dropped rather than reported: it names whatever was
-    newest on the day the launcher ran, not a version.
+    `pkg@1.2.3` / `@scope/pkg@1.2.3` (npm), `pkg==1.2` / `pkg@1.2` / `pkg>=1`
+    (pypi). The version is kept only when it pins one release.
     """
+    if (
+        "://" in spec
+        or spec.startswith((".", "/", "~", "\\"))
+        or spec.lower().endswith(_ARCHIVE_SUFFIXES)
+        or _TOKEN_RE.search(spec)
+    ):
+        return None
     if ecosystem == "pypi":
-        if not _PYPI_SPEC.match(spec):
+        m = _PYPI_REQ.match(spec)
+        if not m:
             return None
-        m = re.match(r"^(.+?)(?:==|@)([\w.\-+]+)$", spec)
-        name, version = (m.group(1), m.group(2)) if m else (spec, None)
-        name = re.sub(r"\[.*\]$", "", name)
-    else:
-        if not _NPM_SPEC.match(spec):
-            return None
-        head, sep, tail = spec.rpartition("@")
-        name, version = (head, tail) if sep and head else (spec, None)
-    return name, version if _is_version(version, ecosystem) else None
+        return m.group("name"), _exact(m.group("exact"), "pypi")
+    head, sep, tail = spec.rpartition("@")
+    name, version = (head, tail) if sep and head else (spec, None)
+    if not _NPM_NAME.match(name):
+        return None
+    return name, _exact(version, "npm")
 
 
 def _split_image(ref: str) -> tuple[str, str | None] | None:
     """Split a container reference into (registry/repository, tag or digest).
 
-    The tag is after the last `:` only when that `:` follows the last `/`, so a
-    registry port (`host:5000/acme/mcp`) is not mistaken for one.
+    `repo[:tag][@sha256:...]`. The tag is after the last `:` only when that `:`
+    follows the last `/`, so a registry port (`host:5000/acme/mcp`) is not one.
+    A digest, when present, is the exact version.
     """
-    version: str | None = None
-    if "@" in ref:
-        ref, _, digest = ref.partition("@")
-        version = digest if digest.startswith("sha256:") else None
-    else:
-        last_slash = ref.rfind("/")
-        colon = ref.rfind(":")
-        if colon > last_slash:
-            ref, version = ref[:colon], ref[colon + 1 :]
-            if not _IMAGE_TAG.match(version):
-                return None
+    ref, _, digest = ref.partition("@")
+    if digest and not _DIGEST.match(digest):
+        return None
+    tag: str | None = None
+    colon = ref.rfind(":")
+    if colon > ref.rfind("/"):
+        ref, tag = ref[:colon], ref[colon + 1 :]
+        if not _IMAGE_TAG.match(tag):
+            return None
     parts = ref.split("/")
     registry_like = len(parts) > 1 and (
         "." in parts[0] or ":" in parts[0] or parts[0] == "localhost"
@@ -129,11 +145,16 @@ def _split_image(ref: str) -> tuple[str, str | None] | None:
     repo = "/".join(parts[1:]) if registry_like else ref
     if not repo or not _IMAGE_REPO.match(repo):
         return None
-    return ref, version if _is_version(version, "docker") else None
+    return ref, digest or _exact(tag, "docker")
 
 
 def _launch_package(command: str, args: list[str]) -> tuple[str, str, str | None] | None:
-    """Return (ecosystem, package, version) a launch command runs, if it names one."""
+    """Return (ecosystem, package, version) a launch command runs, if it names one.
+
+    Only the launcher's own options are read: everything from the first
+    positional (the package) or a `--` on belongs to the launched server, and is
+    never reinterpreted as a launcher option.
+    """
     exe = Path(command).name.lower()
     argv = [a for a in args if isinstance(a, str)]
 
@@ -144,26 +165,27 @@ def _launch_package(command: str, args: list[str]) -> tuple[str, str, str | None
 
     if exe in _NPM_LAUNCHERS or exe in _PYPI_LAUNCHERS:
         ecosystem = "npm" if exe in _NPM_LAUNCHERS else "pypi"
-        # A flag that selects the package outright: `npx --package pkg bin`,
-        # `npx -p pkg bin`, `uvx --from pkg bin`. The positional is then only
-        # the executable that package provides.
+        # `npx --package pkg bin`, `npx -p pkg bin`, `uvx --from pkg bin`: the
+        # flag names the package and the positional is only an executable.
         selectors = ("--package", "-p") if ecosystem == "npm" else ("--from",)
-        for i, arg in enumerate(argv[:-1]):
+        i = 0
+        while i < len(argv):
+            arg = argv[i]
+            if arg == "--":
+                return None
             if arg in selectors:
+                if i + 1 >= len(argv):
+                    return None
                 split = _split_version(argv[i + 1], ecosystem)
                 return (ecosystem, *split) if split else None
-            if arg.startswith(tuple(f"{s}=" for s in selectors if s.startswith("--"))):
+            if arg.startswith("--") and "=" in arg and arg.split("=", 1)[0] in selectors:
                 split = _split_version(arg.split("=", 1)[1], ecosystem)
                 return (ecosystem, *split) if split else None
-        skip = False
-        for arg in argv:
-            if skip:
-                skip = False
-                continue
             if arg in _LAUNCHER_VALUE_FLAGS:
-                skip = True
+                i += 2
                 continue
             if arg.startswith("-"):
+                i += 1
                 continue
             split = _split_version(arg, ecosystem)
             return (ecosystem, *split) if split else None
@@ -177,6 +199,8 @@ def _launch_package(command: str, args: list[str]) -> tuple[str, str, str | None
             if skip:
                 skip = False
                 continue
+            if arg == "--":
+                return None
             if arg in _CONTAINER_VALUE_FLAGS:
                 skip = True
                 continue
@@ -365,8 +389,53 @@ _JS_CONSTRUCTS: list[tuple[re.Pattern[str], str, str | None]] = [
 ]
 
 # A launch inside code: `command="npx"` / `command: "uvx"` with its args list.
-_CODE_COMMAND = re.compile(r"""\bcommand\s*[=:]\s*["'`](npx|bunx|pnpx|uvx|docker|podman)["'`]""")
+_CODE_COMMAND = re.compile(
+    r"""\bcommand\s*[=:]\s*["'`]"""
+    r"""(npx|bunx|pnpx|npm|pnpm|yarn|uvx|pipx|docker|podman)["'`]"""
+)
 _CODE_ARGS = re.compile(r"""\bargs\s*[=:]\s*\[([^\]]*)\]""")
+_JS_COMMENTS = re.compile(r"/\*.*?\*/|//[^\n]*", re.DOTALL)
+_OPENERS = {"(": ")", "{": "}"}
+
+
+def _enclosing_span(content: str, start: int, end: int) -> str | None:
+    """The call or object literal around content[start:end], or None at top level.
+
+    An `args` list is only evidence for the `command` in the same call. Taking
+    the nearest list in the file attributes another construct's arguments,
+    which may be anything, to this launch.
+    """
+    depth = 0
+    for i in range(start - 1, max(-1, start - 4000), -1):
+        ch = content[i]
+        if ch in ")}]":
+            depth += 1
+        elif ch in "({[":
+            if depth == 0:
+                if ch not in _OPENERS:
+                    return None
+                close, level = _OPENERS[ch], 0
+                for j in range(i + 1, min(len(content), end + 4000)):
+                    cj = content[j]
+                    if cj in "({[":
+                        level += 1
+                    elif cj in ")}]":
+                        if level == 0:
+                            return content[i : j + 1] if cj == close else None
+                        level -= 1
+                return None
+            depth -= 1
+    return None
+
+
+def _statement_block(content: str, start: int) -> str:
+    """Top-level `command = ...` / `args = [...]` written as adjacent lines."""
+    lines = content.splitlines()
+    line_no = content[:start].count("\n")
+    block = lines[max(0, line_no - 3) : line_no + 4]
+    return "\n".join(line for line in block if re.match(r"^\s*(command|args)\s*[=:]", line))
+
+
 _CODE_STRING = re.compile(r"""["'`]([^"'`]*)["'`]""")
 
 
@@ -380,20 +449,26 @@ class MCPDetector(BaseDetector):
     def detect(self, content: str, path: Path, matcher: Any | None = None) -> Iterator[Finding]:
         """Yield MCP findings for one file.
 
-        Only a file that imports an MCP SDK is considered at all: `Server(` and
-        `new Client(` are everyday names, and a bare string naming a server
-        package is just as likely an ordinary import.
+        Constructs (`Server(`, `new Client(`) only count in a file that imports
+        an MCP SDK: they are everyday names. A launched server counts in any
+        file whose launch names a package the KB lists as an MCP server, and in
+        an MCP-importing file whatever package it names.
 
         Evidence (`how`) is the construct or the program and package, never the
         source line: lines carry `env={"API_KEY": ...}` and URLs with
         credentials, and an SBOM is passed around.
         """
         is_py = path.suffix.lower() == ".py"
-        if not (_PY_SDK_IMPORT if is_py else _JS_SDK_IMPORT).search(content):
-            return
-        constructs = _PY_CONSTRUCTS if is_py else _JS_CONSTRUCTS
+        # Comments are not imports (`// import { Client } from "fastmcp"`).
+        searchable = content if is_py else _JS_COMMENTS.sub("", content)
+        has_sdk = bool((_PY_SDK_IMPORT if is_py else _JS_SDK_IMPORT).search(searchable))
+        if has_sdk:
+            yield from self._constructs(content, path, is_py)
+        yield from self._launches(content, path, matcher, require_kb=not has_sdk)
 
-        server_names: set[str] = set()
+    def _constructs(self, content: str, path: Path, is_py: bool) -> Iterator[Finding]:
+        constructs = _PY_CONSTRUCTS if is_py else _JS_CONSTRUCTS
+        declared_names: set[str] = set()
         server_lines: set[int] = set()
         client_found = False
         for regex, role, transport in constructs:
@@ -403,14 +478,17 @@ class MCPDetector(BaseDetector):
                 continue
             for m in regex.finditer(content):
                 declared = m.group(1) if regex.groups else None
-                name = _safe_name(declared)
                 line_no = content[: m.start()].count("\n") + 1
                 if role == "server":
-                    # The unnamed pattern re-matches a named server's line.
-                    if (name or "") in server_names or line_no in server_lines:
+                    # The unnamed pattern re-matches a named server's line. Track
+                    # the declared value, not the sanitised name: two servers
+                    # whose names are both replaced are still two servers.
+                    if line_no in server_lines or (declared and declared in declared_names):
                         continue
-                    server_names.add(name or "")
+                    if declared:
+                        declared_names.add(declared)
                     server_lines.add(line_no)
+                name = _safe_name(declared)
                 construct = m.group(0).split("(", 1)[0].strip() + "(...)"
                 yield Finding(
                     type=FindingType.MCP_SERVER if role == "server" else FindingType.MCP_CLIENT,
@@ -429,28 +507,35 @@ class MCPDetector(BaseDetector):
                     client_found = True
                     break
 
-        # Servers this code launches: the same launcher rules as a config file,
-        # applied to a `command=` literal and the `args` list beside it.
-        launched: set[str] = set()
+    def _launches(
+        self, content: str, path: Path, matcher: Any | None, require_kb: bool
+    ) -> Iterator[Finding]:
+        """Servers this code launches.
+
+        The launcher rules a config file gets, applied to a `command` literal and
+        the literal `args` list of the same call, or of the adjacent top-level
+        assignment. An `args` given as a variable resolves to nothing.
+        """
+        launched: set[tuple[str, str]] = set()
+        scoped = getattr(matcher, "match_mcp_in", None)
         for cm in _CODE_COMMAND.finditer(content):
-            window = content[max(0, cm.start() - 400) : cm.end() + 400]
-            pos = cm.start() - max(0, cm.start() - 400)
-            arg_lists = list(_CODE_ARGS.finditer(window))
-            if not arg_lists:
+            span = _enclosing_span(content, cm.start(), cm.end())
+            if span is None:
+                span = _statement_block(content, cm.start())
+            arg_list = _CODE_ARGS.search(span)
+            if not arg_list:
                 continue
-            nearest = min(arg_lists, key=lambda am: abs(am.start() - pos))
-            argv = [sm.group(1) for sm in _CODE_STRING.finditer(nearest.group(1))]
+            argv = [sm.group(1) for sm in _CODE_STRING.finditer(arg_list.group(1))]
             resolved = _launch_package(cm.group(1), argv)
             if not resolved:
                 continue
             ecosystem, package, version = resolved
-            if package in launched:
+            if (ecosystem, package) in launched:
                 continue
-            launched.add(package)
-            kb = None
-            scoped = getattr(matcher, "match_mcp_in", None)
-            if scoped is not None:
-                kb = scoped(package, ecosystem)
+            kb = scoped(package, ecosystem) if scoped is not None else None
+            if require_kb and kb is None:
+                continue
+            launched.add((ecosystem, package))
             yield Finding(
                 type=FindingType.MCP_SERVER,
                 file_path=str(path),
