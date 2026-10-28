@@ -1410,5 +1410,41 @@
     ],
     "category": "mcp",
     "license": "MIT"
+  },
+  {
+    "id": "modelcontextprotocol-server",
+    "purl": "pkg:npm/@modelcontextprotocol/server",
+    "patterns": [
+      "@modelcontextprotocol/server"
+    ],
+    "category": "mcp",
+    "license": "Apache-2.0"
+  },
+  {
+    "id": "modelcontextprotocol-client",
+    "purl": "pkg:npm/@modelcontextprotocol/client",
+    "patterns": [
+      "@modelcontextprotocol/client"
+    ],
+    "category": "mcp",
+    "license": "Apache-2.0"
+  },
+  {
+    "id": "modelcontextprotocol-node",
+    "purl": "pkg:npm/@modelcontextprotocol/node",
+    "patterns": [
+      "@modelcontextprotocol/node"
+    ],
+    "category": "mcp",
+    "license": "Apache-2.0"
+  },
+  {
+    "id": "modelcontextprotocol-core",
+    "purl": "pkg:npm/@modelcontextprotocol/core",
+    "patterns": [
+      "@modelcontextprotocol/core"
+    ],
+    "category": "mcp",
+    "license": "Apache-2.0"
   }
 ]

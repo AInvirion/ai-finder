@@ -30,6 +30,11 @@ AI_SDK_PACKAGES_FALLBACK = frozenset(
         "@google/generative-ai",
         "@xenova/transformers",
         "@modelcontextprotocol/sdk",
+        # SDK v2 is split into packages.
+        "@modelcontextprotocol/server",
+        "@modelcontextprotocol/client",
+        "@modelcontextprotocol/node",
+        "@modelcontextprotocol/core",
         "fastmcp",
     }
 )

@@ -817,3 +817,22 @@ def test_launch_args_with_brackets_inside_a_string(matcher) -> None:
     )
     findings = MCPDetector().detect(src, Path("a.py"), matcher.scoped({"pypi"}))
     assert [f.mcp_info.kb_id for f in findings if f.mcp_info.package] == ["mcp-filesystem"]
+
+
+def test_sdk_v2_split_packages(matcher) -> None:
+    # The official servers import the v2 SDK, split into packages; there is no
+    # `@modelcontextprotocol/sdk` import in them at all.
+    src = (
+        'import { McpServer } from "@modelcontextprotocol/server";\n'
+        'const server = new McpServer({ name: "memory-server", version: "0.6.3" });\n'
+    )
+    assert [f.mcp_info.name for f in MCPDetector().detect(src, Path("index.ts"))] == [
+        "memory-server"
+    ]
+    sdk = matcher.match_sdk_identifier("@modelcontextprotocol/server", frozenset({"npm"}))
+    assert sdk is not None and sdk.license == "Apache-2.0"
+    # `server-memory` is a server package, not the SDK's `server` package.
+    assert (
+        matcher.match_sdk_identifier("@modelcontextprotocol/server-memory", frozenset({"npm"}))
+        is None
+    )

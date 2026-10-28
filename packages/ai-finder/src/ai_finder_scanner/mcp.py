@@ -378,7 +378,7 @@ _PY_SDK_IMPORT = re.compile(
 # which needs a lexer to tell `//` in a URL string from a comment.
 _JS_SDK_IMPORT = re.compile(
     r"""(?:(?:^|;)\s*import\b[^;"'`]*?\bfrom\s*|(?:^|;)\s*import\s*|\brequire\s*\(\s*|\bimport\s*\(\s*)"""
-    r"""["'](?:@modelcontextprotocol/sdk|fastmcp)(?:/[^"']*)?["']""",
+    r"""["'](?:@modelcontextprotocol/(?:sdk|server|client|node|core)|fastmcp)(?:/[^"']*)?["']""",
     re.MULTILINE,
 )
 
