@@ -775,9 +775,7 @@
       "kind": "sdk",
       "purl": "pkg:pypi/langchain",
       "patterns": [
-        "langchain",
-        "langchain_core",
-        "langchain_openai"
+        "langchain"
       ],
       "category": "agent-framework",
       "priority": 100
@@ -837,9 +835,7 @@
       "kind": "sdk",
       "purl": "pkg:npm/langchain",
       "patterns": [
-        "langchain",
-        "@langchain/core",
-        "@langchain/openai"
+        "langchain"
       ],
       "category": "agent-framework",
       "priority": 100
