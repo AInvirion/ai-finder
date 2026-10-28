@@ -416,7 +416,8 @@ _LAUNCHERS = r"(npx|bunx|pnpx|npm|pnpm|yarn|uvx|pipx|docker|podman)"
 _KEY = r"""["']?{}["']?\s*[=:]\s*"""
 # A list of string literals only, read quote by quote so a `[` or `]` inside an
 # argument (`"/srv/Reports [2026]"`) is just a character.
-_STR = r"""(?:"[^"\n]*"|'[^'\n]*'|`[^`\n]*`)"""
+# A backslash escapes the next character, so `'/srv/O\\'Brien'` is one string.
+_STR = r"""(?:"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\\n]|\\.)*`)"""
 _GAP = r"(?:\s|#[^\n]*|//[^\n]*)*"  # whitespace and line comments
 _ARGS_LIST = r"\[(" + _GAP + r"(?:" + _STR + _GAP + r",?" + _GAP + r")*)\]"
 _SEP = _GAP + "," + _GAP
@@ -437,7 +438,9 @@ _CODE_LAUNCH = re.compile(
     + _LAUNCHERS
     + r"""["'`]"""
 )
-_CODE_STRING = re.compile(r"""["'`]([^"'`]*)["'`]""")
+_CODE_STRING = re.compile(
+    r"""(?:"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`((?:[^`\\\n]|\\.)*)`)"""
+)
 
 
 class MCPDetector(BaseDetector):
@@ -520,7 +523,10 @@ class MCPDetector(BaseDetector):
             # Groups: (command, args) in the first order, (args, command) in the second.
             command = lm.group(1) or lm.group(4)
             arg_text = lm.group(2) if lm.group(2) is not None else lm.group(3)
-            argv = [sm.group(1) for sm in _CODE_STRING.finditer(arg_text)]
+            argv = [
+                next(g for g in sm.groups() if g is not None)
+                for sm in _CODE_STRING.finditer(arg_text)
+            ]
             resolved = _launch_package(command, argv)
             if not resolved:
                 continue
