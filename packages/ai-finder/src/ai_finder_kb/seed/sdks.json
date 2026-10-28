@@ -301,15 +301,6 @@
     "license": "MIT"
   },
   {
-    "id": "cohere-kotlin",
-    "purl": "pkg:maven/io.cohere/cohere-kotlin",
-    "patterns": [
-      "io.cohere"
-    ],
-    "category": "llm-client",
-    "license": "MIT"
-  },
-  {
     "id": "cohere-ruby",
     "purl": "pkg:gem/cohere-ruby",
     "patterns": [

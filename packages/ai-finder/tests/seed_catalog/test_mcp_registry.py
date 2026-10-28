@@ -117,3 +117,11 @@ def test_images_whose_names_slug_alike_are_both_proposed() -> None:
     ]
     rows = proposals(servers, [])
     assert len(rows) == 2 and len({r["id"] for r in rows}) == 2
+
+
+def test_publisher_text_only_on_request() -> None:
+    servers = [_record("com.acme/tool", [{"registryType": "npm", "identifier": "acme-tool-mcp"}])]
+    (row,) = proposals(servers, [])
+    assert row["description"] == "MCP server published to the MCP Registry as com.acme/tool"
+    (kept,) = proposals(servers, [], keep_descriptions=True)
+    assert kept["description"] == "com.acme/tool server"

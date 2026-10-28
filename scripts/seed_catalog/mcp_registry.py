@@ -127,6 +127,7 @@ def proposals(
     servers: list[dict[str, Any]],
     existing: list[dict[str, Any]],
     include_personal: bool = False,
+    keep_descriptions: bool = False,
 ) -> list[dict[str, Any]]:
     """New candidate rows: active, latest, in scope, and not already in the pool."""
     have_purls = {e["purl"] for e in existing}
@@ -139,7 +140,15 @@ def proposals(
         server = record.get("server") or {}
         if not include_personal and str(server.get("name", "")).startswith(PERSONAL_NAMESPACES):
             continue
-        description = _CONTROL.sub(" ", str(server.get("description") or "")).strip()[:200]
+        # The publisher's own description is their text, not a fact about the
+        # package; the row carries only the registry name it was published as.
+        # --keep-descriptions copies the text when that is wanted.
+        registry_name = _CONTROL.sub(" ", str(server.get("name") or "")).strip()[:120]
+        description = (
+            _CONTROL.sub(" ", str(server.get("description") or "")).strip()[:200]
+            if keep_descriptions
+            else ""
+        ) or f"MCP server published to the MCP Registry as {registry_name}"
         for package in server.get("packages") or []:
             found = candidate_for(package)
             if not found:
@@ -163,7 +172,7 @@ def proposals(
                     "kind": "mcp_server",
                     "purl": purl,
                     "patterns": patterns,
-                    "description": description or f"MCP server {server.get('name', '')}".strip(),
+                    "description": description,
                     "priority": 200,
                     "source": SOURCE,
                     "registry_name": server.get("name"),
@@ -181,11 +190,21 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="also propose servers published under a personal GitHub/GitLab namespace",
     )
+    parser.add_argument(
+        "--keep-descriptions",
+        action="store_true",
+        help="copy each publisher's description text instead of the registry name only",
+    )
     args = parser.parse_args(argv)
 
     servers = json.loads(args.from_file.read_text()) if args.from_file else fetch_servers()
     document = json.loads(CANDIDATES_PATH.read_text())
-    new = proposals(servers, document["entries"], include_personal=args.include_personal)
+    new = proposals(
+        servers,
+        document["entries"],
+        include_personal=args.include_personal,
+        keep_descriptions=args.keep_descriptions,
+    )
     by_type: dict[str, int] = {}
     for row in new:
         eco = row["purl"][4:].split("/", 1)[0]
