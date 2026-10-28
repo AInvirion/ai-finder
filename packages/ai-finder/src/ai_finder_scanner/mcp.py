@@ -414,18 +414,24 @@ _JS_CONSTRUCTS: list[tuple[re.Pattern[str], str, str | None]] = [
 # `args` that is a variable, from being attributed to this launch.
 _LAUNCHERS = r"(npx|bunx|pnpx|npm|pnpm|yarn|uvx|pipx|docker|podman)"
 _KEY = r"""["']?{}["']?\s*[=:]\s*"""
-_ARGS_LIST = r"\[([^\[\]]*)\]"
+# A list of string literals only, read quote by quote so a `[` or `]` inside an
+# argument (`"/srv/Reports [2026]"`) is just a character.
+_STR = r"""(?:"[^"\n]*"|'[^'\n]*'|`[^`\n]*`)"""
+_GAP = r"(?:\s|#[^\n]*|//[^\n]*)*"  # whitespace and line comments
+_ARGS_LIST = r"\[(" + _GAP + r"(?:" + _STR + _GAP + r",?" + _GAP + r")*)\]"
+_SEP = _GAP + "," + _GAP
 _CODE_LAUNCH = re.compile(
     _KEY.format("command")
     + r"""["'`]"""
     + _LAUNCHERS
-    + r"""["'`]\s*,\s*"""
+    + r"""["'`]"""
+    + _SEP
     + _KEY.format("args")
     + _ARGS_LIST
     + "|"
     + _KEY.format("args")
     + _ARGS_LIST
-    + r"\s*,\s*"
+    + _SEP
     + _KEY.format("command")
     + r"""["'`]"""
     + _LAUNCHERS

@@ -793,3 +793,27 @@ class TestRound3:
         doc = SPDX3Formatter().format(ScanResult(root_path="/", findings=findings))
         graph = json.loads(doc)["@graph"]
         assert len([e for e in graph if e.get("name") == "async-openai"]) == 1
+
+
+def test_launch_pair_with_a_comment_between(matcher) -> None:
+    src = (
+        "from mcp import StdioServerParameters\n"
+        "params = StdioServerParameters(\n"
+        '    command="npx",  # Launch the filesystem server\n'
+        '    args=["-y", "@modelcontextprotocol/server-filesystem", "/srv"],\n'
+        ")\n"
+    )
+    findings = MCPDetector().detect(src, Path("a.py"), matcher.scoped({"pypi"}))
+    assert [f.mcp_info.kb_id for f in findings if f.mcp_info.package] == ["mcp-filesystem"]
+
+
+def test_launch_args_with_brackets_inside_a_string(matcher) -> None:
+    src = (
+        "from mcp import StdioServerParameters\n"
+        "params = StdioServerParameters(\n"
+        '    command="npx",\n'
+        '    args=["-y", "@modelcontextprotocol/server-filesystem", "/srv/Reports [2026]"],\n'
+        ")\n"
+    )
+    findings = MCPDetector().detect(src, Path("a.py"), matcher.scoped({"pypi"}))
+    assert [f.mcp_info.kb_id for f in findings if f.mcp_info.package] == ["mcp-filesystem"]
