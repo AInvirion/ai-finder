@@ -133,6 +133,28 @@ class SPDX23Formatter:
         return base + sep + qualifiers
 
     @staticmethod
+    def _identity(package: dict[str, Any]) -> str:
+        """Registry and name for a package with a purl, so npm `openai` and PyPI
+        `openai` stay two packages and an import merges with its manifest entry;
+        the bare name otherwise."""
+        name = package["name"]
+        purl = next(
+            (
+                ref["referenceLocator"]
+                for ref in package.get("externalRefs", [])
+                if ref.get("referenceType") == "purl"
+            ),
+            None,
+        )
+        eco = purl_ecosystem(purl)
+        if not eco:
+            return f"name:{name}"
+        key_name = name.lower()
+        if eco == "pypi":
+            key_name = re.sub(r"[-_.]+", "-", key_name)
+        return f"{eco}:{key_name}"
+
+    @staticmethod
     def _seen_at(finding: Finding) -> str:
         """`path:line (how)` for one finding; SPDX 2.3 has no occurrence field."""
         where = finding.file_path.replace("\\", "/")
@@ -370,7 +392,8 @@ class SPDX23Formatter:
             packages: Dict of package name to package dict (modified in place).
             enricher: KB enricher instance.
         """
-        for name, package in packages.items():
+        for key, package in packages.items():
+            name = package.get("name", key)
             purpose = package.get("primaryPackagePurpose")
 
             if purpose == "APPLICATION":
@@ -515,7 +538,8 @@ class SPDX23Formatter:
                 continue
 
             name = package["name"]
-            existing = packages_by_name.get(name)
+            key = self._identity(package)
+            existing = packages_by_name.get(key)
             seen_at = self._seen_at(finding)
 
             if existing is None:
@@ -523,7 +547,7 @@ class SPDX23Formatter:
                     package["sourceInfo"] = f"found at: {seen_at}"
                 # First time seeing this package
                 name_to_spdxid[name] = package["SPDXID"]
-                packages_by_name[name] = package
+                packages_by_name[key] = package
                 # Add DESCRIBES relationship
                 relationships.append(
                     {

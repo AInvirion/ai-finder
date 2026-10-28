@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import uuid
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
@@ -11,6 +12,7 @@ from ai_finder_kb.matcher import purl_ecosystem, purl_name
 
 from .. import __version__
 from ..models import Finding, FindingType, ScanResult
+from .cyclonedx import CycloneDXFormatter
 
 if TYPE_CHECKING:
     from ..analyzers.graph import ComponentGraph
@@ -138,21 +140,36 @@ class SPDX3Formatter:
         tool_id = tool_agent["spdxId"]
         elements.append(tool_agent)
 
-        # Build elements with deduplication by (type, name, version) to avoid
-        # incorrectly merging different versions or element types
-        elements_by_key: dict[tuple[str, str, str], dict[str, Any]] = {}
+        # Deduplicate by (type, registry, name, version). The registry keeps npm
+        # `openai` and PyPI `openai` apart; an unversioned finding (an import)
+        # joins a versioned one (its manifest entry) rather than standing
+        # beside it; two different versions stay two elements.
+        elements_by_key: dict[tuple[str, str, str, str], dict[str, Any]] = {}
+        keys_by_base: dict[tuple[str, str, str], list[tuple[str, str, str, str]]] = {}
 
         for finding in result.findings:
             element = self._finding_to_element(finding, enricher)
             if not element:
                 continue
 
-            # Key by (type, name, version) to keep different versions separate
             elem_type = element["type"]
-            name = element["name"]
+            eco = self._registry(finding)
+            norm = element["name"].lower()
+            if eco == "pypi":
+                norm = re.sub(r"[-_.]+", "-", norm)
             version = element.get("software_packageVersion", "")
-            key = (elem_type, name, version)
+            base = (elem_type, eco, norm)
+            key = next(
+                (
+                    k
+                    for k in keys_by_base.get(base, [])
+                    if k[3] == version or not version or not k[3]
+                ),
+                (elem_type, eco, norm, version),
+            )
             existing = elements_by_key.get(key)
+            if existing is None:
+                keys_by_base.setdefault(base, []).append(key)
 
             seen_at = self._seen_at(finding)
             if existing is None:
@@ -172,6 +189,13 @@ class SPDX3Formatter:
                     existing["software_sourceInfo"] = (
                         f"{prior}; {seen_at}" if prior else f"found at: {seen_at}"
                     )
+
+        # Same name in two registries: give the later one its own spdxId.
+        used_ids: set[str] = set()
+        for (_, eco, _, _), element in elements_by_key.items():
+            if element["spdxId"] in used_ids and eco:
+                element["spdxId"] = f"{element['spdxId']}-{eco}"
+            used_ids.add(element["spdxId"])
 
         # Convert dict to list and collect root elements
         for element in elements_by_key.values():
@@ -215,6 +239,20 @@ class SPDX3Formatter:
     def _is_sentinel_value(self, value: Any) -> bool:
         """Check if a value is a sentinel/placeholder that should be replaced."""
         return value in ("NOASSERTION", "", None)
+
+    @staticmethod
+    def _registry(finding: Finding) -> str:
+        """The registry a finding's package lives in, or "" when unknown."""
+        if finding.sdk_usage and finding.sdk_usage.purl:
+            return purl_ecosystem(finding.sdk_usage.purl) or ""
+        if finding.mcp_info and finding.mcp_info.purl:
+            return purl_ecosystem(finding.mcp_info.purl) or ""
+        if finding.manifest_dep:
+            filename = finding.manifest_dep.manifest_file.replace("\\", "/").split("/")[-1]
+            if filename.endswith(".csproj"):
+                return "nuget"
+            return CycloneDXFormatter.MANIFEST_PURL_TYPES.get(filename, "")
+        return ""
 
     @staticmethod
     def _seen_at(finding: Finding) -> str:
@@ -374,8 +412,10 @@ class SPDX3Formatter:
             # Only include version if present (null is invalid in SPDX 3.0)
             if sdk.version:
                 element["software_packageVersion"] = sdk.version
-            # Enrich from KB if available
-            if enricher:
+            # Enrich only a package the KB resolved: a fallback import name is
+            # not a registry name, and looking it up returns whatever unrelated
+            # package shares it.
+            if enricher and sdk.purl:
                 self._enrich_package(element, sdk_name, enricher, purl_ecosystem(sdk.purl))
             return element
 

@@ -15,12 +15,14 @@ from pathlib import Path
 import pytest
 from ai_finder_cli.main import main
 from ai_finder_kb.database import Database
-from ai_finder_kb.matcher import Matcher
+from ai_finder_kb.matcher import Matcher, purl_ecosystem, purl_name
 from ai_finder_scanner.detectors.javascript import JavaScriptDetector
 from ai_finder_scanner.detectors.tools import ToolsDetector
 from ai_finder_scanner.mcp import MCPDetector, parse_mcp_config
 from ai_finder_scanner.models import FindingType
 from ai_finder_scanner.output.cyclonedx import CycloneDXFormatter
+from ai_finder_scanner.output.spdx import SPDX23Formatter
+from ai_finder_scanner.output.spdx3 import SPDX3Formatter
 from ai_finder_scanner.scanner import Scanner
 from click.testing import CliRunner
 
@@ -216,7 +218,8 @@ class TestMCPCode:
         findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
         launched = [f.mcp_info for f in findings if f.mcp_info.kb_id]
         assert [m.kb_id for m in launched] == ["mcp-memory"]
-        assert launched[0].purl == "pkg:npm/@modelcontextprotocol/server-memory"
+        assert purl_ecosystem(launched[0].purl) == "npm"
+        assert purl_name(launched[0].purl) == "@modelcontextprotocol/server-memory"
 
     def test_typescript_server(self) -> None:
         src = (
@@ -324,4 +327,185 @@ def test_scanner_without_kb_still_detects_mcp_sdk(tmp_path: Path) -> None:
     _write(tmp_path, "s.py", "from mcp.server.fastmcp import FastMCP\n")
     result = Scanner(detect_licenses=False).scan(tmp_path)
     assert [f.sdk_usage.sdk for f in result.findings if f.sdk_usage] == ["mcp"]
-    assert CycloneDXFormatter().format(result)
+    bom = json.loads(CycloneDXFormatter().format(result))
+    (mcp,) = [c for c in bom["components"] if c["name"] == "mcp"]
+    assert mcp["purl"] == "pkg:pypi/mcp"
+    assert mcp["evidence"]["occurrences"][0] == {
+        "location": "s.py",
+        "line": 1,
+        "additionalContext": "from mcp.server.fastmcp import FastMCP",
+    }
+
+
+# --- review round 1 ------------------------------------------------------------
+
+
+def _all_text(findings) -> str:
+    return repr([f.mcp_info for f in findings])
+
+
+class TestSecretsNeverExported:
+    def test_secret_values_in_code_under_any_key(self, matcher) -> None:
+        # Arbitrary values, so no token-shape rule can be what hides them.
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'p = StdioServerParameters(command="node", args=["--password", "swordfish"],'
+            ' env={"API_KEY": "swordfish"}, url="https://u:swordfish@h/x?k=swordfish")\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
+        assert findings
+        assert "swordfish" not in _all_text(findings)
+
+    def test_secret_shaped_server_name_is_not_a_name(self, matcher) -> None:
+        src = 'from fastmcp import FastMCP\napp = FastMCP("sk-abcdefghijklmnop")\n'
+        findings = list(MCPDetector().detect(src, Path("a.py"), matcher.scoped({"pypi"})))
+        assert [f.mcp_info.name for f in findings] == ["mcp-server"]
+        assert "sk-abcdefghijklmnop" not in _all_text(findings)
+
+    def test_url_launch_is_not_a_package(self, matcher) -> None:
+        config = {
+            "mcpServers": {
+                "x": {
+                    "command": "npx",
+                    "args": ["https://u:SEKRET@example.com/server.tgz?token=PRIVATE"],
+                }
+            }
+        }
+        (finding,) = parse_mcp_config(json.dumps(config), Path("m.json"), matcher)
+        assert finding.mcp_info.purl is None and finding.mcp_info.package is None
+        assert "SEKRET" not in _all_text([finding]) and "PRIVATE" not in _all_text([finding])
+
+
+class TestLaunchParsing:
+    def _one(self, matcher, command: str, args: list[str]):
+        config = {"mcpServers": {"s": {"command": command, "args": args}}}
+        (finding,) = parse_mcp_config(json.dumps(config), Path("m.json"), matcher)
+        return finding.mcp_info
+
+    def test_moving_image_tag_is_not_a_version(self, matcher) -> None:
+        info = self._one(matcher, "docker", ["run", "ghcr.io/github/github-mcp-server:latest"])
+        assert info.version is None
+        assert info.kb_id == "github-mcp-server"
+        pinned = self._one(matcher, "docker", ["run", "ghcr.io/github/github-mcp-server:v0.5.0"])
+        assert pinned.version == "v0.5.0"
+
+    def test_registry_port_is_not_a_tag(self, matcher) -> None:
+        info = self._one(matcher, "docker", ["run", "registry.example:5000/acme/mcp:1.2.3"])
+        assert info.package == "registry.example:5000/acme/mcp"
+        assert info.version == "1.2.3"
+        assert info.purl == "pkg:docker/acme/mcp@1.2.3?repository_url=registry.example:5000"
+
+    def test_npx_package_flag_names_the_package(self, matcher) -> None:
+        info = self._one(matcher, "npx", ["--package", "@acme/server@2.1.0", "acme-cli"])
+        assert (info.package, info.version) == ("@acme/server", "2.1.0")
+
+    def test_bad_url_port_does_not_stop_the_scan(self, matcher) -> None:
+        config = {
+            "servers": {
+                "bad": {"url": "https://host:bad/mcp"},
+                "good": {"command": "uvx", "args": ["mcp-server-fetch"]},
+            }
+        }
+        findings = list(parse_mcp_config(json.dumps(config), Path("m.json"), matcher))
+        assert sorted(f.mcp_info.name for f in findings) == ["bad", "mcp-server-fetch"]
+
+
+class TestCodeScope:
+    def test_ordinary_import_is_not_a_launched_server(self, matcher) -> None:
+        # An MCP SDK import is present, so the detector runs; the second import
+        # is still just an import and must not resolve to PyPI from JS.
+        src = (
+            'import { Client } from "@modelcontextprotocol/sdk/client/index.js";\n'
+            'import fetch from "mcp-server-fetch";\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("app.js"), matcher.scoped({"npm"})))
+        assert all(f.mcp_info.purl is None for f in findings)
+
+    def test_js_constructor_needs_a_real_import(self) -> None:
+        src = 'const label = "fastmcp";\nconst client = new Client();\n'
+        assert list(MCPDetector().detect(src, Path("a.js"))) == []
+        imported = 'import { Client } from "fastmcp";\nconst client = new Client();\n'
+        assert [f.type for f in MCPDetector().detect(imported, Path("a.js"))] == [
+            FindingType.MCP_CLIENT
+        ]
+
+
+class TestIdentityAcrossFormats:
+    @pytest.fixture
+    def two_openais(self, tmp_path: Path, seed_kb: Path):
+        _write(tmp_path, "a.py", "import openai\n")
+        _write(tmp_path, "b.ts", 'import OpenAI from "openai";\n')
+        _write(tmp_path, "requirements.txt", "openai==1.60.0\n")
+        db = Database(seed_kb)
+        db.connect()
+        yield Scanner(detect_licenses=False).scan(tmp_path, kb=Matcher(db))
+        db.close()
+
+    def test_spdx23_keeps_registries_apart(self, two_openais) -> None:
+        doc = json.loads(SPDX23Formatter().format(two_openais))
+        openai = [p for p in doc["packages"] if p["name"] == "openai"]
+        assert len(openai) == 2
+
+    def test_spdx3_keeps_registries_apart_and_merges_import_with_manifest(
+        self, two_openais
+    ) -> None:
+        graph = json.loads(SPDX3Formatter().format(two_openais))["@graph"]
+        openai = [e for e in graph if e.get("name") == "openai"]
+        assert len(openai) == 2
+        assert len({e["spdxId"] for e in openai}) == 2
+        pypi = next(e for e in openai if "pypi" in e.get("software_packageUrl", ""))
+        # The manifest's version reached the merged element. (SPDX 3 keeps the
+        # specifier, `==1.60.0`, as main always has; that is not this change.)
+        assert pypi.get("software_packageVersion", "").endswith("1.60.0")
+        assert "a.py" in pypi["software_sourceInfo"]
+        assert "requirements.txt" in pypi["software_sourceInfo"]
+
+    def test_mcp_server_and_its_manifest_entry_are_one_component(
+        self, tmp_path: Path, seed_kb: Path
+    ) -> None:
+        _write(
+            tmp_path,
+            ".mcp.json",
+            json.dumps(
+                {
+                    "mcpServers": {
+                        "gh": {"command": "npx", "args": ["@modelcontextprotocol/server-github"]}
+                    }
+                }
+            ),
+        )
+        _write(
+            tmp_path,
+            "package.json",
+            json.dumps({"dependencies": {"@modelcontextprotocol/server-github": "1.0.0"}}),
+        )
+        bom = _cyclonedx(tmp_path, seed_kb)
+        gh = [c for c in bom["components"] if c["name"] == "@modelcontextprotocol/server-github"]
+        assert len(gh) == 1
+        props = {p["name"]: p["value"] for p in gh[0]["properties"]}
+        assert props["ai-finder:mcp:role"] == "server"
+        assert {o["location"] for o in gh[0]["evidence"]["occurrences"]} == {
+            ".mcp.json",
+            "package.json",
+        }
+
+
+def test_spdx3_does_not_enrich_an_unresolved_import(tmp_path: Path) -> None:
+    class RecordingEnricher:
+        def __init__(self) -> None:
+            self.calls: list[str] = []
+
+        def lookup_sdk(self, name):
+            self.calls.append(name)
+            return None
+
+        def lookup_package(self, name, ecosystem):
+            self.calls.append(f"{ecosystem}:{name}")
+            return None
+
+    _write(tmp_path, "s.py", "import mcp\n")
+    result = Scanner(detect_licenses=False).scan(tmp_path)  # no KB: no purl
+    assert [f.sdk_usage.sdk for f in result.findings if f.sdk_usage] == ["mcp"]
+    enricher = RecordingEnricher()
+    SPDX3Formatter().format(result, enricher=enricher)
+    assert enricher.calls == []

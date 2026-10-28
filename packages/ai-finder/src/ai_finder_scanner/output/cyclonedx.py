@@ -187,6 +187,14 @@ class CycloneDXFormatter:
         return base + sep + qualifiers
 
     @staticmethod
+    def _package_key(purl_type: str, name: str) -> str:
+        """One identity per registry package, whichever detector found it."""
+        key_name = name.lower()
+        if purl_type == "pypi":
+            key_name = re.sub(r"[-_.]+", "-", key_name)  # PEP 503
+        return f"{purl_type}:{key_name}"
+
+    @staticmethod
     def _occurrence(finding: Finding) -> dict[str, Any]:
         """Where a component was found and, when known, the line that shows how."""
         occurrence: dict[str, Any] = {"location": finding.file_path.replace("\\", "/")}
@@ -267,7 +275,7 @@ class CycloneDXFormatter:
                 "type": "library",
                 "name": name,
                 "purl": purl,
-                "_key": f"{purl_type}:{name.lower()}",
+                "_key": self._package_key(purl_type, name),
             }
             if sdk.version:
                 component["version"] = sdk.version
@@ -287,10 +295,7 @@ class CycloneDXFormatter:
             # Generate PURL with proper encoding
             purl_type = self._infer_purl_type_from_manifest(dep.manifest_file)
             component["purl"] = self._build_purl(purl_type, dep.name, dep.version)
-            key_name = dep.name.lower()
-            if purl_type == "pypi":
-                key_name = key_name.replace("_", "-")
-            component["_key"] = f"{purl_type}:{key_name}"
+            component["_key"] = self._package_key(purl_type, dep.name)
             return component
 
         if finding.type == FindingType.MODEL_FILE and finding.model_info:
@@ -409,7 +414,9 @@ class CycloneDXFormatter:
                 mcp_component["purl"] = self._purl_for(purl_type, pkg, mcp.purl, mcp.version)
                 if mcp.version:
                     mcp_component["version"] = mcp.version
-                mcp_component["_key"] = f"mcp:{purl_type}:{pkg.lower()}"
+                # Same key as the package found any other way (import,
+                # manifest), so one package is one component.
+                mcp_component["_key"] = self._package_key(purl_type, pkg)
             else:
                 # Unpackaged: a server this project defines, a remote endpoint,
                 # or a local command. Keyed by role and name so two servers
@@ -634,6 +641,15 @@ class CycloneDXFormatter:
             occurrences = existing.setdefault("evidence", {}).setdefault("occurrences", [])
             if occurrence not in occurrences:
                 occurrences.append(occurrence)
+            # A package that is also an MCP server keeps what the MCP finding
+            # knows about it.
+            if component.get("properties"):
+                known = {p["name"] for p in existing.get("properties", [])}
+                extra = [p for p in component["properties"] if p["name"] not in known]
+                if extra:
+                    existing.setdefault("properties", []).extend(extra)
+            if component.get("type") == "application":
+                existing["type"] = "application"
             if "version" not in existing and "version" in component:
                 # Existing has no version but new one does - update
                 existing["version"] = component["version"]

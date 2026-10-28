@@ -485,10 +485,11 @@ class ScopedMatcher:
     def match_mcp(self, text: str) -> MCPMatch | None:
         return self._matcher.match_mcp_identifier(text, self.ecosystems)
 
-    def match_mcp_any(self, text: str) -> MCPMatch | None:
-        """Match an MCP server package in any ecosystem.
+    def match_mcp_in(self, text: str, ecosystem: str) -> MCPMatch | None:
+        """Match an MCP server package in the registry its launcher installs from.
 
         Code in one language routinely launches a server published in another
-        (Python spawning `npx @modelcontextprotocol/server-github`).
+        (Python spawning `npx @modelcontextprotocol/server-github`), so the scope
+        comes from the launcher, not from the file.
         """
-        return self._matcher.match_mcp_identifier(text)
+        return self._matcher.match_mcp_identifier(text, frozenset({ecosystem}))
