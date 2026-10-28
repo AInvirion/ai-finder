@@ -323,6 +323,11 @@ def scan(
                             lines.append(
                                 f"  Model: {finding.file_path} ({finding.model_info.format})"
                             )
+                        elif finding.mcp_info:
+                            m = finding.mcp_info
+                            lines.append(
+                                f"  MCP {m.role}: {m.name} ({finding.file_path}:{finding.line})"
+                            )
                     return "\n".join(lines)
 
             # Setup KB enricher (enabled by default)
