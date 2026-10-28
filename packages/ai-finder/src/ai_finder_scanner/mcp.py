@@ -160,6 +160,21 @@ def _package_purl(ecosystem: str, name: str, version: str | None) -> str:
     return f"{purl}@{version}" if version else purl
 
 
+_URL_RE = re.compile(r"[a-z][a-z0-9+.\-]*://[^\s\"'`]+", re.IGNORECASE)
+_SECRET_ASSIGN_RE = re.compile(
+    r"(?i)((?:[\w-]*(?:token|key|secret|password|passwd|auth)[\w-]*)\s*[=:]\s*)"
+    r"(?:\"[^\"]*\"|'[^']*'|[^\s,)\]}]+)"
+)
+_TOKEN_RE = re.compile(r"\b(?:sk|pk|ghp|gho|ghs|xox[bpas]|glpat|AKIA)[-_A-Za-z0-9]{12,}\b")
+
+
+def _redact(text: str) -> str:
+    """Strip what a source line may carry that must not land in an SBOM."""
+    text = _URL_RE.sub(lambda m: _safe_url(m.group(0)) or "<url>", text)
+    text = _SECRET_ASSIGN_RE.sub(lambda m: m.group(1) + "***", text)
+    return _TOKEN_RE.sub("***", text)
+
+
 def _line_of_key(content: str, key: str) -> int | None:
     m = re.search(r'"' + re.escape(key) + r'"\s*:', content)
     return content[: m.start()].count("\n") + 1 if m else None
@@ -222,11 +237,15 @@ def parse_mcp_config(content: str, path: Path, matcher: Any | None = None) -> It
 
         if isinstance(command, str) and command:
             transport = "stdio"
-            how = " ".join([command, *args])
+            # Never the raw arguments: they carry `-e TOKEN=...`, connection
+            # strings with passwords and API keys. The program and the package
+            # it runs are the provenance; the rest is configuration.
+            how = Path(command).name
             launched = _launch_package(command, args)
             if launched:
                 ecosystem, package, version = launched
                 purl = _package_purl(ecosystem, package, version)
+                how = f"{how} {package}" + (f"@{version}" if version else "")
         elif isinstance(url, str) and url:
             declared = str(spec.get("type") or spec.get("transport") or "").lower()
             transport = "sse" if "sse" in declared else "http"
@@ -347,7 +366,7 @@ class MCPDetector(BaseDetector):
                             role=role,
                             source="code",
                             transport=transport,
-                            how=line[:200],
+                            how=_redact(line)[:200],
                         ),
                     )
                     if role == "client":
@@ -379,6 +398,6 @@ class MCPDetector(BaseDetector):
                     purl=kb.purl,
                     version=version,
                     kb_id=kb.id,
-                    how=content.splitlines()[line_no - 1].strip()[:200],
+                    how=_redact(content.splitlines()[line_no - 1].strip())[:200],
                 ),
             )

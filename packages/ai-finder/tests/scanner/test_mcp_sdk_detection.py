@@ -146,10 +146,23 @@ class TestMCPConfig:
             "servers": {
                 "remote": {"type": "http", "url": "https://u:pw@mcp.example.com/v1?token=SEKRET"},
                 "local": {"command": "npx", "args": ["x-mcp"], "env": {"API_KEY": "SEKRET"}},
+                "db": {
+                    "command": "docker",
+                    "args": [
+                        "run",
+                        "-e",
+                        "TOKEN=SEKRET",
+                        "mcp/postgres",
+                        "postgresql://u:SEKRET@db/app",
+                        "--api-key=SEKRET",
+                    ],
+                },
             }
         }
         findings = list(parse_mcp_config(json.dumps(config), Path("mcp.json"), matcher))
-        assert len(findings) == 2
+        assert len(findings) == 3
+        db = next(f.mcp_info for f in findings if f.mcp_info.name == "mcp/postgres")
+        assert db.how == "docker mcp/postgres"
         assert "SEKRET" not in repr(findings)
         assert "pw" not in repr([f.mcp_info.how for f in findings])
         remote = next(f.mcp_info for f in findings if f.mcp_info.name == "remote")
@@ -175,6 +188,18 @@ class TestMCPCode:
         assert [s.mcp_info.name for s in servers] == ["weather"]
         assert servers[0].line == 3
         assert len(clients) == 1 and clients[0].mcp_info.transport == "stdio"
+
+    def test_code_evidence_is_redacted(self, matcher) -> None:
+        src = (
+            "from mcp import StdioServerParameters\n"
+            'p = StdioServerParameters(command="npx", args=["@modelcontextprotocol/server-github"],'
+            ' env={"GITHUB_TOKEN": "ghp_abcdefghijklmnopqrstu"}, url="https://u:pw@h/x?k=1")\n'
+        )
+        findings = list(MCPDetector().detect(src, Path("c.py"), matcher.scoped({"pypi"})))
+        assert findings
+        for f in findings:
+            assert "ghp_abcdefghijklmnopqrstu" not in f.mcp_info.how
+            assert "pw@" not in f.mcp_info.how and "k=1" not in f.mcp_info.how
 
     def test_constructor_names_need_an_mcp_import(self) -> None:
         # `Server(` and `new Client(` are everyday names.
