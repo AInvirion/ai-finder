@@ -13,6 +13,7 @@ from ai_finder_scanner.models import (
     GuardrailInfo,
     LicenseInfo,
     ManifestDep,
+    MCPInfo,
     ModelInfo,
     PromptInfo,
     ScanResult,
@@ -44,6 +45,7 @@ __all__ = [
     "PromptInfo",
     "GuardrailInfo",
     "DatasetInfo",
+    "MCPInfo",
     # Discovery
     "FileDiscovery",
     # Caching
